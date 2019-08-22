@@ -29,7 +29,7 @@
 					</div>
 					<img class="choose-img" src="../../../assets/img/UnionpayQuick/checked.png">
 				</div>
-				<div class="add-card flx-r">
+				<div class="add-card flx-r" @click="goAddQuickCard">
 					<img src="../../../assets/img/UnionpayQuick/add.png">
 					<span class="medium">添加信用卡</span>
 				</div>
@@ -54,7 +54,8 @@
 							<span>暂不支持交通、浦发银行信用卡</span>
 						</div>
 					</div>
-					<div class="tip2"></div>
+					<img src="../../../assets/img/UnionpayQuick/intro.png" class="tip2" @click="goChannelIntroduce">
+					<!-- <img  class="tip2" @click="goChannelIntroduce"></img> -->
 				</div>
 			</div>
 		</div>
@@ -74,6 +75,20 @@ export default {
 	},
 	beforeCreate() {
 		document.querySelector('body').setAttribute('style', 'background-color:#FFFFFF')
+	},
+	methods: {
+		// 跳转绑定快捷信用卡页面
+		goAddQuickCard(){
+			this.$router.push({
+				'name':'addQuickCard'
+			})
+		},
+		// 跳转通道介绍页面
+		goChannelIntroduce() {
+			this.$router.push({
+				name:'channelIntroduce',
+			})
+		}
 	},
 };
 </script>
@@ -171,31 +186,29 @@ export default {
 					height: 32px;
 					padding-right: 30px;
 				}
-			}
-			.channel-info{
-				flex-flow: wrap;
-				padding-top:10px;
-				div{
-					width: 50%;
-					font-size: 24px;
-					color: #999;
+				.channel-info{
+					flex-flow: wrap;
+					padding-top:10px;
+					div{
+						width: 50%;
+						font-size: 24px;
+						color: #999;
+					}
 				}
-			}
-			.tip{
-				padding-top: 10px;
-				font-size:22px;
-				:nth-child(2){
-					padding-left: 10px;
+				.tip{
+					padding-top: 10px;
+					font-size:22px;
+					:nth-child(2){
+						padding-left: 10px;
+					}
 				}
-			}
-			.tip2{
-				position: absolute;
-				top: 0;
-				right: 0;
-				border-top: 52px solid red;
-				border-bottom: 52px solid transparent;
-				border-right: 52px solid transparent;
-				border-radius: 50%;
+				.tip2{
+					position: absolute;
+					top: 1px;
+					right: -31px;
+					width: 70px;
+					height: 70px;
+				}
 			}
 		}
 	}

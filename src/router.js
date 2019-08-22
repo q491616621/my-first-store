@@ -26,6 +26,7 @@ Vue.use(Router)
 //quickVerify //快捷支付短信验证
 //channelIntroduce //积分通道介绍
 //chooseQuickCard //选择快捷支付银行卡
+//addQuickCard //添加快捷信用卡
 
 const router = new Router({
 	base: process.env.BASE_URL,
@@ -196,6 +197,11 @@ const router = new Router({
 			path: '/chooseQuickCard',
 			name: 'chooseQuickCard', // chooseQuickCard //选择快捷支付银行卡
 			component: resolve => require(['@/components/appPages/UnionpayQuick/chooseQuickCard.vue'], resolve)
+		},	
+		{
+			path: '/addQuickCard',
+			name: 'addQuickCard', // addQuickCard //添加快捷信用卡
+			component: resolve => require(['@/components/appPages/UnionpayQuick/addQuickCard.vue'], resolve)
 		},
 	]
 })

@@ -18,11 +18,11 @@
 						<span>落地通道</span>
 					</div> -->
 					<span class="orderId">订单号:{{cardInfo.planOrderId}}</span>
-					<div class="right flx-rs">
+		<!-- 			<div class="right flx-rs">
 						<span>消费地区：</span>
 						<img src="../../assets/img/location.png">
 						<span>深圳市</span>
-					</div>
+					</div> -->
 				</div>
 				<div class="bank flx-rs">
 					<div class="left flx-rs">

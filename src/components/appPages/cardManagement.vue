@@ -55,7 +55,7 @@
 							<div>还款笔数</div>
 						</div>
 						<div class="bottom-li flx-c">
-							<div>{{item.cardBalance == null?'暂无计划':item.cardBalance}}</div>
+							<div>{{item.totalRate == null?'暂无计划':item.totalRate}}</div>
 							<div>手续费</div>
 						</div>
 						<div class="bottom-li flx-c">

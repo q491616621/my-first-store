@@ -51,9 +51,10 @@
 				</div>
 				<div class="keybord-right flx-cs">
 					<van-button class='keybord-x' type="default" @click="setAmount('D')">
-						<span class="x">x</span>
+						<img src="../../../assets/img/UnionpayQuick/del.png">
+						<!-- <span class="x">x</span> -->
 					</van-button>
-					<van-button class='keybord-pay' type="default">
+					<van-button class='keybord-pay' type="default" @click='goChooseQuickCard'>
 						<span>确认</span>
 						<span>付款</span>
 					</van-button>
@@ -80,6 +81,18 @@
 			document.querySelector('body').setAttribute('style', 'background-color:#f6f6f6')
 		},
 		methods: {
+			// 跳转选择信用卡页面
+			goChooseQuickCard(){
+				if(!this.amount||this.amount == 0){
+					this.$toast({
+						message:'请输入刷卡金额',
+					})
+					return;
+				}
+				this.$router.push({
+					name:'chooseQuickCard'
+				})
+			},
 			// 输入金额
 			setAmount(num) {
 				// let str = this.amount;
@@ -286,33 +299,10 @@
 					height: 120px;
 					margin: 0 0 10px 10px;
 					border-radius: 5px;
-					display: flex;
-					justify-content: center;
-
-					.x {
-						display: block;
-						width: 28px;
-						height: 28px;
-						font-size: 26px;
-						line-height: 28px;
-						background: #000000;
-						color: #FFFFFF;
-						// border-radius: 5px;
-						border-top-right-radius: 5px;
-						border-bottom-right-radius: 5px;
-						position: relative;
-					}
-
-					.x::before {
-						position: absolute;
-						top: 0px;
-						left: -14px;
-						content: '';
-						width: 0;
-						height: 0;
-						border-top: 14px solid transparent;
-						border-bottom: 14px solid transparent;
-						border-right: 14px solid #000;
+					line-height:0;
+					img{
+						width: 34px;
+						height: 26px;
 					}
 				}
 
