@@ -1,0 +1,720 @@
+body {
+	    font-size: 28px;
+	    background-color: #f6f6f6;
+	}
+	
+	.wueui-bar.wueui-bar-nav {
+	    position: fixed;
+	    top: 0;
+	    height: 88px;
+	    left: 0;
+	    right: 0;
+	    z-index: 991;
+	    border-bottom: 1px solid #dcdcdc;
+	    background-color: #fff;
+	    padding: 0 30px;
+	    overflow: hidden;
+	}
+	
+	    .wueui-bar.wueui-bar-nav ~ .wueui-content {
+	        padding-top: 88px;
+	    }
+	
+	    .wueui-bar.wueui-bar-nav .div_title {
+	        height: 88px;
+	        line-height: 88px;
+	        font-size: 36px;
+	        color: #333;
+	        text-align: center;
+	        overflow: hidden;
+	        text-overflow: ellipsis;
+	        white-space: nowrap;
+	    }
+	
+	    .wueui-bar.wueui-bar-nav .nav_btn_left {
+	        display: block;
+	        position: absolute;
+	        left: 30px;
+	        top: 0;
+	        bottom: 0;
+	        height: 88px;
+	        line-height: 88px;
+	        color: #333;
+	        font-size: 28px;
+	    }
+	
+	
+	    .wueui-bar.wueui-bar-nav .nav_btn_right {
+	        display: block;
+	        position: absolute;
+	        right: 30px;
+	        top: 0;
+	        bottom: 0;
+	        height: 88px;
+	        line-height: 88px;
+	        color: #333;
+	        font-size: 28px;
+	    }
+	
+	.btn_back {
+	    padding-left: 40px;
+	    background: url('../../src/assets/img/images/icon001.png') no-repeat center left;
+	    background-size: 24px;
+	}
+	
+	.btn_menu {
+	    width: 44px;
+	    background: url('../../src/assets/img/images/icon002.png') no-repeat center right;
+	    background-size: 50px;
+	}
+	
+	.div_vip_li {
+	    padding: 20px 30px;
+	    background-color: #fff;
+	    margin-top: 20px;
+	}
+	
+	    .div_vip_li:first-child {
+	        margin-top: 0px;
+	    }
+	
+	
+	    .div_vip_li .div_vip_li_img img {
+	        display: block;
+	        width: 100%;
+	        -moz-box-shadow: 0px 10px 20px rgba(0,0,0,0.2); /* 老的 Firefox */
+	        box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+	    }
+	
+	.div_vip_li_title {
+	    margin-top: 20px;
+	    font-size: 32px;
+	    color: #333;
+	    line-height: 52px;
+	}
+	
+	.div_evaluate {
+	    overflow: hidden;
+	}
+	
+	    .div_evaluate span {
+	        margin-top: 16px;
+	        display: block;
+	        float: left;
+	        padding: 0 12px;
+	        background-color: #ff852b;
+	        font-size: 24px;
+	        height: 44px;
+	        line-height: 44px;
+	        color: #fff;
+	        margin-right: 20px;
+	        -webkit-border-radius: 6px;
+	        -moz-border-radius: 6px;
+	        border-radius: 6px;
+	        overflow: hidden;
+	    }
+	
+	        .div_evaluate span label {
+	            display: block;
+	            float: left;
+	        }
+	
+	        .div_evaluate span img {
+	            display: block;
+	            height: 28px;
+	            float: left;
+	            margin-top: 8px;
+	        }
+	
+	.div_function {
+	    overflow: hidden;
+	}
+	
+	    .div_function span {
+	        display: block;
+	        float: left;
+	        padding: 0 12px;
+	        background-color: #3e80f7;
+	        font-size: 24px;
+	        height: 44px;
+	        line-height: 44px;
+	        color: #fff;
+	        margin-right: 20px;
+	        -webkit-border-radius: 6px;
+	        -moz-border-radius: 6px;
+	        border-radius: 6px;
+	        margin-top: 16px;
+	    }
+	
+	.div_vip_li_content {
+	    margin-top: 20px;
+	}
+	
+	    .div_vip_li_content .btn_title {
+	        display: block;
+	        padding-right: 60px;
+	        font-size: 28px;
+	        color: #999;
+	        line-height: 52px;
+	        background: url('../../src/assets/img/images/icon004.png') no-repeat center right;
+	        background-size: 30px;
+	    }
+	
+	        .div_vip_li_content .btn_title.active {
+	            background: url('../../src/assets/img/images/icon007.png') no-repeat center right;
+	            background-size: 30px;
+	        }
+	
+	    .div_vip_li_content .div_vip_li_info {
+	        padding: 20px 0;
+	        display: none;
+	    }
+	
+	    .div_vip_li_content .btn_title.active + .div_vip_li_info {
+	        display: block;
+	    }
+	
+	.div_vip_li_info {
+	    font-size: 26px;
+	    color: #666;
+	    line-height: 50px;
+	}
+	
+	.div_vip_li_title02 {
+	    font-size: 28px;
+	    color: #333;
+	    line-height: 60px;
+	    padding-left: 50px;
+	    background: url('../../src/assets/img/images/icon008.png') no-repeat center left;
+	    background-size: 26px;
+	}
+	
+	.div_table table {
+	    display: table;
+	    border-right: 1px solid #A4A4A2;
+	    border-bottom: 1px solid #A4A4A2;
+	}
+	
+	.div_table th {
+	    text-align: center;
+	    white-space: nowrap;
+	    padding: 10px;
+	    font-size: 26px;
+	    color: #333;
+	    font-weight: 600;
+	    background-color: #eef4ff;
+	    border-left: 1px solid #A4A4A2;
+	    border-top: 1px solid #A4A4A2;
+	}
+	
+	.div_table td {
+	    text-align: center;
+	    padding: 10px;
+	    font-size: 26px;
+	    color: #333;
+	    background-color: #eef4ff;
+	    border-left: 1px solid #A4A4A2;
+	    border-top: 1px solid #A4A4A2;
+	}
+	
+	.div_vip_li_info img {
+	    display: block;
+	    max-width: 100%;
+	    margin: 0 auto;
+	}
+	
+	.div_pay {
+	    font-size: 30px;
+	    color: #ff5050;
+	    margin-top: 10px;
+	    line-height: 64px;
+	}
+	
+	    .div_pay span {
+	        font-size: 26px;
+	        color: #999;
+	        line-height: 64px;
+	        margin-top: 40px;
+	        text-decoration: line-through;
+	    }
+	
+	    .div_pay .btn_pay {
+	        float: right;
+	        display: block;
+	        padding: 0 16px;
+	        color: #fff;
+	        font-size: 30px;
+	        line-height: 60px;
+	        height: 60px;
+	        background-color: #ff5050;
+	        -webkit-border-radius: 6px;
+	        -moz-border-radius: 6px;
+	        border-radius: 6px;
+	        -moz-box-shadow: 0px 4px 10px rgba(255,27,27,0.4); /* 老的 Firefox */
+	        box-shadow: 0px 4px 10px rgba(255,27,27,0.4);
+	    }
+	
+	.income_details_tj_box
+	{
+	    position:fixed;
+	    top:88px;
+	    left:0;
+	    right:0;
+	    z-index:990;
+	}
+	
+	.income_details_tj {
+	    background-color: #fff;
+	    padding: 20px 30px;    
+	}
+	
+	.income_details_tj_content {
+	    padding: 40px 20px;
+	    background: url('../../src/assets/img/images/icon010.png') no-repeat center;
+	    background-size: 100% 100%;
+	    position: relative;
+	    -moz-box-shadow: 0px 10px 20px rgba(0,0,0,0.2); /* 老的 Firefox */
+	    box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+	}
+	
+	.income_details_tj_title {
+	    font-size: 48px;
+	    color: #fff;
+	    text-align: center;
+	    line-height: 60px;
+	}
+	
+	    .income_details_tj_title span {
+	        display: block;
+	        font-size: 24px;
+	    }
+	
+	.income_details_tj_list {
+	    margin-top: 30px;
+	    overflow: hidden;
+	}
+	
+	.income_details_tj_li {
+	    width: 50%;
+	    float: left;
+	    font-size: 30px;
+	    color: #fff;
+	    text-align: center;
+	    line-height: 40px;
+	    position: relative;
+	}
+	
+	    .income_details_tj_li:after {
+	        content: " ";
+	        position: absolute;
+	        top: 0;
+	        bottom: 0;
+	        width: 4px;
+	        right: -2px;
+	        background-color: rgba(255,255,255,0.5);
+	    }
+	
+	    .income_details_tj_li:last-child::after {
+	        width: 0px;
+	    }
+	
+	    .income_details_tj_li span {
+	        display: block;
+	        font-size: 24px;
+	    }
+	
+	
+	.income_details_tj_content .btn_withdraw {
+	    position: absolute;
+	    top: 20px;
+	    right: 20px;
+	    display: block;
+	    width: 128px;
+	    height: 54px;
+	    background-color: #fff;
+	    line-height: 54px;
+	    -webkit-border-radius: 28px;
+	    -moz-border-radius: 28px;
+	    border-radius: 28px;
+	    font-size: 30px;
+	    color: #3e80f7;
+	    text-align: center;
+	}
+	
+	.income_details_tj_li02 {
+	    width: 50%;
+	    float: left;
+	    font-size: 30px;
+	    color: #fff;
+	    text-align: center;
+	    line-height: 40px;
+	    position: relative;
+	}
+	
+	    .income_details_tj_li02:after {
+	        content: " ";
+	        position: absolute;
+	        top: 6px;
+	        bottom: 6px;
+	        width: 4px;
+	        right: -2px;
+	        background-color: #e5e5e5;
+	    }
+	
+	    .income_details_tj_li02:last-child::after {
+	        width: 0px;
+	    }
+	
+	.income_details_tj_li_title {
+	    font-size: 28px;
+	    color: #333;
+	    text-align: center;
+	    line-height: 52px;
+	}
+	
+	.icon_ywsy {
+	    padding: 0 20px;
+	    background: url('../../src/assets/img/images/icon011.png') no-repeat center;
+	    background-size: 30px;
+	}
+	
+	.icon_tdsy {
+	    padding: 0 20px;
+	    background: url('../../src/assets/img/images/icon012.png') no-repeat center;
+	    background-size: 34px;
+	}
+	
+	.income_details_tj_li_text {
+	    font-size: 28px;
+	    color: #333;
+	    text-align: center;
+	    line-height: 52px;
+	}
+	
+	    .income_details_tj_li_text span {
+	        color: #ff4f4f;
+	    }
+	
+	.income_details_list {
+	    margin-top: 504px;
+	    background-color: #fff;
+	    padding: 0 30px;
+	}
+	
+	.income_details_li {
+	    padding: 20px 0 20px 80px;
+	    position: relative;
+	    border-bottom: 2px solid #e5e5e5;
+	    min-height: 60px;
+	}
+	
+	    .income_details_li:last-child {
+	        border-bottom: 0px solid #fff;
+	    }
+	
+	.income_details_li_img {
+	    position: absolute;
+	    left: 0;
+	    top: 20px;
+	    width: 60px;
+	    height: 60px;
+	}
+	
+	    .income_details_li_img img {
+	        display: block;
+	        width: 100%;
+	        height: 100%;
+	    }
+	
+	.income_details_li_title {
+	    font-size: 30px;
+	    color: #333;
+	    line-height: 60px;
+	}
+	
+	    .income_details_li_title span {
+	        font-size: 24px;
+	        color: #999;
+	        float: right;
+	    }
+	
+	.income_details_li_text {
+	    font-size: 24px;
+	    color: #999;
+	    line-height: 40px;
+	    margin-top: 4px;
+	}
+	
+	.income_details_li_footer {
+	    font-size: 24px;
+	    color: #999;
+	    line-height: 40px;
+	    margin-top: 10px;
+	}
+	
+	    .income_details_li_footer .span_tdjl {
+	        display: inline-block;
+	        padding: 0 20px;
+	        background-color: #12b4ee;
+	        color: #fff;
+	        height: 40px;
+	        line-height: 40px;
+	        -webkit-border-radius: 6px;
+	        -moz-border-radius: 6px;
+	        border-radius: 6px;
+	    }
+	
+	    .income_details_li_footer .div_tj {
+	        float: right;
+	        font-size: 28px;
+	        color: #333;
+	    }
+	
+	        .income_details_li_footer .div_tj span {
+	            color: #ff9344;
+	        }
+	
+	.div_bank {
+	    padding: 20px 30px 20px 140px;
+	    background-color: #fff;
+	    min-height: 80px;
+	    position: relative;
+	}
+	
+	    .div_bank .div_bank_logo {
+	        position: absolute;
+	        left: 30px;
+	        width: 80px;
+	        top: 50%;
+	        transform: translateY(-50%);
+	        -webkit-transform: translateY(-50%);
+	    }
+	
+	        .div_bank .div_bank_logo img {
+	            display: block;
+	            width: 100%;
+	        }
+	
+	.div_bank_name {
+	    font-size: 30px;
+	    color: #333;
+	    line-height: 60px;
+	}
+	
+	.div_bank_num {
+	    font-size: 24px;
+	    color: #666;
+	    line-height: 40px;
+	}
+	
+	.div_tx {
+	    padding: 24px 30px 24px 70px;
+	    background: url('../../src/assets/img/images/icon014.png') no-repeat;
+	    background-position-x: 30px;
+	    background-position-y: center;
+	    background-size: 20px;
+	    font-size: 24px;
+	    color: #999;
+	    line-height: 40px;
+	}
+	
+	.div_withdraw {
+	    padding: 0 30px;
+	    background-color: #fff;
+	    overflow: hidden;
+	}
+	
+	    .div_withdraw .div_withdraw_title {
+	        width: 20%;
+	        height: 88px;
+	        line-height: 88px;
+	        float: left;
+	        font-size: 30px;
+	        color: #333;
+	    }
+	
+	    .div_withdraw .div_withdraw_text {
+	        width: 80%;
+	        height: 88px;
+	        line-height: 88px;
+	        float: left;
+	    }
+	
+	        .div_withdraw .div_withdraw_text input {
+	            width: 100%;
+	            border: 0;
+	            height: 84px;
+	            line-height: 84px;
+	            padding: 0;
+	            margin: 0;
+	        }
+	
+	.div_btn_go_withdraw {
+	    margin: 100px 30px;
+	}
+	
+	.btn_go_withdraw {
+	    display: block;
+	    width: 100%;
+	    border: 0;
+	    height: 88px;
+	    line-height: 88px;
+	    padding: 0;
+	    text-align: center;
+	    font-size: 36px;
+	    color: #fff;
+	    background-color: #3e80f7;
+	    -webkit-border-radius: 10px;
+	    -moz-border-radius: 10px;
+	    border-radius: 10px;
+	    -moz-box-shadow: 0px 4px 10px rgba(62,128,247,0.2); /* 老的 Firefox */
+	    box-shadow: 0px 4px 10px rgba(62,128,247,0.2);
+	}
+	
+	.withdraw_list {
+	    padding: 0 30px;
+	}
+	
+	.withdraw_li {
+	    padding: 24px 220px 24px 0;
+	    position: relative;
+	    border-bottom: 1px solid #e5e5e5;
+	}
+	
+	.withdraw_li_title {
+	    font-size: 30px;
+	    line-height: 52px;
+	    color: #333;
+	}
+	
+	.withdraw_li_text {
+	    font-size: 24px;
+	    line-height: 48px;
+	    color: #999;
+	}
+	
+	.withdraw_li_num {
+	    font-size: 30px;
+	    line-height: 48px;
+	    color: #333;
+	    font-weight: 600;
+	    text-align: right;
+	    position: absolute;
+	    right: 30px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    -webkit-transform: translateY(-50%);
+	}
+	
+	.div_bank_data {
+	    padding: 0 30px;
+	    background-color: #fff;
+	}
+	
+	
+	.bank_data_li {
+	    overflow: hidden;
+	    border-bottom: 1px solid #e5e5e5;
+	}
+	
+	    .bank_data_li.drop_down {
+	        padding-right: 40px;
+	        background: url('../../src/assets/img/images/icon016.png') no-repeat center right;
+	        background-size: 14px;
+	    }
+	
+	    .bank_data_li:last-child {
+	        border-bottom: 0px solid #fff;
+	    }
+	
+	    .bank_data_li .bank_data_li_title {
+	        width: 30%;
+	        height: 88px;
+	        line-height: 88px;
+	        float: left;
+	        font-size: 30px;
+	        color: #333;
+	    }
+	
+	    .bank_data_li .bank_data_li_text {
+	        width: 70%;
+	        height: 88px;
+	        line-height: 88px;
+	        float: left;
+	    }
+	
+	    .bank_data_li .bank_data_li_text02 {
+	        width: 40%;
+	        height: 88px;
+	        line-height: 88px;
+	        float: left;
+	    }
+	
+	    .bank_data_li .bank_data_li_text input {
+	        width: 100%;
+	        border: 0;
+	        height: 84px;
+	        line-height: 84px;
+	        padding: 0;
+	        margin: 0;
+	    }
+	
+	    .bank_data_li .bank_data_li_text02 input {
+	        width: 100%;
+	        border: 0;
+	        height: 84px;
+	        line-height: 84px;
+	        padding: 0;
+	        margin: 0;
+	    }
+	
+	    .bank_data_li .bank_data_li_text select {
+	        width: 100%;
+	        border: 0;
+	        height: 84px;
+	        line-height: 84px;
+	        padding: 0;
+	        margin: 0;
+	    }
+	
+	
+	    .bank_data_li .bank_data_li_text03 {
+	        width: 30%;
+	        height: 88px;
+	        line-height: 88px;
+	        float: left;
+	    }
+	
+	        .bank_data_li .bank_data_li_text03 .btn_yzm {
+	            display: block;
+	            width: 90%;
+	            height: 56px;
+	            line-height: 56px;
+	            padding: 0;
+	            text-align: center;
+	            font-size: 24px;
+	            color: #3e80f7;
+	            border: 1px solid #3e80f7;
+	            -webkit-border-radius: 28px;
+	            -moz-border-radius: 28px;
+	            border-radius: 28px;
+	            margin: 14px 0 10px auto;
+	        }
+	
+	        .bank_data_li .bank_data_li_text03 .span_yzm {
+	            display: block;
+	            width: 90%;
+	            height: 56px;
+	            line-height: 56px;
+	            padding: 0;
+	            text-align: center;
+	            font-size: 24px;
+	            color: #3e80f7;
+	            margin: 14px 0 10px auto;
+	            display: none;
+	        }
+	
+	.div_line {
+	    height: 20px;
+	    background-color: #f6f6f6;
+	}
