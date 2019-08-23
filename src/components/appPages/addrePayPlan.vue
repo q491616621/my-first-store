@@ -110,7 +110,7 @@
 		<!-- 省市选择器 -->
 		<div class="addrePayPlan-choose-picker">
 			<van-popup v-model="chooseCityBox" position="bottom">
-				<van-picker show-toolbar :columns="columns" @change="onChange" @cancel="chooseDateBox=false" @confirm="onConfirm"
+				<van-picker show-toolbar :columns="columns" @change="onChange" @cancel="chooseCityBox=false" @confirm="onConfirm"
 				 :item-height="60" />
 			</van-popup>
 		</div>

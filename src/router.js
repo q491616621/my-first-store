@@ -27,6 +27,7 @@ Vue.use(Router)
 //channelIntroduce //积分通道介绍
 //chooseQuickCard //选择快捷支付银行卡
 //addQuickCard //添加快捷信用卡
+//bindChannel //绑定通道
 
 const router = new Router({
 	base: process.env.BASE_URL,
@@ -202,6 +203,11 @@ const router = new Router({
 			path: '/addQuickCard',
 			name: 'addQuickCard', // addQuickCard //添加快捷信用卡
 			component: resolve => require(['@/components/appPages/UnionpayQuick/addQuickCard.vue'], resolve)
+		},
+		{
+			path: '/bindChannel',
+			name: 'bindChannel', // bindChannel //绑定通道
+			component: resolve => require(['@/components/appPages/bindChannel.vue'], resolve)
 		},
 	]
 })

@@ -68,19 +68,24 @@ export default {
 				this.erCode = url;
 			})
 			.catch(err=>{
-				console.log(err)
+				this.$toast({
+					messgae:'二维码生成失败,请重新进入页面'
+				})
 			})
 		},
 		// 分享
 		share(){
-			let bgImg = document.getElementById('bgImg')
+			let img = new Image();
+			img.src = require('../../../assets/img/erCode1.jpg')
+			// let bgImg = document.getElementById('bgImg')
 			const canvas = document.getElementById('myCanvas');
 			const ctx = canvas.getContext('2d');
 			// ctx.fillStyle="#FF0000";
 			// ctx.fillRect(0,0,150,75);
 			// ctx.drawImage('../../../assets/img/erCode1.jpg',0,0,this.width,this.height);
 			console.log(this.erCode)
-			ctx.drawImage(bgImg,0,0,375,500);
+			// console.log(bgImg)
+			ctx.drawImage(img,0,0,375,150);
 			// bgImg.onload = function(){
 			// 	ctx.drawImage(bgImg,0,0,this.width,this.height)
 			// }

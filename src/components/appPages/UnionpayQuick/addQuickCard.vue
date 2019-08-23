@@ -22,32 +22,35 @@
 				<button class="sure-btn bold" @click="goQuickVerify">下一步</button>
 			</van-cell-group>
 		</div>
-		<div>
+		<!-- <div>
 			<van-dialog
 			  v-model="tipsBox"
 			  title="有效期说明"
 			  show-cancel-button
 			>
-			  <img style="width: 300px;height: 200px;" src="../../../assets/img/tips1.png">
+			  <img style="width: 300px;height: 200px;" src="../../../assets/img/tips2.jpg">
 			  <div style="text-align: left;">有效期是打印在信用卡正面卡号下方，标注格式为月份在前，年份在后的数字</div>
 			</van-dialog>
-		</div>
+		</div> -->
+		<card-tips :tipsType='tipsType' @resetTipsType='resetTipsType' ></card-tips>
 	</div>
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
+	import cardTips from '@/components/common/cardTips.vue'
 	import {
 		server
 	} from '@/api/server.js';
 	import tool from '../../../../public/tool/tool.js'
 	export default {
 		components: {
-			topTitle
+			topTitle,
+			cardTips
 		},
 		data() {
 			return {
 				titleName: '添加快捷信用卡', //标题栏标题
-				tipsBox:false,//提示盒子
+				tipsType:'',//提示盒子
 				cardInfo: {
 					cardNum: null, //卡号
 					cvn2: null, //cvv码
@@ -70,12 +73,14 @@
 			// 提示弹窗
 			showTips(type){
 				if(type == 'cvn2'){
-					this.tipsBox = true;
-					console.log('cvn2')
+					this.tipsType = 'cvn2';
 				}else{
-					this.tipsBox = true;
-					console.log('valid')
+					this.tipsType = 'valid';
 				}
+			},
+			// 重置tipsType
+			resetTipsType(){
+				this.tipsType = '';
 			},
 			// 跳转到短信验证
 			goQuickVerify() {
@@ -101,7 +106,6 @@
 				}
 				// 如果value 为true 的话,进行下一步提交卡片，否则提示用户哪些信息未填写
 				if (value === true) {
-					return;
 					// 提示加载中
 					tool.toastLoading()
 					server.getBindcardSm(cardInfo)
@@ -116,26 +120,6 @@
 						message: `请填写${value}`
 					})
 				}
-			},
-			// 提交验证码，验证银行卡绑定
-			verifyBank() {
-				let smsCode = this.smsCode;
-				if (smsCode == null || smsCode == '') {
-					this.$toast({
-						message: '请填写验证码',
-						duration: 2000
-					})
-					return;
-				} //未填写验证码时不进行下面操作
-				tool.toastLoading()
-				let verify = this.verify;
-				verify.smsCode = this.smsCode;
-				server.verifyBindcardSm(verify)
-					.then(res => {
-						if (res == null) return; //返回为null 不执行下面操作
-						let status = res.data.status;
-						this.checkCardStatus(status, res) //执行检查
-					})
 			},
 		}
 	};
