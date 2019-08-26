@@ -24,9 +24,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="card">
-				<div class="right"></div>
-				<div></div>
+			<div class="card flx-rs">
+				<div class="right flx-c">
+					<img src="../../assets/img/bank.png">
+					<div>1716</div>
+					<div>招商银行</div>
+				</div>
+				<div class="left flx-c">
+					<div class="btn" color="#fff">绑定该通道</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -111,9 +117,39 @@ export default {
 		.card{
 			margin-top: 30px;
 			width: 690px;
-			height: 250px;
-			background: pink;
+			height: 300px;
+			background: #ccc;
 			border-radius: 10px;
+			font-size: 28px;
+			.right{
+				width: 150px;
+				height: 100%;
+				background: #c2565b;
+				border-top-left-radius: 10px;
+				border-bottom-left-radius: 10px;
+				color: #fff;
+				img{
+					width: 100px;
+					height: 100px;
+					padding-bottom: 10px;
+				}
+				div{
+					padding-top: 10px;
+				}
+			}
+			.left{
+				width: 100%;
+				height: 100%;
+				.btn{
+					width: 220px;
+					height: 70px;
+					border-radius: 10px;
+					color: #fff;
+					background: #f6e159;
+					text-align: center;
+					line-height: 70px;
+				}
+			}
 		}
 	}
 </style>

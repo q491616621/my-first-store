@@ -6,6 +6,8 @@
 		</div>
 		<!-- 正在加载中 -->
 		<commomLoading v-if='commonLoading'></commomLoading>
+		<!-- 加载失败，重新加载 -->
+		<loadFail v-if='loadFail' @reload='reload'></loadFail>
 		<div v-if="!commonLoading">
 			<!-- 信用卡列表 -->
 			<div class="card-list flx-cs" v-if='cardList.length != 0'>
@@ -72,7 +74,7 @@
 				</button>
 			</div>
 			<!-- 没有信用卡时背景 -->
-			<div class="card-list flx-cs" v-if='cardList.length == 0'>
+			<div class="card-list flx-cs" v-if='cardList.length == 0&&loadFail == false'>
 				<div class="bg0 no-card">
 					<div class="card-top flx-cas">
 						<div class="logo flx-rs">
@@ -129,6 +131,7 @@
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
 	import commomLoading from '@/components/common/loading.vue';
+	import loadFail from '@/components/common/loadFail.vue';
 	import tool from '../../../public/tool/tool.js';
 	import switchServer from '../../../public/tool/switchServer.js';
 	import {
@@ -138,6 +141,7 @@
 		components: {
 			topTitle,
 			commomLoading,
+			loadFail
 		},
 		data() {
 			return {
@@ -145,6 +149,7 @@
 				pageType: 'app', //上个页面是什么h5还是app?
 				cardList: [],
 				commonLoading: true, //默认加载中，页面加载完成才消失
+				loadFail:false,//默认不显示，页面加载失败时显示
 			};
 		},
 		beforeRouteEnter(to, from, next) {
@@ -163,14 +168,20 @@
 				window['getAppData'] = (url) => {
 					me.getAppData(url)
 				}
-				let appData =
-					'{"repayChannelCode": "1000000001","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
-				this.getCardList()
-				this.$store.commit('setCardManagement', JSON.parse(appData))
-				// this.getAppData(appData)
+				// let appData =
+				// 	'{"repayChannelCode": "1000000001","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+				// this.getCardList()
+				// this.$store.commit('setCardManagement', JSON.parse(appData))
+				// // this.getAppData(appData)
 			}
 		},
 		methods: {
+			// 重新刷新
+			reload(){
+				this.loadFail = false;
+				this.commonLoading = true;
+				this.getCardList()
+			},
 			// 获取app端传过来的数据
 			getAppData(e) {
 				// 获取到app端传过来的数据
@@ -215,7 +226,11 @@
 						isLinkPlanId: 1,
 					})
 					.then(res => {
-						if (res == null) return;
+						if (res == null){
+							this.commonLoading = false;
+							this.loadFail = true;
+							return;
+						}
 						let bankLogo = {
 							'工商银行': require('../../assets/img/bankLogo/bank1.png'),
 							'广大银行': require('../../assets/img/bankLogo/bank2.png'),

@@ -44,7 +44,7 @@ axios.interceptors.response.use(response => {
 				console.log('403,拒绝访问')
 				break;
 			case 404:
-				Toast('404错误');
+				Toast({message:'404错误'});
 				console.log('404,请求错误,未找到该资源')
 				break;
 			case 405:
@@ -150,7 +150,8 @@ export function post(url, data = {}) {
 					}
 				}, 2000)
 			} else {
-				Toast(res.data.message)
+				// 判断是否有返回的错误信息,没有的话提示错误码
+				Toast(res.data.message||res.status)
 				resolve(null)
 			}
 		}).catch(err => {
