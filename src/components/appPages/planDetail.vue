@@ -18,11 +18,11 @@
 						<span>落地通道</span>
 					</div> -->
 					<span class="orderId">订单号:{{cardInfo.planOrderId}}</span>
-		<!-- 			<div class="right flx-rs">
+					<div class="right flx-rs">
 						<span>消费地区：</span>
 						<img src="../../assets/img/location.png">
-						<span>深圳市</span>
-					</div> -->
+						<span>{{cardPlanInfo.city}}</span>
+					</div>
 				</div>
 				<div class="bank flx-rs">
 					<div class="left flx-rs">
@@ -218,6 +218,7 @@
 					planOrderId
 				}).then(res => {
 					if (res == null) return;
+					console.log(res)
 					let cardPlanInfo = res.data;
 					// 格式化数据
 					// cardPlanInfo.hasRepayMoney = tool.centTurnSmacker(cardPlanInfo.hasRepayMoney); //已还款金额
