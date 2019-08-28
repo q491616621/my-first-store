@@ -57,8 +57,8 @@
 					<div class="road flx-rs medium">
 						<div class="name">选择通道</div>
 						<van-radio-group v-model="radio" class='radio-box flx-rs' @change='changeRadio'>
-							<van-radio :name="index" v-for="(item,index) in channelList" :key='item.ChannelID'>
-								{{item.name}}
+							<van-radio :name="index" v-for="(item,index) in channelList" :key='index'>
+								{{item.channelName}}
 								<img slot="icon" slot-scope="props" :src="props.checked ? icon.active : icon.inactive">
 							</van-radio>
 						</van-radio-group>
@@ -73,7 +73,7 @@
 							</van-radio>
 						</van-radio-group>
 					</div>
-					<div class="city-picker flx-rs medium">
+					<div class="city-picker flx-rs medium" v-if="isSupportLand == 1">
 						<div class="pick-title">落地城市</div>
 						<div class="pick-content flx-rs" @click="showPicker">
 							<div class="pick-citys flx-rs">
@@ -159,6 +159,7 @@
 					cityName: '', //省份名称
 					cardQuota: null, //卡额度
 					repayMode: 1, //默认扣1还1
+					repayType:'',//还款方式，1：完美还款，2:智能还款，3:0余额还款
 				},
 				inputCodefocus: false, //自动聚焦
 				icon: {
@@ -185,7 +186,8 @@
 				],
 				date: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
 					30, 31
-				]
+				],
+				isSupportLand:'',//是否支持选择落地城市，1支持，非1不支持
 			};
 		},
 		beforeRouteEnter(to, from, next) {
@@ -214,6 +216,7 @@
 					cityName: '', //省份名称
 					cardQuota: null, //卡额度
 					repayMode: 1, //默认扣1还1
+					repayType:'',//还款方式
 				};
 				this.radio2 = 1,
 				this.setCardInfo()
@@ -231,28 +234,27 @@
 				this.planInfo.cardQuota = cardInfo.cardQuota //额度
 				this.planInfo.repaymentDay = cardInfo.repaymentDay //还款日
 				this.planInfo.billingDay = cardInfo.billingDay //账单日 
+				this.planInfo.repaymothod = cardInfo.repaymothod //还款方式，1：完美还款，2:智能还款，3:0余额还款
 				// --------------------------------------------------
 				this.cardQuota = null;
 
 			},
 			// 获取代还通道列表
 			getChannelList() {
-				server.repayChannels().then(res => {
+				server.newRepayChannels().then(res => {
 					if (res == null) return;
-					let channelList = []
-					// res.data = {
-					//   '100001':'通道1',
-					//   '100002':'通道2',
-					//   '100003':'通道3',
+					console.log(res)
+					let channelList = res.data.reverse();
+					// let channelList = []
+					// for (let it in res.data) {
+					// 	let init = {}
+					// 	init.channelCode = it;
+					// 	init.name = res.data[it]
+					// 	channelList.push(init)
 					// }
-					for (let it in res.data) {
-						let init = {}
-						init.channelCode = it;
-						init.name = res.data[it]
-						channelList.push(init)
-					}
 					this.channelList = channelList;
-					this.planInfo.channelCode = channelList[0].channelCode
+					this.planInfo.channelCode = channelList[0].channelCode;
+					this.isSupportLand = channelList[0].isSupportLand;
 				})
 			},
 			// 确定设置额度
@@ -276,9 +278,12 @@
 			},
 			// 选择通道
 			changeRadio(e) {
+				console.log(e)
 				let name = e;
 				// 选择通道时,设置通道id
 				this.planInfo.channelCode = this.channelList[name].channelCode;
+				//选择通道时，设置是否支持选择落地城市
+				this.isSupportLand = this.channelList[name].isSupportLand;
 			},
 			// 选择方式
 			changeRadio2(e) {

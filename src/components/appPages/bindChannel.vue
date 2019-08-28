@@ -10,11 +10,14 @@
 				<div class="name bold">认证通道</div>
 				<div class="channel-list flx-rs">
 					<div 
-					:class="item.check?'channel-li2':'channel-li1'" 
+					:class="item.status == 0||item.status == 1?'channel-li1':'channel-li2'" 
 					v-for="(item,index) in channelList" 
 					:key='index' 
 					@click="checkChannel(index)">
 						<div>{{item.channelName}}</div>
+						<div class="yes flx-c" v-if="item.check">
+							<img src="../../assets/img/right.png">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -33,6 +36,9 @@
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
+	import {
+		server
+	} from '@/api/server.js';
 export default {
 	components: {
 		topTitle,
@@ -40,26 +46,32 @@ export default {
 	data() {
 		return {
 			titleName: '通道绑定', //标题栏标题
-			channelList:[
-				{id:1,channelName:'大额8',check:true},
-				{id:2,channelName:'大额13',check:false},
-				{id:3,channelName:'通道1',check:false},
-				{id:4,channelName:'通道2',check:false},
-				{id:5,channelName:'通道3',check:false},
-			],
-			cardList:[
-				{id:1,cardNum:1234,cardBank:'招商银行',pass:true},
-				{id:2,cardNum:2311,cardBank:'平安银行',pass:false},
-				{id:3,cardNum:4515,cardBank:'广发银行',pass:false},
-				{id:4,cardNum:2136,cardBank:'招商银行',pass:false},
-				{id:5,cardNum:1245,cardBank:'广发银行',pass:true}
-			]
+			cardInfo:'',
+			checkIndex:0,
+			channelList:[],
 		};
 	},
 	beforeCreate() {
 		document.querySelector('body').setAttribute('style', 'background-color:#f6f6f6')
 	},
+	created() {
+		let cardInfo = this.$route.params
+		this.cardInfo = cardInfo; 
+		console.log(cardInfo)
+		this.getUserCardInfo(cardInfo.uniqueId);
+	},
 	methods: {
+		getUserCardInfo(uniqueId){
+			server.queryChannelBindcardInfo({uniqueId})
+			.then(res=>{
+				this.channelList = res.data
+				console.log(res)
+			})
+		},
+		// // 获取通道列表
+		// getChannelList(){
+		// 	
+		// },
 		// 切换通道
 		checkChannel(index) {
 			this.channelList = this.channelList.map((cur,idx)=>{
@@ -100,6 +112,7 @@ export default {
 				width:520px;
 				flex-wrap: wrap;
 				.channel-li1{
+					position: relative;
 					flex-shrink: 0;
 					width: 150px;
 					height: 50px;
@@ -109,19 +122,9 @@ export default {
 					border-radius: 10px;
 					margin-right: 20px;
 					margin-bottom: 20px;
-					// .check{
-					// 	position: absolute;
-					// 	bottom: 0;
-					// 	right: -3px;
-					// 	width: 26px;
-					// 	height: 26px;
-					// 	border-radius: 50%;
-					// 	background: #fff;
-					// 	background: url(../../assets/img/right.png) no-repeat center center;
-					// 	background-size: 100% 100%;
-					// }
 				}
 				.channel-li2{
+					position: relative;
 					flex-shrink: 0;
 					width: 150px;
 					height: 50px;
@@ -131,6 +134,19 @@ export default {
 					border-radius: 10px;
 					margin-right: 20px;
 					margin-bottom: 20px;
+				}
+				.yes{
+					position: absolute;
+					bottom:-5px;
+					right: -5px;
+					border-radius: 50%;
+					width: 30px;
+					height: 30px;
+					background: #fff;
+					img{
+						width: 20px;
+						height: 20px;
+					}
 				}
 			}
 		}
@@ -142,7 +158,7 @@ export default {
 			border-radius: 10px;
 			font-size: 28px;
 			.right{
-				width: 150px;
+				width: 200px;
 				height: 100%;
 				background: #c2565b;
 				border-top-left-radius: 10px;

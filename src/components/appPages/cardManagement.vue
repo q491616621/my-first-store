@@ -11,7 +11,7 @@
 		<div v-if="!commonLoading">
 			<!-- 信用卡列表 -->
 			<div class="card-list flx-cs" v-if='cardList.length != 0'>
-				<div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index'>
+				<div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index' @click="goBindChannel(item)">
 					<div class="card-top flx-cas">
 						<div class="logo flx-rs">
 							<!-- <img src="../../assets/img/cardManagement/logo.png"> -->
@@ -159,6 +159,9 @@
 			}
 			next();
 		},
+		beforeCreate() {
+			document.querySelector('body').setAttribute('style', 'background-color:#FFFFFF')
+		},
 		created() {
 			// this.getCardList(); //执行获取已绑定卡列表
 			if (this.$route.params.type == 'next') {
@@ -168,11 +171,11 @@
 				window['getAppData'] = (url) => {
 					me.getAppData(url)
 				}
-				// let appData =
-				// 	'{"repayChannelCode": "1000000001","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
-				// this.getCardList()
-				// this.$store.commit('setCardManagement', JSON.parse(appData))
-				// // this.getAppData(appData)
+				let appData =
+					'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+				this.getCardList()
+				this.$store.commit('setCardManagement', JSON.parse(appData))
+				// this.getAppData(appData)
 			}
 		},
 		methods: {
@@ -197,7 +200,7 @@
 			// 跳转添加信用卡页面
 			goAddCreditCard() {
 				this.$router.push({
-					name: 'addCreditCard'
+					name: 'addCreditCard',
 				})
 			},
 			// 跳转新增还款计划页面
@@ -218,6 +221,13 @@
 						planOrderId,
 						cardInfo: item
 					}
+				})
+			},
+			// 跳转绑定通道页面
+			goBindChannel(e){
+				this.$router.push({
+					name:'bindChannel',
+					params:e
 				})
 			},
 			// 获取已绑定卡列表函数

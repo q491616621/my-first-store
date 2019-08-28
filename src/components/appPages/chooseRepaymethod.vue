@@ -5,8 +5,7 @@
 			<top-title :titleName="titleName"></top-title>
 		</div>
 		<div class="methods-list flx-cas medium">
-			<!-- <div class="methods-li flx-r" v-for="(item,index) in methodsList" :key='index' @click="chooseMethods(index)"> -->
-			<div class="methods-li flx-r" v-for="(item,index) in methodsList" :key='index'>
+			<div class="methods-li flx-r" v-for="(item,index) in methodsList" :key='index' @click="chooseMethods(index)">
 				<div class="left flx-cas">
 					<div>{{item.title}}</div>
 					<div class="methods-content">{{item.content}}</div>
@@ -34,20 +33,20 @@
 					title: '智能还款',
 					content: '还款总额大于5万元，单笔大于1000元商旅商户账单',
 					checked: false,
-					type:0
+					type:2
 				}, {
 					title: '完美还款',
 					content: '还款总额小于5万元，单笔金额小于1000元实体落地商户',
-					checked: true,
+					checked: false,
 					type:1
 				}, {
 					title: '0余额还款',
 					content: '信用卡为0也能还，预留充足的手续费即可',
 					checked: false,
-					type:2
+					type:3
 				}],
 				cardInfo:{},//信用卡列表页面传递过来的数据
-				repaymothod:0,
+				repaymothod:'',
 			};
 		},
 		beforeRouteEnter(to,from,next){
@@ -90,14 +89,19 @@
 			},
 			// 选择还款方式
 			chooseMethods(e) {
+				if(e == 2){
+					this.$toast('该还款方式暂未开放,敬请期待!')
+					return;
+				}
 				let methodsList = this.methodsList.map((cur, index) => {
 					cur.checked = false;
 					if (index == e) {
 						cur.checked = true;
+						this.repaymothod = cur.type;
 					}
 					return cur
 				})
-				this.methodsList = methodsList
+				this.methodsList = methodsList;
 			}
 		},
 	};

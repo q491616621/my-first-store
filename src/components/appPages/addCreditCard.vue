@@ -74,16 +74,17 @@
 				countDownBox: true, //倒计时框
 				smsCode: null, //验证码
 				cardInfo: {
-					cardNum: null, //卡号
+					cardNum: '', //卡号
 					cvn2: null, //cvv码
 					valid: null, //有效期
 					userName: null, //姓名
 					certificateNum: null, //身份证号码
-					bankName: null, //开户行
+					bankName: '', //开户行
 					mobile: null, //手机号
-					bankAgentId: null, //联行号（暂时写死）
+					bankAgentId: '', //信惠通道必须的联行号
+					bankType:'',//快付通大小额必须的联行号
 					cardType: '2', //卡类型
-					channelCode: '1000000001'
+					channelCode: ''//通道号
 				},
 				// chooseBankBox: false,//选择银行的picker弹窗
 				verify: null, //验证银行卡绑卡需要的信息
@@ -95,44 +96,59 @@
 			this.getUserInfo(); //获取用户身份信息函数
 		},
 		methods: {
-			// 查询开户行
-			checkCardBank(e) {
-				let bankcardNumb = this.cardInfo.cardNum;
-				server.queryBankcardInfo({
-						bankcardNumb
-					})
-					.then(res => {
-						// 判断返回的数据是null或者是{},把银联号和银行都设为null,并不执行下面的操作
-						if (res == null || JSON.stringify(res.data) == '{}') {
-							this.cardInfo.bankAgentId = null;
-							this.cardInfo.bankName = null;
-							return
-						};
-						if (res.data.xhBankAgentId == '' || res.data.xhBankAgentId == null) {
-							this.cardInfo.bankAgentId = null;
-						} else {
-							this.cardInfo.bankAgentId = res.data.xhBankAgentId;
-						}
-						this.cardInfo.bankName = res.data.bankName;
-					})
-			},
 			// 获取用户身份信息
 			getUserInfo() {
 				// let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 				// this.cardInfo.userName = userInfo.realName;
 				// this.cardInfo.certificateNum = userInfo.certificateNumb;
-				this.cardInfo.userName = this.$store.state.userName;
-				this.cardInfo.certificateNum = this.$store.state.certificateNum;
+				this.cardInfo.userName = this.$store.state.userName;//从vuex里面拿用户姓名
+				this.cardInfo.certificateNum = this.$store.state.certificateNum;//从vuex里面拿用户身份证号码
+				this.cardInfo.channelCode = this.$store.state.repayChannelCode;//从vuex里面拿通道编号
+			},
+			// 查询开户行
+			checkCardBank() {
+				let bankcardNumb = this.cardInfo.cardNum;
+				let channelCode = this.cardInfo.channelCode;
+				server.queryBankcardInfo({
+						bankcardNumb,
+						channelCode
+					})
+					.then(res => {
+						// 判断返回的数据是null或者是{},不执行下面的操作
+						if (res == null || JSON.stringify(res.data) == '{}'){
+							this.cardInfo.bankAgentId = '';
+							this.cardInfo.bankType = '';
+							this.cardInfo.bankName = '';
+							return;
+						}
+						// 判断是否有返回信惠的联行号
+						if (res.data.xhBankAgentId == '' || res.data.xhBankAgentId == null) {
+							this.cardInfo.bankAgentId = '';
+						} else {
+							this.cardInfo.bankAgentId = res.data.xhBankAgentId;
+						}
+						// 判断是否有返回快付通的联行号
+						if(res.data.kftBankType == '' || res.data.kftBankType == null){
+							this.cardInfo.bankType = '';
+						}else{
+							this.cardInfo.bankType = res.data.kftBankType;
+						}
+						this.cardInfo.bankName = res.data.bankName;
+					})
 			},
 			// 显示弹窗
 			showCodeBox() {
 				let cardInfo = this.cardInfo;
-				// 通道号1000000001 信汇的，这个通道必须有联行号
-				if (cardInfo.channelCode == '1000000001' && cardInfo.bankAgentId == null) {
-					this.$toast({
-						message: '该卡不支持,请填其他卡'
-					})
+				// 通道号1000000001 信惠的，这个通道必须有联行号
+				if (cardInfo.channelCode == '1000000001' && cardInfo.bankAgentId == '') {
+					this.$toast('该卡不支持,请填其他卡')
 					return;
+				}else if(cardInfo.channelCode == '1000010002' && cardInfo.bankType == ''){
+					this.$toast('该卡不支持,请填其他卡')
+					return;
+				// 通道号1000010002，1000020002 快付通带下额通道必须有联行号
+				}else if(cardInfo.channelCode == '1000020002' && cardInfo.bankType == ''){
+					this.$toast('该卡不支持,请填其他卡')
 				}
 				let value = true;
 				let verifier = {

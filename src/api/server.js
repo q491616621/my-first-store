@@ -1,6 +1,6 @@
 import {get,post} from './api.js'
 export const server = {
-	register:(data)=>{return post('/user/register.do',data)} ,//注册
+  register:(data)=>{return post('/user/register.do',data)} ,//注册
   login:(data)=>{return post('/login.do',data)},//登陆
   logout:(data)=>{return post('/logout.do',data)},//退出登陆
   idAuth:(data)=>{return post('/user/idAuth.do',data)},//实名认证
@@ -19,9 +19,10 @@ export const server = {
   queryPlanBillDetail:(data)=>{return post('/plan/queryPlanBillDetail.do',data)},//查询信用卡计划明细
   queryPlanBillList:(data)=>{return post('/plan/queryPlanBillList.do',data)},//查询信用卡计划明细
   vcodeMobile:(data)=>{return post('/vcodeMobile.do',data)},//获取短信验证码
-  register:(data)=>{return post('/user/register.do',data)},//用户注册
   querySettleInfo:(data)=>{return post('/insettle/querySettleInfo.do',data)},//查询总收益信息
   queryIncomeDetail:(data)=>{return post('/insettle/queryIncomeDetail.do',data)},//查询收益明细列表
   queryWithdrawList:(data)=>{return post('/insettle/queryWithdrawList.do',data)},//查询提现记录列表
   stopRepayPlan:(data)=>{return post('/plan/stopRepayPlan.do',data)},//终止计划
+  queryChannelBindcardInfo:(data)=>{return post('/bankcard/queryChannelBindcardInfo.do',data)},//查询卡在各通道的绑定情况
+  newRepayChannels:(data)=>{return post('/plan/repayChannels.do',data)},//查询代还通道列表(新)
 }
