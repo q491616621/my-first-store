@@ -9,18 +9,12 @@
 			<div class="channel flx-ras">
 				<div class="name bold">认证通道</div>
 				<div class="channel-list flx-rs">
-					<div class="channel-li1">
-						<div>大额8</div>
-						<!-- <div class="check"></div> -->
-					</div>
-					<div class="channel-li1">
-						<div>大额13</div>
-					</div>
-					<div class="channel-li2">
-						<div>通道14</div>
-					</div>
-					<div class="channel-li2">
-						<div>通道12</div>
+					<div 
+					:class="item.check?'channel-li2':'channel-li1'" 
+					v-for="(item,index) in channelList" 
+					:key='index' 
+					@click="checkChannel(index)">
+						<div>{{item.channelName}}</div>
 					</div>
 				</div>
 			</div>
@@ -46,10 +40,36 @@ export default {
 	data() {
 		return {
 			titleName: '通道绑定', //标题栏标题
+			channelList:[
+				{id:1,channelName:'大额8',check:true},
+				{id:2,channelName:'大额13',check:false},
+				{id:3,channelName:'通道1',check:false},
+				{id:4,channelName:'通道2',check:false},
+				{id:5,channelName:'通道3',check:false},
+			],
+			cardList:[
+				{id:1,cardNum:1234,cardBank:'招商银行',pass:true},
+				{id:2,cardNum:2311,cardBank:'平安银行',pass:false},
+				{id:3,cardNum:4515,cardBank:'广发银行',pass:false},
+				{id:4,cardNum:2136,cardBank:'招商银行',pass:false},
+				{id:5,cardNum:1245,cardBank:'广发银行',pass:true}
+			]
 		};
 	},
 	beforeCreate() {
 		document.querySelector('body').setAttribute('style', 'background-color:#f6f6f6')
+	},
+	methods: {
+		// 切换通道
+		checkChannel(index) {
+			this.channelList = this.channelList.map((cur,idx)=>{
+				cur.check = false;
+				if(idx == index){
+					cur.check = true;
+				}
+				return cur;
+			})
+		}
 	},
 };
 </script>
