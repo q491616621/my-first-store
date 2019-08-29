@@ -129,7 +129,7 @@ export function post(url, data = {}) {
 				return ret
 			}]
 		}).then(res => {
-			if (res.data.code == 0) {
+			if (res.data.code == 0 || res.data.code == '-30001') {
 				resolve(res.data)
 			} else if (res.data.code == '-10000') {
 				// 检查平台 0为安卓，1为ios，2为PC

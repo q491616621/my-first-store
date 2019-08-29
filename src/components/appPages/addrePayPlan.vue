@@ -234,7 +234,7 @@
 				this.planInfo.cardQuota = cardInfo.cardQuota //额度
 				this.planInfo.repaymentDay = cardInfo.repaymentDay //还款日
 				this.planInfo.billingDay = cardInfo.billingDay //账单日 
-				this.planInfo.repaymothod = cardInfo.repaymothod //还款方式，1：完美还款，2:智能还款，3:0余额还款
+				this.planInfo.repayType = cardInfo.repaymothod //还款方式，1：完美还款，2:智能还款，3:0余额还款
 				// --------------------------------------------------
 				this.cardQuota = null;
 
@@ -243,17 +243,14 @@
 			getChannelList() {
 				server.newRepayChannels().then(res => {
 					if (res == null) return;
-					console.log(res)
-					let channelList = res.data.reverse();
-					// let channelList = []
-					// for (let it in res.data) {
-					// 	let init = {}
-					// 	init.channelCode = it;
-					// 	init.name = res.data[it]
-					// 	channelList.push(init)
-					// }
-					this.channelList = channelList;
+					// 返回和用户选择的通道类型相同的通道
+					let channelList = res.data.filter(cur=>{
+						return cur.channelType == this.planInfo.repayType;
+					});
+					this.channelList = channelList.reverse();
+					// 设置默认选择的是第一条通道
 					this.planInfo.channelCode = channelList[0].channelCode;
+					//设置默认是否显示落地城市选择
 					this.isSupportLand = channelList[0].isSupportLand;
 				})
 			},

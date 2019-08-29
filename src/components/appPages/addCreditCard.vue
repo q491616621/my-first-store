@@ -41,7 +41,7 @@
 		<van-dialog class="code-box flx-cas" v-model="codeBox" :show-confirm-button="false" ref='sms'>
 			<!-- <div class="codeBox-logo flx-r"><img src="../../assets/img/addCreditCard_logo.png" alt="logo" /></div> -->
 			<van-cell-group class="code-input flx-rs">
-				<van-field class="input-box medium" v-model="smsCode" placeholder="请输入验证码" />
+				<van-field class="input-box medium" v-model="smsCode" type="number" placeholder="请输入验证码" />
 				<button class="send-btn medium" v-if='!countDownBox' @click="resendCode">发送验证码</button>
 				<div class="send-btn medium flx-r" v-if="countDownBox">
 					<van-count-down ref='countDown' class='count-down' :time="countDown" format='ss' :auto-start='false' @finish='finished' />
@@ -149,6 +149,7 @@
 				// 通道号1000010002，1000020002 快付通带下额通道必须有联行号
 				}else if(cardInfo.channelCode == '1000020002' && cardInfo.bankType == ''){
 					this.$toast('该卡不支持,请填其他卡')
+					return;
 				}
 				let value = true;
 				let verifier = {
@@ -219,6 +220,7 @@
 							verify.channelCode = res.data.channelCode;
 							verify.orderId = res.data.orderId;
 							verify.recordId = res.data.recordId;
+							verify.smsSeq = res.data.smsSeq||'';//快付通通道的短信验证序列号
 							this.verify = verify; //把短信验证需要的数据设置到data里面
 							this.codeBox = true; //显示短信验证框
 							this.countDownBox = true; //显示倒计时窗口
@@ -248,15 +250,6 @@
 					this.$toast({
 						message: '卡片绑定成功',
 						forbidClick: true,
-						// onClose: () => {
-						// 	// 提示用户绑卡成功了之后调回信用卡管理页面
-						// 	this.$router.push({
-						// 		name: 'cardManagement',
-						// 		params: {
-						// 			type: 'next'
-						// 		}
-						// 	})
-						// }
 					});
 					setTimeout(()=>{
 						this.$router.push({
@@ -273,6 +266,8 @@
 						forbidClick: true,
 						duration: 2000,
 						onClose:()=>{
+							// 关闭弹窗时,如果是倒计时状态,就重置倒计时
+							if(this.$refs.countDown)this.$refs.countDown.reset();
 							this.codeBox = false;
 						}
 					});
@@ -283,6 +278,8 @@
 						forbidClick: true,
 						duration: 2000,
 						onClose:()=>{
+							// 关闭弹窗时,如果是倒计时状态,就重置倒计时
+							if(this.$refs.countDown)this.$refs.countDown.reset();
 							this.codeBox = false;
 						}
 					});
@@ -314,7 +311,8 @@
 			},
 			// 关闭弹窗
 			closeCodeBox() {
-				// this.$refs.countDown.reset()
+				// 关闭弹窗时,如果是倒计时状态,就重置倒计时
+				if(this.$refs.countDown)this.$refs.countDown.reset();
 				this.codeBox = false;
 				this.smsCode = null;
 				this.verify = null;

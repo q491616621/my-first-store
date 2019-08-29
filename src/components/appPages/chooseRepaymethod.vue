@@ -76,12 +76,14 @@
 			},
 			// 跳转到添加还款计划页面
 			goAddrePayPlan(){
+				if(!this.repaymothod){
+					this.$toast('请选择还款方式');
+					return;
+				}
 				// 把这一页获取到的还款方式和上一页的数据一起传给添加还款计划页面
 				let cardInfo = this.cardInfo;
-				let repaymothod = this.repaymothod
-				console.log(cardInfo)
+				let repaymothod = this.repaymothod;
 				cardInfo = {...cardInfo,repaymothod};
-				console.log(cardInfo)
 				this.$router.push({
 					name:'addrePayPlan',
 					params:cardInfo

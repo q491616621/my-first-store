@@ -172,8 +172,9 @@
 					me.getAppData(url)
 				}
 				let appData =
-					'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+					'{"repayChannelCode": "1000020002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
 				this.getCardList()
+				// 1000000001 1000010002 1000020002
 				this.$store.commit('setCardManagement', JSON.parse(appData))
 				// this.getAppData(appData)
 			}

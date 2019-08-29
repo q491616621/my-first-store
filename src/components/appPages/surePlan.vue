@@ -31,6 +31,14 @@
 				<button class="sure-btn bold" @click="sureSumbitPlan">确认执行计划</button>
 			</div>
 		</div>
+		<!-- 未绑定通道弹窗 -->
+		<van-dialog class="bindChannle" v-model="bindChannelBox" show-confirm-button confirm-button-text='下一步'
+		 confirm-button-color='66b9ff' @confirm='goBindChannel'>
+			<div class="content flx-c">
+				<img src="../../assets/img/tip.png">
+				<div>您还未绑定该通道,暂时无法使用该通道,点击下一步进行通道的绑定!</div>
+			</div>
+		</van-dialog>
 	</div>
 </template>
 <script>
@@ -53,6 +61,7 @@
 					totalRateMoney: '',
 					balanceMoney: '',
 				}, //各种金额数据
+				bindChannelBox: false,
 			};
 		},
 		beforeRouteEnter(to, from, next) {
@@ -75,6 +84,11 @@
 			this.isFirstEnter = false;
 		},
 		methods: {
+			// 获取上个页面传递过来的数据的函数
+			getPlanInfo() {
+				let surePlanInfo = this.$route.params;
+				this.surePlanInfo = surePlanInfo;
+			},
 			// 确认提交计划
 			sureSumbitPlan() {
 				let init = {};
@@ -86,33 +100,31 @@
 				server.comfirmRepayPlan(init)
 					.then(res => {
 						if (res == null) return;
-						this.$toast({
-							message: '制定计划成功',
-							forbidClick: true,
-							// onClose: () => {
-							// 	// 提示用户计划制定成功了之后调回信用卡管理页面
-							// 	this.$router.push({
-							// 		name: 'cardManagement',
-							// 		params: {
-							// 			type: 'next'
-							// 		}
-							// 	})
-							// }
-						})
-						setTimeout(() => {
-							this.$router.push({
-								name: 'cardManagement',
-								params: {
-									type: 'next'
-								}
+						// 判断后台返回的是成功还是未绑定该通道
+						if (res.code == "-30001") {
+							// 未绑定通道,显示绑定通道弹窗
+							this.bindChannelBox = true;
+							return;
+						} else {
+							this.$toast({
+								message: '制定计划成功',
+								forbidClick: true,
 							})
-						}, 2000)
+							setTimeout(() => {
+								this.$router.push({
+									name: 'cardManagement',
+									params: {
+										type: 'next'
+									}
+								})
+							}, 2000)
+						}
 					})
 			},
-			// 获取上个页面传递过来的数据的函数
-			getPlanInfo() {
-				let surePlanInfo = this.$route.params;
-				this.surePlanInfo = surePlanInfo;
+			goBindChannel(){
+				this.$router.push({
+					name:'bindChannel',
+				})
 			}
 		},
 	};
@@ -164,6 +176,23 @@
 			border-radius: 45px;
 			font-size: 32px;
 			color: #fff;
+		}
+	}
+
+	// 跳转绑通道弹窗
+	.bindChannle {
+		.content {
+			padding: 30px 0;
+
+			img {
+				width: 100px;
+				height: 100px;
+			}
+
+			div {
+				text-align: left;
+				padding: 30px;
+			}
 		}
 	}
 </style>

@@ -23,6 +23,6 @@ export const server = {
   queryIncomeDetail:(data)=>{return post('/insettle/queryIncomeDetail.do',data)},//查询收益明细列表
   queryWithdrawList:(data)=>{return post('/insettle/queryWithdrawList.do',data)},//查询提现记录列表
   stopRepayPlan:(data)=>{return post('/plan/stopRepayPlan.do',data)},//终止计划
-  queryChannelBindcardInfo:(data)=>{return post('/bankcard/queryChannelBindcardInfo.do',data)},//查询卡在各通道的绑定情况
+  queryCardInfoByChannel:(data)=>{return post('/bankcard/queryCardInfoByChannel.do',data)},//查询用户所有卡在某个通道下未绑卡的列表
   newRepayChannels:(data)=>{return post('/plan/repayChannels.do',data)},//查询代还通道列表(新)
 }
