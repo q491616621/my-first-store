@@ -129,6 +129,7 @@
 			// 提交计划
 			sumbitPlan() {
 				let surePlanInfo = this.planInfo;
+				surePlanInfo.channelCode = this.cardInfo.channelCode;
 				this.$router.push({
 					name: 'surePlan',
 					params: surePlanInfo

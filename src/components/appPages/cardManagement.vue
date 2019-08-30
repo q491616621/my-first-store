@@ -11,7 +11,7 @@
 		<div v-if="!commonLoading">
 			<!-- 信用卡列表 -->
 			<div class="card-list flx-cs" v-if='cardList.length != 0'>
-				<div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index' @click="goBindChannel(item)">
+				<div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index' @click="goBindChannel">
 					<div class="card-top flx-cas">
 						<div class="logo flx-rs">
 							<!-- <img src="../../assets/img/cardManagement/logo.png"> -->
@@ -225,10 +225,12 @@
 				})
 			},
 			// 跳转绑定通道页面
-			goBindChannel(e){
+			goBindChannel(){
 				this.$router.push({
 					name:'bindChannel',
-					params:e
+					params:{channelCode:'1000020002',page:'surePlan'},
+					// params:{page:'addCreditCard'},
+					// 1000000001 1000010002 1000020002
 				})
 			},
 			// 获取已绑定卡列表函数
