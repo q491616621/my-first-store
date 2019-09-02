@@ -37,10 +37,8 @@
 				if (pageType == 'h5') {
 					if(this.$route.name == 'bindChannel'){
 						this.$router.push('cardManagement')
-						console.log('运行了返回卡列表页面')
 						return;
 					}
-					console.log('运行了go-1')
 					this.$router.go(-1)
 				} else {
 					if (this.platFlag == 1) {

@@ -1,10 +1,11 @@
 <template>
-	<div>
+	<div class="flx-cas">
 		<!-- 顶部标题栏 -->
 		<div class="title-bar">
-			<top-title :titleName="titleName"></top-title>
+			<top-title :titleName="titleName" :pageType='pageType'></top-title>
 		</div>
-		<div class="container flx-cas">
+		<!-- 通道列表 -->
+		<div class="topBar flx-cas">
 			<div class="title bold">绑定所有通道,可以避免还款失败,丰富商户类型</div>
 			<div class="channel flx-ras">
 				<div class="name bold">认证通道</div>
@@ -18,9 +19,12 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<!-- 未绑定通道卡列表 -->
+		<div class="card-list">
 			<div class="card flx-rs" v-for="(item,index) in cardList" :key='index'>
 				<div class="right flx-c">
-					<img src="../../assets/img/bank.png">
+					<img :src="item.logo">
 					<div>{{item.bankCardNumb}}</div>
 					<div>{{item.bankName}}</div>
 				</div>
@@ -30,19 +34,21 @@
 			</div>
 		</div>
 		<!-- 发短信弹窗 -->
-		<van-dialog class="code-box flx-cas" v-model="codeBox" :show-confirm-button="false" ref='sms'>
-			<!-- <div class="codeBox-logo flx-r"><img src="../../assets/img/addCreditCard_logo.png" alt="logo" /></div> -->
-			<van-cell-group class="code-input flx-rs">
-				<van-field class="input-box medium" v-model="smsCode" type="number" placeholder="请输入验证码" />
-				<button class="send-btn medium" v-if='!countDownBox' @click="resendCode">发送验证码</button>
-				<div class="send-btn medium flx-r" v-if="countDownBox">
-					<van-count-down ref='countDown' class='count-down' :time="countDown" format='ss' :auto-start='false' @finish='finished' />
-					<div>s 后重发</div>
-				</div>
-			</van-cell-group>
-			<button class="sumbit-btn bold" @click="verifyBank">提交</button>
-			<button class="cancel-btn" @click="closeCodeBox"></button>
-		</van-dialog>
+		<div v-if="codeBox">
+			<van-dialog class="code-box flx-cas" v-model="codeBox" :show-confirm-button="false" ref='sms'>
+				<!-- <div class="codeBox-logo flx-r"><img src="../../assets/img/addCreditCard_logo.png" alt="logo" /></div> -->
+				<van-cell-group class="code-input flx-rs">
+					<van-field class="input-box medium" v-model="smsCode" type="number" placeholder="请输入验证码" />
+					<button class="send-btn medium" v-if='!countDownBox' @click="resendCode">发送验证码</button>
+					<div class="send-btn medium flx-r" v-if="countDownBox">
+						<van-count-down ref='countDown' class='count-down' :time="countDown" format='ss' :auto-start='false' @finish='finished' />
+						<div>s 后重发</div>
+					</div>
+				</van-cell-group>
+				<button class="sumbit-btn bold" @click="verifyBank">提交</button>
+				<button class="cancel-btn" @click="closeCodeBox"></button>
+			</van-dialog>
+		</div>
 	</div>
 </template>
 <script>
@@ -52,6 +58,22 @@
 	import {
 		server
 	} from '@/api/server.js';
+	let bankLogo = {
+		'工商银行': require('../../assets/img/bankLogo/bank1.png'),
+		'广大银行': require('../../assets/img/bankLogo/bank2.png'),
+		'广发银行': require('../../assets/img/bankLogo/bank3.png'),
+		'华夏银行': require('../../assets/img/bankLogo/bank4.png'),
+		'建设银行': require('../../assets/img/bankLogo/bank5.png'),
+		'交通银行': require('../../assets/img/bankLogo/bank6.png'),
+		'民生银行': require('../../assets/img/bankLogo/bank7.png'),
+		'平安银行': require('../../assets/img/bankLogo/bank8.png'),
+		'浦发银行': require('../../assets/img/bankLogo/bank9.png'),
+		'兴业银行': require('../../assets/img/bankLogo/bank10.png'),
+		'邮政银行': require('../../assets/img/bankLogo/bank11.png'),
+		'招商银行': require('../../assets/img/bankLogo/bank12.png'),
+		'中国银行': require('../../assets/img/bankLogo/bank13.png'),
+		'中信银行': require('../../assets/img/bankLogo/bank14.png'),
+	};
 	export default {
 		components: {
 			topTitle,
@@ -77,12 +99,9 @@
 			document.querySelector('body').setAttribute('style', 'background-color:#f6f6f6')
 		},
 		created() {
-			// console.log(this.$route);
 			let params = this.$route.params;
-			console.log(params)
 			if (Object.keys(params).length > 0) {
 				// 判断上个页面是否传值过来,如果有的话说明上个页面是h5页面，直接执行getChannelList函数
-				console.log('执行了h5页面进入')
 				this.pageType = 'h5';
 				this.getChannelList(params)
 			} else {
@@ -91,7 +110,6 @@
 				window['appEnter'] = (url) => {
 					me.appEnter(url)
 				}
-				console.log('执行了app页面进入')
 				// let a =
 				// 	'{"repayChannelCode": "1000020002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
 				// 	this.appEnter(a)
@@ -101,15 +119,27 @@
 			// this.getChannelList()
 		},
 		mounted() {
-			if(window.history&&window.history.pushState){
-				window.addEventListener('popstate',()=>{
-					this.$router.push({
-						name:'myMessage'
-					})
-				})
+			// 监控安卓回退按钮,设置返回事件
+			if (window.history && window.history.pushState) {
+				history.pushState(null, null, document.URL);
+				window.addEventListener('popstate', this.goBack, false)
 			}
 		},
+		destroyed() {
+			// 组件销毁时,移除事件,避免其他页面触发
+			window.removeEventListener('popstate', this.goBack, false)
+		},
 		methods: {
+			// 返回事件(安卓手机返回按钮)
+			goBack() {
+				if(this.pageType == 'app'){
+					window.android.btnBack()
+				}else{
+					this.$router.replace({
+						name: 'cardManagement'
+					})
+				}
+			},
 			// 从App端进入该页面
 			appEnter(e) {
 				// 获取app传过来的sessionId并设置给cookie,再执行getChannelList函数
@@ -158,6 +188,13 @@
 								if (res == null) return;
 								this.cardList = res.data.map(cur => {
 									cur.bankCardNumb = cur.bankCardNumb.substr(cur.bankCardNumb.length - 4);
+									// 添加银行logo
+									cur.logo = require('../../assets/img/bankLogo/bank15.png');
+									for (let item in bankLogo) {
+										if (cur.bankName == item) {
+											cur.logo = bankLogo[item]
+										}
+									}
 									return cur;
 								});
 							})
@@ -168,6 +205,7 @@
 				// 节流判断，当前通道号和点击的通道号相同，不发请求
 				if (this.currentChannelCode == this.channelList[index].channelCode) return;
 				let channelCode = this.channelList[index].channelCode;
+				tool.toastLoading();
 				server.queryCardInfoByChannel({
 						channelCode
 					})
@@ -185,8 +223,16 @@
 						// 更新当前通道号的卡片列表
 						this.cardList = res.data.map(cur => {
 							cur.bankCardNumb = cur.bankCardNumb.substr(cur.bankCardNumb.length - 4);
+							// 添加银行logo
+							cur.logo = require('../../assets/img/bankLogo/bank15.png');
+							for (let item in bankLogo) {
+								if (cur.bankName == item) {
+									cur.logo = bankLogo[item]
+								}
+							}
 							return cur;
 						});
+						this.closeCodeBox()
 					})
 			},
 			// 绑定该通道
@@ -338,8 +384,9 @@
 	};
 </script>
 <style scoped="scoped" lang="less">
-	.container {
+	.topBar {
 		width: 100%;
+		position: fixed;
 		margin-top: 88px;
 
 		.title {
@@ -410,6 +457,12 @@
 				}
 			}
 		}
+	}
+
+	// 未绑定卡列表
+	.card-list {
+		margin-top: 280px;
+		padding-bottom: 50px;
 
 		.card {
 			margin-top: 30px;
@@ -545,5 +598,9 @@
 
 	.van-dialog {
 		overflow: visible;
+	}
+
+	.van-cell:not(:last-child)::after {
+		border: none;
 	}
 </style>

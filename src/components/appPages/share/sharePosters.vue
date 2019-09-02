@@ -77,18 +77,11 @@ export default {
 		share(){
 			let img = new Image();
 			img.src = require('../../../assets/img/erCode1.jpg')
-			// let bgImg = document.getElementById('bgImg')
 			const canvas = document.getElementById('myCanvas');
 			const ctx = canvas.getContext('2d');
-			// ctx.fillStyle="#FF0000";
-			// ctx.fillRect(0,0,150,75);
-			// ctx.drawImage('../../../assets/img/erCode1.jpg',0,0,this.width,this.height);
-			console.log(this.erCode)
-			// console.log(bgImg)
+			let scale = 3/4;
+			jing
 			ctx.drawImage(img,0,0,375,150);
-			// bgImg.onload = function(){
-			// 	ctx.drawImage(bgImg,0,0,this.width,this.height)
-			// }
 		}
 	}
 };

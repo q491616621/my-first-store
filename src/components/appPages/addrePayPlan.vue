@@ -218,6 +218,7 @@
 					repayMode: 1, //默认扣1还1
 					repayType:'',//还款方式
 				};
+				this.radio = 0, //还款通道
 				this.radio2 = 1,
 				this.setCardInfo()
 				this.getChannelList() //执行获取代还通道请求
@@ -343,6 +344,12 @@
 					this.$toast('请设置卡片额度');
 					return
 				}
+				let days = tool.days();//获取当前月份的天数
+				// 判断用户设置的账单日和还款日是否大于当前月分的天数,是的话提示用户进行修改
+				if(planInfo.billingDay>days||planInfo.repaymentDay>days){
+					this.$toast('账单日或还款日不能大于当月最大天数，请修改后重试')
+					return
+				}
 				// 弹窗加载中
 				tool.toastLoading();
 				server.preCreatePlan(planInfo).then(res => {
@@ -431,7 +438,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg1.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -442,7 +449,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg2.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg2.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -453,7 +460,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg3.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg3.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -464,7 +471,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg4.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg4.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -475,7 +482,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg5.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg5.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;

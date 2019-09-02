@@ -11,7 +11,8 @@
 		<div v-if="!commonLoading">
 			<!-- 信用卡列表 -->
 			<div class="card-list flx-cs" v-if='cardList.length != 0'>
-				<div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index' @click="goBindChannel">
+				<!-- <div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index' @click="goBindChannel"> -->
+				<div :class="item.bgClassName" v-for="(item,index) in cardList" :key='index'>
 					<div class="card-top flx-cas">
 						<div class="logo flx-rs">
 							<!-- <img src="../../assets/img/cardManagement/logo.png"> -->
@@ -154,7 +155,7 @@
 		},
 		beforeRouteEnter(to, from, next) {
 			let name = from.name;
-			if (name == 'planDetail' || name == 'chooseRepaymethod' || name == 'addCreditCard' || name == 'surePlan') {
+			if (name == 'planDetail' || name == 'chooseRepaymethod' || name == 'addCreditCard' || name == 'surePlan'||name == 'bindChannel') {
 				to.params.type = 'next'
 			}
 			next();
@@ -171,15 +172,31 @@
 				window['getAppData'] = (url) => {
 					me.getAppData(url)
 				}
-				let appData =
-					'{"repayChannelCode": "1000020002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
-				this.getCardList()
-				// 1000000001 1000010002 1000020002
-				this.$store.commit('setCardManagement', JSON.parse(appData))
-				// this.getAppData(appData)
+				// let appData =
+				// 	'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+				// 	// '{"repayChannelCode": "1000020002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
+				// this.getCardList()
+				// // 1000000001 1000010002 1000020002
+				// this.$store.commit('setCardManagement', JSON.parse(appData))
+				// // this.getAppData(appData)
 			}
 		},
+		mounted() {
+			// 监控安卓回退按钮,设置返回事件
+			if (window.history && window.history.pushState) {
+				history.pushState(null, null, document.URL);
+				window.addEventListener('popstate', this.goBack, false)
+			}
+		},
+		destroyed() {
+			// 组件销毁时,移除事件,避免其他页面触发
+			window.removeEventListener('popstate', this.goBack, false)
+		},
 		methods: {
+			// 返回事件(安卓手机返回按钮)
+			goBack(){
+				window.android.btnBack()
+			},
 			// 重新刷新
 			reload(){
 				this.loadFail = false;
@@ -341,7 +358,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg1.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -352,7 +369,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg2.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg2.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -363,7 +380,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg3.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg3.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -374,7 +391,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg4.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg4.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -385,7 +402,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg5.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg5.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -396,7 +413,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg1.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;

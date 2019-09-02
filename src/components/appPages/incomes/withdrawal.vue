@@ -108,7 +108,7 @@
 			},
 			// 查询用户绑定了的银行卡信息
 			getBankCard() {
-				server.querySettleCard()
+				server.querySettleCard({isAppCall:1})
 					.then(res => {
 						if (res == null) return;
 						if (res.data.settleCardInfo != null) {

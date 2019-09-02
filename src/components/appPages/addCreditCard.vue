@@ -51,6 +51,15 @@
 			<button class="sumbit-btn bold" @click="verifyBank">提交</button>
 			<button class="cancel-btn" @click="closeCodeBox"></button>
 		</van-dialog>
+		<!-- 跳转绑定通道页面弹窗 -->
+		<van-dialog class="bindChannle" v-model="bindChannelBox" show-confirm-button confirm-button-text='下一步'
+		 confirm-button-color='66b9ff' @confirm='goBindChannel'>
+			<div class="content flx-c">
+				<img src="../../assets/img/tip.png">
+				<div class="bold">点击【下一步】认证通道</div>
+				<div class="tips">建议绑定所有通道,绑定通道越多,还款越容易</div>
+			</div>
+		</van-dialog>
 	</div>
 </template>
 <script>
@@ -88,8 +97,8 @@
 				},
 				// chooseBankBox: false,//选择银行的picker弹窗
 				verify: null, //验证银行卡绑卡需要的信息
-				// countDown: 10000, //倒计时
 				countDown: 59000, //倒计时
+				bindChannelBox:false,//跳转绑定通道页面弹窗
 			};
 		},
 		created() {
@@ -98,9 +107,6 @@
 		methods: {
 			// 获取用户身份信息
 			getUserInfo() {
-				// let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-				// this.cardInfo.userName = userInfo.realName;
-				// this.cardInfo.certificateNum = userInfo.certificateNumb;
 				this.cardInfo.userName = this.$store.state.userName;//从vuex里面拿用户姓名
 				this.cardInfo.certificateNum = this.$store.state.certificateNum;//从vuex里面拿用户身份证号码
 				this.cardInfo.channelCode = this.$store.state.repayChannelCode;//从vuex里面拿通道编号
@@ -146,7 +152,7 @@
 				}else if(cardInfo.channelCode == '1000010002' && cardInfo.bankType == ''){
 					this.$toast('该卡不支持,请填其他卡')
 					return;
-				// 通道号1000010002，1000020002 快付通带下额通道必须有联行号
+				// 通道号1000010002，1000020002 快付通下的通道必须有联行号
 				}else if(cardInfo.channelCode == '1000020002' && cardInfo.bankType == ''){
 					this.$toast('该卡不支持,请填其他卡')
 					return;
@@ -234,15 +240,19 @@
 					this.$toast({
 						message: '绑卡正在处理中，请稍等',
 						forbidClick: true,
+						onClose:()=>{
+							this.bindChannelBox = true;
+						}
 					});
-					setTimeout(()=>{
-						this.$router.push({
-							name:'cardManagement',
-							params:{
-								type:'next'
-							}
-						})
-					},2000)
+					// setTimeout(()=>{
+					// 	
+					// 	this.$router.push({
+					// 		name:'cardManagement',
+					// 		params:{
+					// 			type:'next'
+					// 		}
+					// 	})
+					// },2000)
 					return;
 				} else if (status == 1) {
 					// 关闭短信窗口弹窗告知结果再返回上个页面
@@ -250,15 +260,18 @@
 					this.$toast({
 						message: '卡片绑定成功',
 						forbidClick: true,
+						onClose:()=>{
+							this.bindChannelBox = true;
+						}
 					});
-					setTimeout(()=>{
-						this.$router.push({
-							name:'cardManagement',
-							params:{
-								type:'next'
-							}
-						})
-					},2000)
+					// setTimeout(()=>{
+					// 	this.$router.push({
+					// 		name:'cardManagement',
+					// 		params:{
+					// 			type:'next'
+					// 		}
+					// 	})
+					// },2000)
 					return;
 				} else if (status == 2) {
 					this.$toast({
@@ -317,6 +330,14 @@
 				this.smsCode = null;
 				this.verify = null;
 			},
+			// 跳转绑定通道页面
+			goBindChannel(){
+				// 跳转到绑定通道页面
+				this.$router.push({
+					name:'bindChannel',
+					params:{page:'addCreditCard'}
+				})
+			}
 			// 选择银行
 			// chooseBank() {
 			// 	this.chooseBankBox = true;
@@ -522,7 +543,29 @@
 			background-size: 100% 100%;
 		}
 	}
-
+	
+	// 跳转绑通道弹窗
+	.bindChannle {
+		.content {
+			padding: 30px 0;
+			color:#000;
+			img {
+				width: 100px;
+				height: 100px;
+			}
+	
+			div {
+				text-align: left;
+				padding: 30px;
+			}
+			.tips{
+				width: 70%;
+				font-size: 28px;
+				background: rgba(102,185,255,0.6);
+				border-radius: 5px;
+			}
+		}
+	}
 	.van-dialog {
 		overflow: visible;
 	}

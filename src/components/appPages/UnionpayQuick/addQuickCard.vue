@@ -22,22 +22,12 @@
 				<button class="sure-btn bold" @click="goQuickVerify">下一步</button>
 			</van-cell-group>
 		</div>
-		<!-- <div>
-			<van-dialog
-			  v-model="tipsBox"
-			  title="有效期说明"
-			  show-cancel-button
-			>
-			  <img style="width: 300px;height: 200px;" src="../../../assets/img/tips2.jpg">
-			  <div style="text-align: left;">有效期是打印在信用卡正面卡号下方，标注格式为月份在前，年份在后的数字</div>
-			</van-dialog>
-		</div> -->
 		<card-tips :tipsType='tipsType' @resetTipsType='resetTipsType' ></card-tips>
 	</div>
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
-	import cardTips from '@/components/common/cardTips.vue'
+	import cardTips from '@/components/common/cardTips.vue';
 	import {
 		server
 	} from '@/api/server.js';

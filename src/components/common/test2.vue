@@ -199,7 +199,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg1.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -210,7 +210,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg2.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg2.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -221,7 +221,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg3.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg3.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -232,7 +232,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg4.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg4.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -243,7 +243,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg5.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg5.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;
@@ -254,7 +254,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
-			background: url(../../assets/img/cardManagement/bg1.png) no-repeat center center;
+			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
 			display: flex;

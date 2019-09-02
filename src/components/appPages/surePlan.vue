@@ -31,7 +31,7 @@
 				<button class="sure-btn bold" @click="sureSumbitPlan">确认执行计划</button>
 			</div>
 		</div>
-		<!-- 未绑定通道弹窗 -->
+		<!-- 跳转绑定通道页面弹窗 -->
 		<van-dialog class="bindChannle" v-model="bindChannelBox" show-confirm-button confirm-button-text='下一步'
 		 confirm-button-color='66b9ff' @confirm='goBindChannel'>
 			<div class="content flx-c">

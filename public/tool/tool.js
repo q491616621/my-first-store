@@ -63,6 +63,16 @@ let tool = {
 		}
 	},
 	//-----------------------------------------------------------------------------------------------------
+	// 检查当前月份的天数
+	days(){
+		let date = new Date();
+		let year = date.getFullYear();
+		let month = date.getMonth()+1;
+		let now = new Date(year,month,0);
+		let dayCount = now.getDate();
+		return dayCount;
+	},
+	//-----------------------------------------------------------------------------------------------------
 	// 加载中弹窗
 	toastLoading(){
 		Toast.loading({
