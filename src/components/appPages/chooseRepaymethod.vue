@@ -39,12 +39,14 @@
 					content: '还款总额小于5万元，单笔金额小于1000元实体落地商户',
 					checked: false,
 					type:1
-				}, {
-					title: '0余额还款',
-					content: '信用卡为0也能还，预留充足的手续费即可',
-					checked: false,
-					type:3
-				}],
+				}, 
+				// {
+				// 	title: '0余额还款',
+				// 	content: '信用卡为0也能还，预留充足的手续费即可',
+				// 	checked: false,
+				// 	type:3
+				// },
+				],
 				cardInfo:{},//信用卡列表页面传递过来的数据
 				repaymothod:'',
 			};

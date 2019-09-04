@@ -305,11 +305,13 @@
 
 			.li-top {
 				height: 70px;
-				background: #FAFAFA;
+				background: #DEEDFF;
 				box-sizing: border-box;
 				padding: 0 30px;
 				font-size: 26px;
 				color: #ADADAD;
+				border-top-left-radius: 14px;
+				border-top-right-radius: 14px;
 				justify-content: space-between;
 			}
 

@@ -159,7 +159,7 @@
 					cityName: '', //省份名称
 					cardQuota: null, //卡额度
 					repayMode: 1, //默认扣1还1
-					repayType:'',//还款方式，1：完美还款，2:智能还款，3:0余额还款
+					repayType: '', //还款方式，1：完美还款，2:智能还款，3:0余额还款
 				},
 				inputCodefocus: false, //自动聚焦
 				icon: {
@@ -187,7 +187,7 @@
 				date: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
 					30, 31
 				],
-				isSupportLand:'',//是否支持选择落地城市，1支持，非1不支持
+				isSupportLand: '', //是否支持选择落地城市，1支持，非1不支持
 			};
 		},
 		beforeRouteEnter(to, from, next) {
@@ -216,11 +216,11 @@
 					cityName: '', //省份名称
 					cardQuota: null, //卡额度
 					repayMode: 1, //默认扣1还1
-					repayType:'',//还款方式
+					repayType: '', //还款方式
 				};
 				this.radio = 0, //还款通道
-				this.radio2 = 1,
-				this.setCardInfo()
+					this.radio2 = 1,
+					this.setCardInfo()
 				this.getChannelList() //执行获取代还通道请求
 			}
 			this.isFirstEnter = false;
@@ -245,7 +245,7 @@
 				server.newRepayChannels().then(res => {
 					if (res == null) return;
 					// 返回和用户选择的通道类型相同的通道
-					let channelList = res.data.filter(cur=>{
+					let channelList = res.data.filter(cur => {
 						return cur.channelType == this.planInfo.repayType;
 					});
 					this.channelList = channelList.reverse();
@@ -253,6 +253,19 @@
 					this.planInfo.channelCode = channelList[0].channelCode;
 					//设置默认是否显示落地城市选择
 					this.isSupportLand = channelList[0].isSupportLand;
+					if (channelList[0].isSupportLand == 1) {
+						tool.toastLoading()
+						server.queryProvinces({
+								channelCode: channelList[0].channelCode
+							})
+							.then(res => {
+								if (res == null) return;
+								this.citys = res.data;
+								let province = Object.keys(res.data)[0] //拿到第一个省
+								this.columns[0].values = Object.keys(res.data) //设置省选择框内数据
+								this.columns[1].values = res.data[province] //设置市选择框内数据
+							})
+					}
 				})
 			},
 			// 确定设置额度
@@ -282,6 +295,20 @@
 				this.planInfo.channelCode = this.channelList[name].channelCode;
 				//选择通道时，设置是否支持选择落地城市
 				this.isSupportLand = this.channelList[name].isSupportLand;
+				if (this.channelList[name].isSupportLand == 1) {
+					tool.toastLoading()
+					server.queryProvinces({
+							channelCode: this.channelList[name].channelCode
+						})
+						.then(res => {
+							if (res == null) return;
+							this.citys = res.data;
+							let province = Object.keys(res.data)[0] //拿到第一个省
+							this.columns[0].values = Object.keys(res.data) //设置省选择框内数据
+							this.columns[1].values = res.data[province] //设置市选择框内数据
+						})
+				}
+
 			},
 			// 选择方式
 			changeRadio2(e) {
@@ -290,18 +317,19 @@
 			},
 			// 调起省市选择框
 			showPicker() {
-				let init = {}
-				// channelCode作为queryProvinces请求的参数
-				init.channelCode = this.planInfo.channelCode
-				server.queryProvinces(init)
-					.then(res => {
-						if (res == null) return;
-						this.citys = res.data
-						let province = Object.keys(res.data)[0] //拿到第一个省
-						this.columns[0].values = Object.keys(res.data) //设置省选择框内数据
-						this.columns[1].values = res.data[province] //设置市选择框内数据
-						this.chooseCityBox = true; //显示省市选择框
-					})
+				// let init = {}
+				// // channelCode作为queryProvinces请求的参数
+				// init.channelCode = this.planInfo.channelCode
+				// server.queryProvinces(init)
+				// 	.then(res => {
+				// 		if (res == null) return;
+				// 		this.citys = res.data
+				// 		let province = Object.keys(res.data)[0] //拿到第一个省
+				// 		this.columns[0].values = Object.keys(res.data) //设置省选择框内数据
+				// 		this.columns[1].values = res.data[province] //设置市选择框内数据
+				// 		this.chooseCityBox = true; //显示省市选择框
+				// 	})
+				this.chooseCityBox = true;
 			},
 			// 改变选项
 			onChange(picker, value) {
@@ -344,9 +372,9 @@
 					this.$toast('请设置卡片额度');
 					return
 				}
-				let days = tool.days();//获取当前月份的天数
+				let days = tool.days(); //获取当前月份的天数
 				// 判断用户设置的账单日和还款日是否大于当前月分的天数,是的话提示用户进行修改
-				if(planInfo.billingDay>days||planInfo.repaymentDay>days){
+				if (planInfo.billingDay > days || planInfo.repaymentDay > days) {
 					this.$toast('账单日或还款日不能大于当月最大天数，请修改后重试')
 					return
 				}
