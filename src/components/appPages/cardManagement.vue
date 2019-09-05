@@ -18,9 +18,8 @@
 							<!-- <img src="../../assets/img/cardManagement/logo.png"> -->
 							<img :src='item.logo'>
 							<div class="bold">{{item.bankName}}</div>
-							<div>|</div>
-							<div class="bold">CGB</div>
-							<div>*{{item.bankCardNumb}}</div>
+							<div class="num1">****</div>
+							<div class="num2">{{item.bankCardNumb}}</div>
 						</div>
 						<div class="name">{{item.userName}}</div>
 						<div class="bottom-info flx-rs">
@@ -436,18 +435,10 @@
 					height: 37px;
 					padding-right: 10px;
 				}
-
-				:nth-child(3) {
-					color: #B91227;
-					padding: 0 10px;
-				}
-
-				// :nth-child(4){
-				// 	font-size: 24px;
-				// }
-				:nth-child(5) {
-					padding-left: 50px;
+				.num1,.num2{
 					font-size: 28px;
+					color: #fff;
+					padding-left: 15px;
 				}
 			}
 

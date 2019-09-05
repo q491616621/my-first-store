@@ -117,6 +117,7 @@
 				let init = {};
 				init.page = this.page;
 				init.pageSize = this.pageSize;
+				this.loading = true;
 				server.queryIncomeDetail(init)
 					.then(res => {
 						if (res == null) return;
@@ -131,13 +132,14 @@
 						});
 						// let incomeList = this.incomeList;
 						this.incomeList = this.incomeList.concat(arr);
-						let loading = false;
-						this.page += 1;
+						this.loading = false;
 						// 判断这次拿回来的数据是否小于每页的条数,小于的话不必再触发onLoad事件
 						if (res.data.length < this.pageSize) {
 							this.loading = false;
 							this.finished = true;
+							return
 						}
+						this.page += 1;
 						// if(this.page > 3){
 						// 	this.loading = false;
 						// 	this.finished = true;

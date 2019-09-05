@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<!-- 顶部标题栏 -->
-		<!-- 		<div class="title-bar flx-r">
+		<div class="title-bar flx-r">
 			<top-title :titleName="titleName" :pageType='pageType'></top-title>
-		</div> -->
+		</div>
 		<div class="posters-list flx-cas">
 			<div class="posters-li">
 				<div class="top flx-rs">
@@ -54,8 +54,8 @@
 			// -------------------------------------------
 			let width = document.body.scrollWidth;
 			let height = (width / 5) * 9
-			this.width = width*1.4;
-			this.height = height*1.4;
+			this.width = width;
+			this.height = height;
 		},
 		mounted() {
 			this.userQrcode()
@@ -68,7 +68,7 @@
 					a.setAttribute("download", "海报下载-" + (new Date().getTime()));
 					a.href = this.poster;
 					a.click()
-				}else{
+				} else {
 					console.log('海报不存在请重新生成')
 				}
 			},

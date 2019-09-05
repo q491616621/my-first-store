@@ -85,7 +85,7 @@ axios.interceptors.response.use(response => {
 				break;
 		}
 	} else {
-		Toast('服务器连接失败,请稍后再试')
+		Toast('服务器连接失败,请检查网络情况,稍后再试')
 		// console.log('服务器连接失败')
 	}
 	return Promise.resolve(error.response)

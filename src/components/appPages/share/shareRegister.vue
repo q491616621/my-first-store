@@ -166,7 +166,15 @@
 				server.register(userInfo)
 				.then(res=>{
 					if (res == null) return; //返回为null 不执行下面操作
-					this.$toast('注册成功!赶快登陆APP使用吧!')
+					this.$toast({
+						message:'注册成功!赶快下载登陆APP使用吧!',
+						forbidClick:true,
+					})
+					setTimeout(()=>{
+						this.$router.push({
+							name:'downloadApp'
+						})
+					},2000)
 				})
 			}
 		},

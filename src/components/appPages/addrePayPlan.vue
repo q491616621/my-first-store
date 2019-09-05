@@ -13,9 +13,8 @@
 						<!-- <img src="../../assets/img/cardManagement/logo.png"> -->
 						<img :src='cardInfo.logo'>
 						<div class="bold">{{cardInfo.bankName}}</div>
-						<div>|</div>
-						<div class="bold">CGB</div>
-						<div>*{{cardInfo.bankCardNumb}}</div>
+						<div class="num1">****</div>
+						<div class="num2">{{cardInfo.bankCardNumb}}</div>
 					</div>
 					<div class="name">{{cardInfo.userName}}<span>持卡人</span></div>
 				</div>
@@ -289,7 +288,6 @@
 			},
 			// 选择通道
 			changeRadio(e) {
-				console.log(e)
 				let name = e;
 				// 选择通道时,设置通道id
 				this.planInfo.channelCode = this.channelList[name].channelCode;
@@ -306,6 +304,8 @@
 							let province = Object.keys(res.data)[0] //拿到第一个省
 							this.columns[0].values = Object.keys(res.data) //设置省选择框内数据
 							this.columns[1].values = res.data[province] //设置市选择框内数据
+							this.planInfo.provinceName = '';
+							this.planInfo.cityName = '';
 						})
 				}
 
@@ -336,12 +336,6 @@
 				let province = value[0]
 				let citys = this.citys
 				picker.setColumnValues(1, citys[province])
-				// for (let it in citys) {
-				//   if(province == it){
-				//     console.log(citys[it])
-				//     this.columns[1].values = citys[it]
-				//   }
-				// }
 			},
 			// 点击确定
 			onConfirm(value) {
@@ -365,11 +359,12 @@
 				} else if (!planInfo.repaymentDay) {
 					this.$toast('请选择还款日');
 					return
-					// } else if (!planInfo.provinceName || !planInfo.cityName) {
-					// 	this.$toast('请选择落地城市');
-					// 	return
 				} else if (!planInfo.cardQuota) {
 					this.$toast('请设置卡片额度');
+					return
+				}else if (this.isSupportLand == 1&& planInfo.provinceName == '' && planInfo.cityName == ''){
+					// 判断当前通道是否有落地城市,如果有的话必须填落地省市
+					this.$toast('请选择落地城市');
 					return
 				}
 				let days = tool.days(); //获取当前月份的天数
@@ -533,18 +528,10 @@
 					height: 37px;
 					padding-right: 10px;
 				}
-
-				:nth-child(3) {
-					color: #B91227;
-					padding: 0 10px;
-				}
-
-				// :nth-child(4){
-				// 	font-size: 24px;
-				// }
-				:nth-child(5) {
-					padding-left: 50px;
+				.num1,.num2{
 					font-size: 28px;
+					color: #fff;
+					padding-left: 15px;
 				}
 			}
 

@@ -7,7 +7,7 @@
 			<a class="download-btn flx-r" @click="downloadApp">
 				<div class="box flx-rs">
 					<img src="../../../assets/img/icon.png">
-					<span>下载Iphone客户端</span>
+					<span>下载苹果客户端</span>
 				</div>
 			</a>
 			<a class="download-btn flx-r" @click="downloadApp">
@@ -54,9 +54,9 @@
 				let platFlag = this.platFlag;
 				// 0为安卓，1为ios，2为PC
 				if (platFlag == 0) {
-					// window.location.href = 'https://adl.netease.com/d/g/xyq/c/htb?type=android'
+					window.location.href = 'https://fir.im/xlu8'
 				} else {
-					// window.location.href = "https://apps.apple.com/cn/app/达达卡管家/id1257990711";
+					window.location.href = "https://fir.im/8sgc";
 				}
 			}
 		},

@@ -22,6 +22,7 @@ Vue.use(Router)
 // shareRegister //分享注册
 // downloadApp //下载app
 // sharePosters //分享海报
+// sharePostersTwo //分享海报2
 //swipeCard //信用卡刷卡
 //quickVerify //快捷支付短信验证
 //channelIntroduce //积分通道介绍
@@ -176,8 +177,13 @@ const router = new Router({
 		},
 		{
 			path: '/sharePosters',
-			name: 'sharePosters', // sharePosters //下载海报
+			name: 'sharePosters', // sharePosters //分享海报
 			component: resolve => require(['@/components/appPages/share/sharePosters.vue'], resolve)
+		},
+		{
+			path: '/sharePostersTwo',
+			name: 'sharePostersTwo', // sharePostersTwo //分享海报2
+			component: resolve => require(['@/components/appPages/share/sharePostersTwo.vue'], resolve)
 		},
 		{
 			path: '/swipeCard',
