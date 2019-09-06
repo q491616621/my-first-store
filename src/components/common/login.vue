@@ -46,11 +46,11 @@
       },
       // 登陆
       denglu() {
-        // let init = {
-        //   agentId: 1986738797,
-        //   userName: 13610144601,
-        //   passWord: '123456'
-        // }
+        let init = {
+          agentId: 1986738797,
+          userName: 13610144601,
+          passWord: '123456'
+        }
 		//  let init = {
 		//   agentId: 1986738797,
 		//   userName: 17665271721,
@@ -62,11 +62,11 @@
 		//   passWord: '12345'
 		// }
 		// 昭茜的账号
-		let init = {
-			agentId: 1986738797,
-			userName: 18665327870,
-			passWord: '123456'
-		}
+		// let init = {
+		// 	agentId: 1986738797,
+		// 	userName: 18665327870,
+		// 	passWord: '123456'
+		// }
         server.login(init).then(res=>{
 		  console.log(res.data)
           // 把sessionId 设置给cookie

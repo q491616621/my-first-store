@@ -24,8 +24,8 @@
 					</div>
 
 					<div class="div_function">
-						<span>授信还款额度</span>
-						<span>授权实习会员资格</span>
+						<!-- <span>授信还款额度</span>
+						<span>授权实习会员资格</span> -->
 						<span>智能还款分润万20</span>
 					</div>
 					<div class="div_vip_li_content">
@@ -61,32 +61,43 @@
 											直推会员收益
 										</th>
 										<th>
-											还款分润
+											我的收益
 										</th>
+									</tr>
+									<tr>
+										<td>
+											一级金融师V6
+										</td>
+										<td>
+											推荐20人增加万5
+										</td>
+										<td>
+											60%
+										</td>
+										<td rowspan="4">
+											还款一万收益有20元，一年就有240元
+										</td>
 									</tr>
 									<tr>
 										<td>
 											二级金融师V5
 										</td>
 										<td>
-											推荐20人增加7/万
+											推荐10人增加万4
 										</td>
 										<td>
-											60%
-										</td>
-										<td rowspan="4">
-											享受三级级差收益
+											50%
 										</td>
 									</tr>
 									<tr>
 										<td>
-											一级金融师V4
+											三级级金融师V4
 										</td>
 										<td>
-											推荐3人增加5/万
+											推荐3人增加万3
 										</td>
 										<td>
-											60%
+											40%
 										</td>
 									</tr>
 									<tr>
@@ -97,32 +108,7 @@
 											20/万
 										</td>
 										<td>
-											40%
-										</td>
-									</tr>
-									<tr>
-										<td>
-											初级会员V2
-										</td>
-										<td>
-											16/万
-										</td>
-										<td>
 											30%
-										</td>
-									</tr>
-									<tr>
-										<td>
-											普通V1
-										</td>
-										<td>
-											10/万
-										</td>
-										<td>
-											0
-										</td>
-										<td>
-											0
 										</td>
 									</tr>
 								</table>
@@ -151,8 +137,8 @@
 						</span>
 					</div>
 					<div class="div_function">
-						<span>授信还款额度</span>
-						<span>授权实习会员资格</span>
+					<!-- 	<span>授信还款额度</span>
+						<span>授权实习会员资格</span> -->
 						<span>智能还款分润万16</span>
 					</div>
 					<div class="div_vip_li_content">
@@ -186,46 +172,45 @@
 											直推会员收益
 										</th>
 										<th>
-											还款分润
+											我的收益
 										</th>
+									</tr>
+									<tr>
+										<td>
+											一级金融师V6
+										</td>
+										<td>
+											推荐20人增加万5
+										</td>
+										<td>
+											60%
+										</td>
+										<td rowspan="4">
+											还款一万收益有16元，一年就有192元
+										</td>
 									</tr>
 									<tr>
 										<td>
 											二级金融师V5
 										</td>
 										<td>
-											推荐20人增加7/万
+											推荐10人增加万4
 										</td>
 										<td>
-											60%
-										</td>
-										<td rowspan="4">
-											享受三级级差收益
+											50%
 										</td>
 									</tr>
 									<tr>
 										<td>
-											一级金融师V4
+											三级金融师V4
 										</td>
 										<td>
-											推荐3人增加5/万
-										</td>
-										<td>
-											60%
-										</td>
-									</tr>
-									<tr>
-										<td>
-											中级会员V3
-										</td>
-										<td>
-											20/万
+											推荐3人增加万3
 										</td>
 										<td>
 											40%
 										</td>
 									</tr>
-
 									<tr>
 										<td>
 											初级会员V2
@@ -234,21 +219,7 @@
 											16/万
 										</td>
 										<td>
-											30%
-										</td>
-									</tr>
-									<tr>
-										<td>
-											普通V1
-										</td>
-										<td>
-											10/万
-										</td>
-										<td>
-											0
-										</td>
-										<td>
-											0
+											20%
 										</td>
 									</tr>
 								</table>
@@ -387,7 +358,9 @@
 </style>
 <style scoped="scoped" lang="less">
 	@import url("../../../../public/css/other.css");
-
+	table{
+		border-collapse:separate;
+	}
 	.div_pay {
 		text-align: left;
 	}

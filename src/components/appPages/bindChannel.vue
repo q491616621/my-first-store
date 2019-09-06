@@ -387,7 +387,9 @@
 	.topBar {
 		width: 100%;
 		position: fixed;
-		margin-top: 88px;
+		left: 0;
+		top:88px;
+		// margin-top: 88px;
 
 		.title {
 			width: 750px;
