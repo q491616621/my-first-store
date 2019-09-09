@@ -9,41 +9,55 @@
 				<div class="left">
 					推广海报
 				</div>
-				<div class="right">
+				<div class="right" @click="switchBar">
 					信用卡海报
 				</div>
 			</div>
 			<div class="posters-list flx-rs">
 				<div class="posters-li" v-for="(item,index) in postersList" :key='index' @click="showPostersBox(item.img,index)">
 					<div class="img-box">
-						<img :src="item.img">
-						<div class="erCode"></div>
+						<van-image :src="item.img" class="posters-img" />
+						<!-- <img v-lazy="item.img" class='posters-img'> -->
+						<!-- <img :src="item.img" class='posters-img'> -->
+						<!-- <div class="erCode"></div> -->
 					</div>
 					<div class="title">海报{{index+1}}</div>
 				</div>
 			</div>
 		</div>
-		<!-- 	<van-dialog class="postersBox" v-model="postersBox" :showConfirmButton='false'>
-			<img :src="poster">
-		</van-dialog> -->
+		<!-- 生成海报图 -->
 		<div class="posters-box" v-if="postersBox">
-			<van-overlay :show="postersBox" @click='aaa' />
+			<van-overlay :show="postersBox" @click='closePostersBox' />
 			<div class="mask" v-if="postersBox">
 				<img :src="poster">
 			</div>
 			<img src="../../../assets/img/posters/left.png" class="left" @click="switchImg('left')">
 			<img src="../../../assets/img/posters/right.png" class="right" @click="switchImg('right')">
 			<div class="bottom flx-r">
-				<button class="share-poster">分享海报</button>
-				<button class="save-poster">保存本地</button>
+				<button class="share-poster" @click="shareMethodBox = true">分享海报</button>
+				<button class="save-poster" @click="savePoster">保存本地</button>
 			</div>
 		</div>
+		<!-- 分享选择框 -->
+		<van-dialog
+		  class="share-method-box"
+		  v-model="shareMethodBox"
+		  title="使用以下方式打开"
+		  :show-confirm-button = 'false'
+		  show-cancel-button
+		>
+		<div class="method-box flx-r">
+			<img src="../../../assets/img/posters/friendcCircle.png" @click="sharePoster('friendcCircle')">
+			<img src="../../../assets/img/posters/WeChat.png" @click="sharePoster('WeChat')">
+		</div>
+		</van-dialog>
 		<canvas id="myCanvas"></canvas>
-		<button @click="downLoad">下载</button>
 	</div>
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
+	import switchServer from '../../../../public/tool/switchServer.js';
+	import tool from '../../../../public/tool/tool.js';
 	import QRCode from "qrcode";
 	export default {
 		components: {
@@ -53,6 +67,7 @@
 			return {
 				titleName: '分享海报',
 				pageType: 'app',
+				platFlag:'',//手机类型 0为安卓 1为ios
 				postersList: [{
 						img: require('../../../assets/img/posters/posters1.jpg')
 					},
@@ -61,6 +76,24 @@
 					},
 					{
 						img: require('../../../assets/img/posters/posters3.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters4.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters5.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters6.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters7.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters8.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters9.jpg')
 					},
 				],
 				poster: '', //合成出来的图片
@@ -73,51 +106,39 @@
 					left: 190 / 900,
 					top: 500 / 900,
 				},
-				currentImgIndex:'',//当前选择的图片序号
+				currentImgIndex: '', //当前选择的图片序号
 				canvasImgList: [], //存储已经生成了的二维码图片
+				shareMethodBox:false,//选择分享方式的盒子
 			};
 		},
 		beforeCreate() {
 			document.querySelector('body').setAttribute('style', 'background-color:#f2f2f2')
 		},
 		created() {
-			this.getUserQrCode();
+			this.getQrCode('1908141437', '88888888');
+			this.platFlag = tool.testPlat();//获取平台类型 0为安卓 1为ios;
+			let me = this;
+			window['setPostersData'] = (url) => {
+				me.setPostersData(url)
+			}
 		},
 		methods: {
-			// 切换图片
-			switchImg(type) {
-				let postersList = this.postersList;
-				let currentImgIndex = this.currentImgIndex;
-				// console.log(currentImgIndex)
-				// console.log(postersList.length)
-				// if(imgId+1>postersList.length||imgId-1<0)return;
-				if (type=='left'&&currentImgIndex-1 >= 0 ) {
-					console.log('执行左边了')
-					this.showPostersBox(postersList[currentImgIndex-1].img,currentImgIndex-1)
-				}else if(type == 'right'&&currentImgIndex+1<postersList.length){
-					console.log('执行右边了')
-					this.showPostersBox(postersList[currentImgIndex+1].img,currentImgIndex+1)
-				}
+			// 切换海报页面
+			switchBar(){
+				this.$toast('功能正在开发中，敬请期待')
 			},
-			aaa() {
-				document.querySelector('body').setAttribute('style', 'background-color:#f2f2f2')
-				this.postersBox = false;
-			},
-			// 下载图片
-			downLoad() {
-				if (this.poster) {
-					let a = document.createElement('a');
-					a.setAttribute("download", "海报下载-" + (new Date().getTime()));
-					a.href = this.poster;
-					a.click()
-				} else {
-					console.log('海报不存在请重新生成')
-				}
+			// 获取app传递过来的数据
+			setPostersData(e) {
+				let appData = JSON.parse(e);
+				let sessionId = appData.sessionId;
+				switchServer.setCookie(sessionId);
+				this.getQrCode(appData.agentId, appData.recommendMobile);
 			},
 			// 生成二维码图片
-			getUserQrCode() {
-				QRCode.toDataURL(
-						'https://www.kfmanager.com/producth5/index.html#/shareRegister?agentId=1908141437&recommendMobile=13610144601')
+			getQrCode(agentId, recommendMobile) {
+				let UrlAddress =
+					`https://www.kfmanager.com/producth5/index.html#/shareRegister?agentId=${agentId}&recommendMobile=${recommendMobile}`;
+				QRCode.toDataURL(UrlAddress)
 					.then(url => {
 						this.qrCode = url;
 					})
@@ -128,7 +149,8 @@
 					})
 			},
 			// 显示海报框
-			showPostersBox(postersBg,currentImgIndex) {
+			showPostersBox(postersBg, currentImgIndex) {
+				tool.toastLoading();
 				this.poster = postersBg;
 				document.querySelector('body').setAttribute('style', 'overflow:hidden')
 				let img = new Image();
@@ -136,7 +158,7 @@
 				let qrCode = this.qrCode; //二维码
 				let base64 = '';
 				let canvas = document.getElementById('myCanvas');
-				let ctx = canvas.getContext('2d');	
+				let ctx = canvas.getContext('2d');
 				let bgWidth = 500; //图片宽度
 				let bgHeight = 900; //图片高度
 				let qrWidth = this.qrCodeSize.width * bgWidth; // 二维码宽 = 比例 * 宽度
@@ -186,15 +208,85 @@
 							// this.canvasImgList.push(init)
 							this.postersBox = true;
 							this.currentImgIndex = currentImgIndex;
+							this.$toast.clear();
 						}
 					}
 				}
 				drawing(0)
-			}
+			},
+			// 切换图片
+			switchImg(type) {
+				let postersList = this.postersList;
+				let currentImgIndex = this.currentImgIndex;
+				if (type == 'left' && currentImgIndex - 1 >= 0) {
+					// console.log('执行左边了')
+					this.showPostersBox(postersList[currentImgIndex - 1].img, currentImgIndex - 1)
+				} else if (type == 'right' && currentImgIndex + 1 < postersList.length) {
+					// console.log('执行右边了')
+					this.showPostersBox(postersList[currentImgIndex + 1].img, currentImgIndex + 1)
+				}
+			},
+			// 分享海报
+			sharePoster(type){
+				// this.shareMethodBox = true;
+				let init = {};
+				init.poster = this.poster;
+				init.type = type;
+				if(this.platFlag == 0){
+					// 调用安卓分享海报的方法
+					window.android.shareAction(JSON.stringify(init));
+					this.shareMethodBox = false;
+					this.postersBox = false;
+				}else{
+					// 调用ios分享海报的方法
+					window.webkit.messageHandlers.shareAction.postMessage(init);
+					this.shareMethodBox = false;
+					this.postersBox = false;
+				}
+			},
+			// 保存本地
+			savePoster(){
+				let init = {};
+				init.poster = this.poster;
+				// init.poster = require('../../../assets/img/posters/friendcCircle.png');
+				// console.log(JSON.stringify(init))
+				if(this.platFlag == 0){
+					// 调用安卓保存海报的方法
+					window.android.saveToLocal(JSON.stringify(init));
+					this.shareMethodBox = false;
+					this.postersBox = false;
+				}else{
+					// 调用ios保存本地的方法
+					window.webkit.messageHandlers.saveToLocal.postMessage(init);
+					this.shareMethodBox = false;
+					this.postersBox = false;
+				}
+			},
+			// 关闭海报框
+			closePostersBox() {
+				if(this.shareMethodBox)return;
+				document.querySelector('body').setAttribute('style', 'background-color:#f2f2f2')
+				this.postersBox = false;
+			},
+			// 下载图片
+			// downLoad() {
+			// 	if (this.poster) {
+			// 		let a = document.createElement('a');
+			// 		a.setAttribute("download", "海报下载-" + (new Date().getTime()));
+			// 		a.href = this.poster;
+			// 		a.click()
+			// 	} else {
+			// 		console.log('海报不存在请重新生成')
+			// 	}
+			// },
 		},
 	};
 </script>
-
+<style>
+	.van-toast{
+		z-index: 9999 !important;
+	}
+</style>
 <style scoped="scoped" lang="less">
 	.container {
 		margin-top: 88px;
@@ -253,21 +345,47 @@
 					height: 360px;
 					position: relative;
 
-					img {
-						width: 100%;
-						height: 100%;
+					.posters-img {
+						width: 200px;
+						height: 360px;
+
+						img {
+							width: 100%;
+							height: 100%;
+							position: relative;
+						}
+
+						.van-image__img::before {
+							content: 'dddddd';
+							width: 50px;
+							height: 50px;
+							background: #fff;
+							position: absolute;
+							top: 270px;
+							left: 16px;
+						}
 					}
 
-					.erCode {
+					.posters-img:before {
+						content: '';
 						width: 50px;
 						height: 50px;
 						background: #fff;
 						position: absolute;
 						top: 270px;
-						// 二维码位置高度75%
 						left: 16px;
-						// 二维码左边距离8%
 					}
+
+					// .erCode {
+					// 	width: 50px;
+					// 	height: 50px;
+					// 	background: #fff;
+					// 	position: absolute;
+					// 	top: 270px;
+					// 	// 二维码位置高度75%
+					// 	left: 16px;
+					// 	// 二维码左边距离8%
+					// }
 				}
 
 				.title {
@@ -324,7 +442,8 @@
 			width: 100px;
 			height: 100px;
 		}
-		.bottom{
+
+		.bottom {
 			width: 690px;
 			height: 100px;
 			// background: #fff;
@@ -335,8 +454,9 @@
 			left: 50%;
 			margin-left: -345px;
 			z-index: 3000;
-			justify-content:space-around;
-			.share-poster{
+			justify-content: space-around;
+
+			.share-poster {
 				width: 250px;
 				height: 75px;
 				border: 2px solid #fff;
@@ -346,7 +466,8 @@
 				background: linear-gradient(90deg, rgba(110, 191, 255, 1), rgba(26, 130, 255, 1));
 				color: #fff;
 			}
-			.save-poster{
+
+			.save-poster {
 				width: 250px;
 				height: 75px;
 				border: 2px solid #fff;
@@ -357,8 +478,25 @@
 				color: #fff;
 			}
 		}
+
 		.van-overlay {
 			z-index: 3000 !important;
 		}
+	}
+	.share-method-box{
+		z-index: 9999!important;
+		.method-box{
+			width: 100%;
+			box-sizing: border-box;
+			// padding-left: 100px;
+			// padding-top: 30px;
+			padding: 30px 100px 30px 100px;
+			justify-content: space-around;
+		}
+	}
+	#myCanvas {
+		position: absolute;
+		left: -9999px;
+		top: -9999px;
 	}
 </style>
