@@ -241,6 +241,12 @@
 			},
 			// 获取代还通道列表
 			getChannelList() {
+				this.$toast({
+					type:'loading',
+					message:'通道加载中...',
+					duration:0,
+					forbidClick:true
+				})
 				server.newRepayChannels().then(res => {
 					if (res == null) return;
 					// 返回和用户选择的通道类型相同的通道
@@ -253,7 +259,12 @@
 					//设置默认是否显示落地城市选择
 					this.isSupportLand = channelList[0].isSupportLand;
 					if (channelList[0].isSupportLand == 1) {
-						tool.toastLoading()
+						this.$toast({
+							type:'loading',
+							message:'地区获取中...',
+							duration:0,
+							forbidClick:true
+						})
 						server.queryProvinces({
 								channelCode: channelList[0].channelCode
 							})
@@ -330,6 +341,10 @@
 				// 		this.chooseCityBox = true; //显示省市选择框
 				// 	})
 				this.chooseCityBox = true;
+				// window.scrollTo(0,1)
+				// this.$nextTick(()=>{
+				// 	window.scrollTo(0,1)
+				// })
 			},
 			// 改变选项
 			onChange(picker, value) {
@@ -432,7 +447,9 @@
 			height: 70px;
 			line-height: 70px;
 		}
-
+		.van-popup{
+			position: absolute;
+		}
 		.van-picker__cancel,
 		.van-picker__title,
 		.van-picker__confirm,

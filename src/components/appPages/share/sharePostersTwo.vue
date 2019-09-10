@@ -2,7 +2,7 @@
 	<div>
 		<!-- 顶部标题栏 -->
 		<div class="title-bar flx-r">
-			<top-title :titleName="titleName" :pageType='pageType'></top-title>
+			<top-title :titleName="titleName" :pageType='pageType' :returnBtn='returnBtn'></top-title>
 		</div>
 		<div class="container flx-cas">
 			<div class="switch-bar flx-r">
@@ -10,7 +10,7 @@
 					推广海报
 				</div>
 				<div class="right" @click="switchBar">
-					信用卡海报
+					发圈素材
 				</div>
 			</div>
 			<div class="posters-list flx-rs">
@@ -66,8 +66,9 @@
 		data() {
 			return {
 				titleName: '分享海报',
-				pageType: 'app',
+				pageType: 'app', //上个页面是什么h5还是app?
 				platFlag:'',//手机类型 0为安卓 1为ios
+				returnBtn:false,//页面是否带有返回按钮
 				postersList: [{
 						img: require('../../../assets/img/posters/posters1.jpg')
 					},
@@ -115,8 +116,10 @@
 			document.querySelector('body').setAttribute('style', 'background-color:#f2f2f2')
 		},
 		created() {
-			this.getQrCode('1908141437', '88888888');
-			this.platFlag = tool.testPlat();//获取平台类型 0为安卓 1为ios;
+			// this.getQrCode('1908141437', '88888888');
+			let platFlag = tool.testPlat();
+			this.platFlag = platFlag;//获取平台类型 0为安卓 1为ios;
+			if(platFlag == 1)this.returnBtn = true;
 			let me = this;
 			window['setPostersData'] = (url) => {
 				me.setPostersData(url)
@@ -289,9 +292,14 @@
 </style>
 <style scoped="scoped" lang="less">
 	.container {
-		margin-top: 88px;
-
+		// margin-top: 88px;
+		width: 750px;
+		background:#f2f2f2;
 		.switch-bar {
+			position: fixed;
+			top: 88px;
+			left: 0;
+			z-index: 1500;
 			width: 750px;
 			height: 100px;
 			background: #34332f;
@@ -322,8 +330,9 @@
 		}
 
 		.posters-list {
-			margin-top: 30px;
-			padding-bottom: 30px;
+			margin-top: 218px;
+			// padding-bottom: 30px;
+			margin-bottom: 30px;
 			width: 690px;
 			// height: 1000px;
 			background: #fff;
@@ -492,6 +501,10 @@
 			// padding-top: 30px;
 			padding: 30px 100px 30px 100px;
 			justify-content: space-around;
+			img{
+				width: 64px;
+				height: 64px;
+			}
 		}
 	}
 	#myCanvas {

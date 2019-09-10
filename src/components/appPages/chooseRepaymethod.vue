@@ -68,6 +68,7 @@
 			if(!this.$route.meta.isBack||this.isFirstEnter){
 				this.methodsList = this.methodsList.map(cur=>{
 					cur.checked = false;
+					this.repaymothod = '';
 					return cur;
 				})
 				// 获取上个页面传递过来的卡片信息

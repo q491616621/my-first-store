@@ -1,6 +1,6 @@
 <template>
 	<div class="flx-r top-title">
-		<button class="return-btn flx-r" @click="returnBack">
+		<button class="return-btn flx-r" @click="returnBack" v-if="returnBtn">
 			<img src="../../assets/img/return.png" alt="返回按钮">
 		</button>
 		<div class="title-name">{{titleName}}</div>
@@ -17,6 +17,10 @@
 			pageType: { //上个页面的类型
 				type: String,
 				default: 'h5'
+			},
+			returnBtn:{
+				type:Boolean,
+				default:true
 			}
 		},
 		data() {
