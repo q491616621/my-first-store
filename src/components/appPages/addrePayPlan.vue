@@ -80,6 +80,7 @@
 								<div>{{planInfo.cityName}}</div>
 							</div>
 							<img src="../../assets/img/addCreditCard_choose.png" alt="落地城市">
+							<div v-if="!planInfo.provinceName" class="pick-tips">请选择落地城市</div>
 						</div>
 					</div>
 					<!-- 	<div class="protocol flx-rs medium">
@@ -110,7 +111,7 @@
 		<div class="addrePayPlan-choose-picker">
 			<van-popup v-model="chooseCityBox" position="bottom">
 				<van-picker show-toolbar :columns="columns" @change="onChange" @cancel="chooseCityBox=false" @confirm="onConfirm"
-				 :item-height="60" />
+				 :item-height="60" ref='cityPicker' />
 			</van-popup>
 		</div>
 	</div>
@@ -216,11 +217,23 @@
 					cardQuota: null, //卡额度
 					repayMode: 1, //默认扣1还1
 					repayType: '', //还款方式
+					columns: [{
+							// values: Object.keys(citys),
+							values: [],
+							className: 'column1'
+						},
+						{
+							// values: citys['浙江'],
+							values: [],
+							className: 'column2',
+							defaultIndex: 2
+						}
+					],
 				};
-				this.radio = 0, //还款通道
-					this.radio2 = 1,
-					this.setCardInfo()
-				this.getChannelList() //执行获取代还通道请求
+				this.radio = 0; //还款通道
+				this.radio2 = 1;
+				this.setCardInfo();
+				this.getChannelList(); //执行获取代还通道请求
 			}
 			this.isFirstEnter = false;
 		},
@@ -242,10 +255,10 @@
 			// 获取代还通道列表
 			getChannelList() {
 				this.$toast({
-					type:'loading',
-					message:'通道加载中...',
-					duration:0,
-					forbidClick:true
+					type: 'loading',
+					message: '通道加载中...',
+					duration: 0,
+					forbidClick: true
 				})
 				server.newRepayChannels().then(res => {
 					if (res == null) return;
@@ -260,10 +273,10 @@
 					this.isSupportLand = channelList[0].isSupportLand;
 					if (channelList[0].isSupportLand == 1) {
 						this.$toast({
-							type:'loading',
-							message:'地区获取中...',
-							duration:0,
-							forbidClick:true
+							type: 'loading',
+							message: '地区获取中...',
+							duration: 0,
+							forbidClick: true
 						})
 						server.queryProvinces({
 								channelCode: channelList[0].channelCode
@@ -274,6 +287,12 @@
 								let province = Object.keys(res.data)[0] //拿到第一个省
 								this.columns[0].values = Object.keys(res.data) //设置省选择框内数据
 								this.columns[1].values = res.data[province] //设置市选择框内数据
+								if (this.$refs.cityPicker) {
+									this.$refs.cityPicker.setColumnValues(0, Object.keys(res.data));
+									this.$refs.cityPicker.setColumnValues(1, res.data[province]);
+									this.$refs.cityPicker.setColumnIndex(0, 0);
+									this.$refs.cityPicker.setColumnIndex(1, 2);
+								}
 							})
 					}
 				})
@@ -317,6 +336,12 @@
 							this.columns[1].values = res.data[province] //设置市选择框内数据
 							this.planInfo.provinceName = '';
 							this.planInfo.cityName = '';
+							if (this.$refs.cityPicker) {
+								this.$refs.cityPicker.setColumnValues(0, Object.keys(res.data));
+								this.$refs.cityPicker.setColumnValues(1, res.data[province]);
+								this.$refs.cityPicker.setColumnIndex(0, 0);
+								this.$refs.cityPicker.setColumnIndex(1, 2);
+							}
 						})
 				}
 
@@ -341,10 +366,6 @@
 				// 		this.chooseCityBox = true; //显示省市选择框
 				// 	})
 				this.chooseCityBox = true;
-				// window.scrollTo(0,1)
-				// this.$nextTick(()=>{
-				// 	window.scrollTo(0,1)
-				// })
 			},
 			// 改变选项
 			onChange(picker, value) {
@@ -377,7 +398,7 @@
 				} else if (!planInfo.cardQuota) {
 					this.$toast('请设置卡片额度');
 					return
-				}else if (this.isSupportLand == 1&& planInfo.provinceName == '' && planInfo.cityName == ''){
+				} else if (this.isSupportLand == 1 && planInfo.provinceName == '' && planInfo.cityName == '') {
 					// 判断当前通道是否有落地城市,如果有的话必须填落地省市
 					this.$toast('请选择落地城市');
 					return
@@ -447,9 +468,11 @@
 			height: 70px;
 			line-height: 70px;
 		}
-		.van-popup{
+
+		.van-popup {
 			position: absolute;
 		}
+
 		.van-picker__cancel,
 		.van-picker__title,
 		.van-picker__confirm,
@@ -545,7 +568,9 @@
 					height: 37px;
 					padding-right: 10px;
 				}
-				.num1,.num2{
+
+				.num1,
+				.num2 {
 					font-size: 28px;
 					color: #fff;
 					padding-left: 15px;
@@ -726,7 +751,7 @@
 				font-weight: 500;
 				padding: 25px 0;
 				text-align: left;
-				color: #888;
+				color: #212121;
 				// line-height: 100px;
 				box-sizing: border-box;
 				border-bottom: 1px solid #ededed;
@@ -735,7 +760,7 @@
 			.road {
 				width: 100%;
 				height: 100px;
-				color: #888;
+				color: #212121;
 				font-size: 30px;
 				line-height: 100px;
 				box-sizing: border-box;
@@ -759,8 +784,7 @@
 			.city-picker {
 				height: 100px;
 				font-size: 30px;
-				color: #888;
-
+				color: #212121;
 				img {
 					width: 11px;
 					height: 20px;
@@ -774,13 +798,20 @@
 				.pick-content {
 					width: 100%;
 					justify-content: space-between;
-
+					position:relative;
 					.pick-citys {
 						color: #212121;
 
 						.pick-provinceName {
 							padding-right: 10px;
 						}
+					}
+					.pick-tips{
+						position: absolute;
+						top: 50%;
+						margin-top: -20px;
+						left: 0;
+						color: #d5d5d5;
 					}
 				}
 			}

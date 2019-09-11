@@ -6,20 +6,17 @@
 		</div>
 		<div class="container flx-cas">
 			<div class="switch-bar flx-r">
-				<div class="left">
+				<div :class="bar?'left':'left2'" @click="switchBar('left')">
 					推广海报
 				</div>
-				<div class="right" @click="switchBar">
+				<div :class="bar?'right':'right2'" @click="switchBar('right')">
 					发圈素材
 				</div>
 			</div>
-			<div class="posters-list flx-rs">
+			<div class="posters-list flx-rs" v-if="bar">
 				<div class="posters-li" v-for="(item,index) in postersList" :key='index' @click="showPostersBox(item.img,index)">
 					<div class="img-box">
 						<van-image :src="item.img" class="posters-img" />
-						<!-- <img v-lazy="item.img" class='posters-img'> -->
-						<!-- <img :src="item.img" class='posters-img'> -->
-						<!-- <div class="erCode"></div> -->
 					</div>
 					<div class="title">海报{{index+1}}</div>
 				</div>
@@ -110,6 +107,7 @@
 				currentImgIndex: '', //当前选择的图片序号
 				canvasImgList: [], //存储已经生成了的二维码图片
 				shareMethodBox:false,//选择分享方式的盒子
+				bar:true,
 			};
 		},
 		beforeCreate() {
@@ -127,8 +125,14 @@
 		},
 		methods: {
 			// 切换海报页面
-			switchBar(){
+			switchBar(type){
 				this.$toast('功能正在开发中，敬请期待')
+				return;
+				if(type == 'left'){
+					this.bar = true;
+				}else{
+					this.bar = false;
+				}
 			},
 			// 获取app传递过来的数据
 			setPostersData(e) {
@@ -316,7 +320,16 @@
 				border-bottom-left-radius: 12px;
 				color: #866e39;
 			}
-
+			.left2{
+				width: 220px;
+				height: 65px;
+				background: #34332f;
+				line-height: 70px;
+				border: 2px solid #ffffff;
+				border-top-left-radius: 12px;
+				border-bottom-left-radius: 12px;
+				color: #ffffff;
+			}
 			.right {
 				width: 220px;
 				height: 65px;
@@ -326,6 +339,16 @@
 				border-top-right-radius: 12px;
 				border-bottom-right-radius: 12px;
 				color: #ffffff;
+			}
+			.right2{
+				width: 220px;
+				height: 65px;
+				background: #fff;
+				line-height: 70px;
+				border: 2px solid #ffffff;
+				border-top-right-radius: 12px;
+				border-bottom-right-radius: 12px;
+				color: #866e39;
 			}
 		}
 

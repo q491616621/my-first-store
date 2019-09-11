@@ -397,6 +397,7 @@
 				padding: 25px 0;
 				text-align: left;
 				color: #888;
+				color: #212121;
 				// color: #303030;
 				// line-height: 100px;
 				box-sizing: border-box;

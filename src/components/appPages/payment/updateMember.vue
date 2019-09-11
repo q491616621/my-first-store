@@ -10,7 +10,7 @@
 					<div class="div_vip_li_img">
 						<img src="../../../assets/img/images/icon003.png" />
 					</div>
-					<div class="div_vip_li_title">中级会员</div>
+					<div class="div_vip_li_title">金卡会员</div>
 					<div class="div_evaluate">
 						<span>购买率：95%</span>
 						<span>
@@ -55,60 +55,104 @@
 											会员等级
 										</th>
 										<th>
-											直推补贴
+											分润增加
 										</th>
 										<th>
-											直推会员收益
+											还款收益
 										</th>
 										<th>
-											我的收益
+											推荐收益
+										</th>
+										<th>
+											推荐付费人数
 										</th>
 									</tr>
 									<tr>
 										<td>
-											一级金融师V6
+											黑卡会员
 										</td>
 										<td>
-											推荐20人增加万5
+											增加万2
 										</td>
+										<td>
+											万31
+										</td>
+									<!-- 	<td rowspan="5">
+											还款一万收益有20元，一年就有240元
+										</td> -->
 										<td>
 											60%
 										</td>
-										<td rowspan="4">
-											还款一万收益有20元，一年就有240元
+										<td>
+											付费后累计推荐40人
 										</td>
 									</tr>
 									<tr>
 										<td>
-											二级金融师V5
+											钻石会员
 										</td>
 										<td>
-											推荐10人增加万4
+											增加万2
+										</td>
+										<td>
+											万29
 										</td>
 										<td>
 											50%
 										</td>
+										<td>
+											付费后累计推荐25人
+										</td>
 									</tr>
 									<tr>
 										<td>
-											三级级金融师V4
+											白金会员
 										</td>
 										<td>
-											推荐3人增加万3
+											增加万4
+										</td>
+										<td>
+											万27
 										</td>
 										<td>
 											40%
 										</td>
+										<td>
+											付费后累计推荐13人
+										</td>
 									</tr>
 									<tr>
 										<td>
-											中级会员V3
+											铂金会员
 										</td>
 										<td>
-											20/万
+											增加万3
+										</td>
+										<td>
+											万23
 										</td>
 										<td>
 											30%
+										</td>
+										<td>
+											付费后累计推荐3人
+										</td>
+									</tr>
+									<tr>
+										<td>
+											金卡会员
+										</td>
+										<td>
+											万20
+										</td>
+										<td>
+											万20
+										</td>
+										<td>
+											20%
+										</td>
+										<td>
+											付费升级
 										</td>
 									</tr>
 								</table>
@@ -126,7 +170,7 @@
 					<div class="div_vip_li_img">
 						<img src="../../../assets/img/images/icon006.png" />
 					</div>
-					<div class="div_vip_li_title">初级会员</div>
+					<div class="div_vip_li_title">银卡会员</div>
 					<div class="div_evaluate">
 						<span>购买率：5%</span>
 						<span>
@@ -166,60 +210,104 @@
 											会员等级
 										</th>
 										<th>
-											直推补贴
+											分润增加
 										</th>
 										<th>
-											直推会员收益
+											还款收益
 										</th>
 										<th>
-											我的收益
+											推荐收益
+										</th>
+										<th>
+											推荐付费人数
 										</th>
 									</tr>
 									<tr>
 										<td>
-											一级金融师V6
+											黑卡会员
 										</td>
 										<td>
-											推荐20人增加万5
+											增加万2
 										</td>
+										<td>
+											万27
+										</td>
+									<!-- 	<td rowspan="5">
+											还款一万收益有16元，一年就有192元
+										</td> -->
 										<td>
 											60%
 										</td>
-										<td rowspan="4">
-											还款一万收益有16元，一年就有192元
+										<td>
+											付费后累计推荐40人
 										</td>
 									</tr>
 									<tr>
 										<td>
-											二级金融师V5
+											钻石会员
 										</td>
 										<td>
-											推荐10人增加万4
+											增加万2
+										</td>
+										<td>
+											万25
 										</td>
 										<td>
 											50%
 										</td>
+										<td>
+											付费后累计推荐25人
+										</td>
 									</tr>
 									<tr>
 										<td>
-											三级金融师V4
+											白金会员
 										</td>
 										<td>
-											推荐3人增加万3
+											增加万4
+										</td>
+										<td>
+											万23
 										</td>
 										<td>
 											40%
 										</td>
+										<td>
+											付费后累计推荐13人
+										</td>
 									</tr>
 									<tr>
 										<td>
-											初级会员V2
+											铂金会员
 										</td>
 										<td>
-											16/万
+											增加万3
 										</td>
 										<td>
-											20%
+											万19
+										</td>
+										<td>
+											30%
+										</td>
+										<td>
+											付费后累计推荐3人
+										</td>
+									</tr>
+									<tr>
+										<td>
+											银卡会员
+										</td>
+										<td>
+											万16
+										</td>
+										<td>
+											万16
+										</td>
+										<td>
+											10%
+										</td>
+										<td>
+											付费升级
 										</td>
 									</tr>
 								</table>
