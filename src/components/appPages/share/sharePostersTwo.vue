@@ -93,6 +93,15 @@
 					{
 						img: require('../../../assets/img/posters/posters9.jpg')
 					},
+					{
+						img: require('../../../assets/img/posters/posters10.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters11.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters12.jpg')
+					},
 				],
 				poster: '', //合成出来的图片
 				screenWidth: '', //屏幕宽度

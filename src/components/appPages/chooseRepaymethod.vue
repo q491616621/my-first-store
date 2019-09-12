@@ -15,7 +15,7 @@
 					<img v-show="!item.checked" src="../../assets/img/addrePayPlan_roadNo.png" alt="选择状态">
 				</div>
 			</div>
-		<button class="next bold" @click="goAddrePayPlan">确认还款</button>
+			<button class="next bold" @click="goAddrePayPlan">确认还款</button>
 		</div>
 	</div>
 </template>
@@ -27,48 +27,53 @@
 		},
 		data() {
 			return {
-				isFirstEnter:false,//是否是第一次进入这个页面
+				isFirstEnter: false, //是否是第一次进入这个页面
 				titleName: '选择还款方式',
-				methodsList: [{
-					title: '智能还款',
-					content: '还款总额大于5万元，单笔大于1000元商旅商户账单',
-					checked: false,
-					type:2
-				}, {
-					title: '完美还款',
-					content: '还款总额小于5万元，单笔金额小于1000元实体落地商户',
-					checked: false,
-					type:1
-				}, 
-				// {
-				// 	title: '0余额还款',
-				// 	content: '信用卡为0也能还，预留充足的手续费即可',
-				// 	checked: false,
-				// 	type:3
-				// },
+				methodsList: [
+					// {
+					// 	title: '智能还款',
+					// 	content: '还款总额大于5万元，单笔大于1000元商旅商户账单',
+					// 	checked: false,
+					// 	type: 2
+					// },
+					{
+						title: '完美还款',
+						content: '还款总额小于5万元，单笔金额小于1000元实体落地商户',
+						checked: true,
+						type: 1
+					},
+					// {
+					// 	title: '0余额还款',
+					// 	content: '信用卡为0也能还，预留充足的手续费即可',
+					// 	checked: false,
+					// 	type:3
+					// },
 				],
-				cardInfo:{},//信用卡列表页面传递过来的数据
-				repaymothod:'',
+				cardInfo: {}, //信用卡列表页面传递过来的数据
+				repaymothod: '',
 			};
 		},
-		beforeRouteEnter(to,from,next){
+		beforeRouteEnter(to, from, next) {
 			let arr = Object.keys(to.params)
-			// 当时从cardManagement页面进入进来的,而且有传值的话,把isBack设为false 否则设为true
-			if(from.name == 'cardManagement'&&arr.length != 0){
+			// 当是从cardManagement页面进入进来的,而且有传值的话,把isBack设为false 否则设为true
+			if (from.name == 'cardManagement' && arr.length != 0) {
 				to.meta.isBack = false;
-			}else{
+			} else {
 				to.meta.isBack = true;
 			}
 			next();
 		},
-		created(){
+		created() {
 			this.isFirstEnter = true;
 		},
-		activated(){
-			if(!this.$route.meta.isBack||this.isFirstEnter){
-				this.methodsList = this.methodsList.map(cur=>{
-					cur.checked = false;
-					this.repaymothod = '';
+		activated() {
+			// 判断用户非回退回到该页面或者是第一次进入这个页面,重置选项
+			if (!this.$route.meta.isBack || this.isFirstEnter) {
+				this.methodsList = this.methodsList.map(cur => {
+					// cur.checked = false;
+					// this.repaymothod = '';
+					cur.checked = true;
+					this.repaymothod = 1;
 					return cur;
 				})
 				// 获取上个页面传递过来的卡片信息
@@ -78,27 +83,29 @@
 		},
 		methods: {
 			// 获取上个页面传递过来的数据
-			getCardInfo(){
+			getCardInfo() {
 				this.cardInfo = this.$route.params
 			},
 			// 跳转到添加还款计划页面
-			goAddrePayPlan(){
-				if(!this.repaymothod){
+			goAddrePayPlan() {
+				if (!this.repaymothod) {
 					this.$toast('请选择还款方式');
 					return;
 				}
 				// 把这一页获取到的还款方式和上一页的数据一起传给添加还款计划页面
 				let cardInfo = this.cardInfo;
 				let repaymothod = this.repaymothod;
-				cardInfo = {...cardInfo,repaymothod};
+				cardInfo = { ...cardInfo,
+					repaymothod
+				};
 				this.$router.push({
-					name:'addrePayPlan',
-					params:cardInfo
+					name: 'addrePayPlan',
+					params: cardInfo
 				})
 			},
 			// 选择还款方式
 			chooseMethods(e) {
-				if(e == 2){
+				if (e == 2) {
 					this.$toast('该还款方式暂未开放,敬请期待!')
 					return;
 				}
@@ -120,6 +127,7 @@
 		margin-top: 88px;
 		padding: 20px 0;
 		box-sizing: border-box;
+
 		.methods-li {
 			width: 690px;
 			height: 180px;
@@ -145,13 +153,15 @@
 					width: 455px;
 				}
 			}
+
 			img {
 				width: 35px;
 				height: 35px;
 			}
 		}
-		.next{
-			margin-top:100px;
+
+		.next {
+			margin-top: 100px;
 			width: 690px;
 			height: 90px;
 			text-align: center;
