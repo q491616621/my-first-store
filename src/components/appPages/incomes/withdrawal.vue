@@ -147,22 +147,22 @@
 			// 立即提现
 			ImmediateWithdraw() {
 				let amount = this.amount * 100;
-				// if (amount == '' || amount == null) {
-				// 	this.$toast('请填写提现金额')
-				// 	return;
-				// }else if(amount < 10000){
-				// 	this.$toast('最低提现金额100哦！')
-				// 	return;
-				// }else if(amount > 5000000){
-				// 	this.$toast('最高提现金额50000哦！')
-				// 	return;
-				// }
+				if (amount == '' || amount == null) {
+					this.$toast('请填写提现金额')
+					return;
+				}else if(amount < 10000){
+					this.$toast('最低提现金额100哦！')
+					return;
+				}else if(amount > 5000000){
+					this.$toast('最高提现金额50000哦！')
+					return;
+				}
 				let init = {};
 				init.cardId = this.bankCardInfo.id;
 				init.amount = amount;
 				this.$toast({
 					type: 'loading',
-					message: '提现申请中...',
+					message: '提现申请正在提交',
 					duration: 0,
 					forbidClick: true
 				})

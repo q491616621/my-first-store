@@ -23,20 +23,31 @@
 						</div>
 						<div class="name">{{item.userName}}</div>
 						<div class="bottom-info flx-rs">
-							<div class="sms flx-rs">
-								<span>短信提醒</span>
-								<img src="../../assets/img/cardManagement/sure.png">
+							<div class="sms flx-cas" v-if="item.billingDay != null">
+								<div>{{item.billingDay|dateTime}}号</div>
+								<div>账单日</div>
+								<!-- <span>短信提醒</span> -->
+								<!-- <img src="../../assets/img/cardManagement/sure.png"> -->
 							</div>
-							<div class="bill flx-rs" v-if="item.billingDay != null">
-								<!-- 	<div v-if="item.billingDay != null">账单日{{item.billingDay|dateTime}}号</div>
-								<div v-if="item.billingDay == null">账单日未设置</div> -->
+							<div class="sms flx-cas" v-if="item.billingDay == null">
+								<div>账单日未设置</div>
+							</div>
+			<!-- 				<div class="bill flx-rs" v-if="item.billingDay != null">
 								<div class="num">{{item.billingDay|billDay}}</div>
 								<div>
 									<div class="bold">天后出账单</div>
 									<div class="bold" style="text-align: left;">账单日:{{item.billingDay|dateTime}}号</div>
 								</div>
+								<div class="bill" v-if="item.billingDay == null">账单日未设置</div>
+							</div> -->
+							<div class="bill flx-rs" v-if="item.repaymentDay != null">
+								<div class="num">{{item.repaymentDay|billDay}}</div>
+								<div>
+									<div class="bold">天后还款日</div>
+									<div class="bold" style="text-align: center;">每月{{item.repaymentDay|dateTime}}号</div>
+								</div>
 							</div>
-							<div class="bill" v-if="item.billingDay == null">账单日未设置</div>
+							<div class="bill" v-if="item.repaymentDay == null">还款日未设置</div>
 							<div class="status-btn" @click.stop="goAddrePayPlan(item,index)" v-if="item.planOrderId == null">新增还款</div>
 							<div class="status-btn" @click.stop="goPlanDetail(item.planOrderId,item)" v-if="item.planOrderId != null">查看计划</div>
 						</div>
@@ -171,13 +182,15 @@
 				window['getAppData'] = (url) => {
 					me.getAppData(url)
 				}
-				let appData =
-					'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
-					// '{"repayChannelCode": "1000020002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
-				this.getCardList()
-				// 1000000001 1000010002 1000020002
-				this.$store.commit('setCardManagement', JSON.parse(appData))
-				// this.getAppData(appData)
+				// let appData =
+				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
+				// 	// 正式服务器
+				// 	'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
+				// this.getCardList()
+				// // 1000000001 1000010002 1000020002
+				// this.$store.commit('setCardManagement', JSON.parse(appData))
+				// // this.getAppData(appData)
 			}
 		},
 		mounted() {

@@ -6,7 +6,7 @@
 		</div>
 		<div class="wueui-content content">
 			<div class="div_vip_list">
-				<div class="div_vip_li">
+				<div class="div_vip_li" v-if="payMembInfo.memberRoute == 2||payMembInfo.memberLevel == 1">
 					<div class="div_vip_li_img">
 						<img src="../../../assets/img/images/icon003.png" />
 					</div>
@@ -30,7 +30,7 @@
 					</div>
 					<div class="div_vip_li_content">
 						<a href="javascript:;" :class="contentOne?'btn_title active':'btn_title'" @click="contentOne=!contentOne">
-							钻石*代理*入驻金融圈 自用省钱*推广赚钱
+							金卡会员 自用省钱*推广赚钱
 						</a>
 						<div class="div_vip_li_info">
 							<p style="text-align: left;">
@@ -72,12 +72,13 @@
 											黑卡会员
 										</td>
 										<td>
-											增加万2
+											<!-- 增加万2 -->
+											会员10%加还款万1分红
 										</td>
 										<td>
 											万31
 										</td>
-									<!-- 	<td rowspan="5">
+										<!-- 	<td rowspan="5">
 											还款一万收益有20元，一年就有240元
 										</td> -->
 										<td>
@@ -92,7 +93,8 @@
 											钻石会员
 										</td>
 										<td>
-											增加万2
+											<!-- 增加万2 -->
+											会员8%分红
 										</td>
 										<td>
 											万29
@@ -106,10 +108,11 @@
 									</tr>
 									<tr>
 										<td>
-											白金会员
+											铂金会员
 										</td>
 										<td>
-											增加万4
+											<!-- 增加万4 -->
+											会员5%分红
 										</td>
 										<td>
 											万27
@@ -123,7 +126,7 @@
 									</tr>
 									<tr>
 										<td>
-											铂金会员
+											白金会员
 										</td>
 										<td>
 											增加万3
@@ -166,7 +169,7 @@
 						<button class="btn_pay" @click="alreadyPurchased" v-if="payMembInfo.memberLevel >1">您已是会员</button>
 					</div>
 				</div>
-				<div class="div_vip_li">
+				<div class="div_vip_li" v-if="payMembInfo.memberRoute == 1||payMembInfo.memberLevel == 1">
 					<div class="div_vip_li_img">
 						<img src="../../../assets/img/images/icon006.png" />
 					</div>
@@ -181,13 +184,13 @@
 						</span>
 					</div>
 					<div class="div_function">
-					<!-- 	<span>授信还款额度</span>
+						<!-- 	<span>授信还款额度</span>
 						<span>授权实习会员资格</span> -->
 						<span>智能还款分润万16</span>
 					</div>
 					<div class="div_vip_li_content">
 						<a href="javascript:;" :class="contentTwo?'btn_title active':'btn_title'" @click="contentTwo=!contentTwo">
-							黄金*代理*入驻金融圈 自用省钱*推广赚钱
+							银卡会员 自用省钱*推广赚钱
 						</a>
 						<div class="div_vip_li_info">
 							<p style="text-align: left;">
@@ -232,7 +235,7 @@
 										<td>
 											万27
 										</td>
-									<!-- 	<td rowspan="5">
+										<!-- 	<td rowspan="5">
 											还款一万收益有16元，一年就有192元
 										</td> -->
 										<td>
@@ -261,7 +264,7 @@
 									</tr>
 									<tr>
 										<td>
-											白金会员
+											铂金会员
 										</td>
 										<td>
 											增加万4
@@ -278,7 +281,7 @@
 									</tr>
 									<tr>
 										<td>
-											铂金会员
+											白金会员
 										</td>
 										<td>
 											增加万3
@@ -350,19 +353,26 @@
 			return {
 				titleName: '购买会员', //标题栏标题
 				pageType: 'app', //上个页面是什么h5还是app?
-				contentOne: false,//第一个下拉窗状态
-				contentTwo: false,//第二个下拉窗状态
-				show: false,//支付弹窗状态
+				contentOne: false, //第一个下拉窗状态
+				contentTwo: false, //第二个下拉窗状态
+				show: false, //支付弹窗状态
 				radio: '1',
 				price: '', //选择会员的价格
-				goodsname: '',//会员类型 0初级会员 1中级会员
-				payMembInfo: '',//储存的app传过来的
+				goodsname: '', //会员类型 0初级会员 1中级会员
+				payMembInfo: '', //储存的app传过来的
+				// payMembInfo:{'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'1','memberRoute':null}
 			};
 		},
 		created() {
 			let me = this;
 			window['getUserLevel'] = (url) => {
 				me.getUserLevel(url)
+			}
+			window['weChatPayFinish'] = (url) => {
+				me.weChatPayFinish(url)
+			}
+			window['AlipayPayFinish'] = (url) => {
+				me.AlipayPayFinish(url)
 			}
 			// 下面是自己测试代码
 			// let a = {'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'0'}
@@ -371,10 +381,10 @@
 		},
 		methods: {
 			// 用户已经是会员了
-			alreadyPurchased(){
+			alreadyPurchased() {
 				this.$toast({
-					message:'您已经是会员了，请勿重复购买',
-					duration:2000,
+					message: '您已经是会员了，请勿重复购买',
+					duration: 2000,
 				})
 			},
 			// 获取app页面传递过来的数据的方法
@@ -397,11 +407,11 @@
 				// }
 				if (level == 'levelOne') {
 					let highPayAmount = this.payMembInfo.highPayAmount;
-					this.price = parseInt(highPayAmount)/100;
+					this.price = parseInt(highPayAmount) / 100;
 					this.goodsname = this.payMembInfo.highMemberName;
 				} else {
 					let midPayAmount = this.payMembInfo.midPayAmount;
-					this.price = parseInt(midPayAmount)/100;
+					this.price = parseInt(midPayAmount) / 100;
 					this.goodsname = this.payMembInfo.midMemberName;
 				}
 				// 拉起支付弹窗
@@ -409,9 +419,9 @@
 			},
 			// 确认支付
 			surePay() {
-				let platFlag = tool.testPlat();//获取平台类型 0为安卓 1为ios
+				let platFlag = tool.testPlat(); //获取平台类型 0为安卓 1为ios
 				let init = {};
-				init.goodsname = this.goodsname;//开通的会员等级 0初级会员 1中级会员
+				init.goodsname = this.goodsname; //开通的会员等级 0初级会员 1中级会员
 				init.chanelTpye = this.radio; //0是支付宝 1是微信
 				init.price = this.price; //要支付的价格
 				// 根据平台类型的不同调用不同平台的支付方法
@@ -423,15 +433,19 @@
 					window.webkit.messageHandlers.updateMember.postMessage(init);
 				}
 			},
-			// notClose(action,done){
-			// 	// 弹窗点击的是取消按钮,关闭弹窗
-			// 	if(action == 'cancel'){
-			// 		done()
-			// 	}else{
-			// 		// 弹窗点击的是确认按钮,发出支付,不关闭弹窗
-			// 		done(false)
-			// 	}
-			// }
+			// ------------------------------------------------------------------------安卓端支付完成后调用的方法
+			// 微信支付完成
+			weChatPayFinish(value) {
+				let payMembInfo = JSON.parse(value);
+				this.payMembInfo = payMembInfo;
+				this.show = false;
+			},
+			// 支付宝支付完成
+			AlipayPayFinish(value) {
+				let payMembInfo = JSON.parse(value);
+				this.payMembInfo = payMembInfo;
+				this.show = false;
+			}
 		},
 	};
 </script>
@@ -446,14 +460,22 @@
 </style>
 <style scoped="scoped" lang="less">
 	@import url("../../../../public/css/other.css");
-	table{
-		border-collapse:separate;
+
+	table {
+		border-collapse: separate;
 	}
+
 	.div_pay {
 		text-align: left;
 	}
 
 	.content {
 		margin-top: 88px;
+	}
+
+	.div_vip_li_img {
+		img {
+			border-radius: 10px;
+		}
 	}
 </style>

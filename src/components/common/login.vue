@@ -67,6 +67,13 @@
 		// 	userName: 18665327870,
 		// 	passWord: '123456'
 		// }
+		// 正式服务器的
+		// let init = {
+		// 	agentId:1908141437,
+		// 	userName:17665271721,
+		// 	passWord:'123456'
+		// }
+		// ------------------------------
         server.login(init).then(res=>{
 		  console.log(res.data)
           // 把sessionId 设置给cookie

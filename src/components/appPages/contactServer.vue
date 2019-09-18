@@ -5,7 +5,7 @@
 		</div>
 		<div class="server-box flx-c">
 			<div class="app-name flx-cas">
-				<div class="bold">金融师</div>
+				<div class="bold">安安卡管家</div>
 				<div>版本号1.0.0</div>
 			</div>
 			<div class="server-info flx-cs">
@@ -44,7 +44,8 @@
 			return {
 				titleName: '联系客服',
 				pageType: 'app',
-				copyBtn: null //存储初始化复制按钮事件
+				copyBtn: null ,//存储初始化复制按钮事件
+				n:0
 			};
 		},
 		mounted() {
@@ -67,6 +68,8 @@
 					})
 					clipboard.destroy()
 				})
+				// 每次都需要重置这个值，不然再点击复制就不生效了
+				this.copyBtn = new this.clipboard(this.$refs.copy);
 			}
 		},
 	};

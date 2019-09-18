@@ -263,10 +263,12 @@
 				server.newRepayChannels().then(res => {
 					if (res == null) return;
 					// 返回和用户选择的通道类型相同的通道
-					let channelList = res.data.filter(cur => {
-						return cur.channelType == this.planInfo.repayType;
-					});
-					this.channelList = channelList.reverse();
+					// let channelList = res.data.filter(cur => {
+					// 	return cur.channelType == this.planInfo.repayType;
+					// });
+					// this.channelList = channelList.reverse();
+					let channelList = res.data;
+					this.channelList = channelList;
 					// 设置默认选择的是第一条通道
 					this.planInfo.channelCode = channelList[0].channelCode;
 					//设置默认是否显示落地城市选择

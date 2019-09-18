@@ -8,11 +8,11 @@
 		<div class="addCreditCard-bottom flx-c">
 			<van-cell-group class="addInfo-box">
 				<van-field class="addInput-li" label-width="2.373333rem" type="number" v-model="cardInfo.cardNum" clearable label="卡号"
-				 placeholder="请输入卡号" @blur='checkCardBank' />
-				<van-field class="addInput-li" label-width="2.373333rem" type="number" v-model="cardInfo.cvn2" clearable label="cvn2"
-				 placeholder="信用卡背面后三位，如853" />
-				<van-field class="addInput-li" label-width="2.373333rem" type="number" v-model="cardInfo.valid" clearable label="有效期"
-				 placeholder="有效期（月/年），如0123" />
+				 placeholder="请输入卡号" @blur='checkCardBank' @input="changeCode" />
+				 <van-field class="addInput-li" label-width="2.373333rem" type="number" v-model="cardInfo.valid" clearable label="有效期"
+				  placeholder="有效期（月/年），如0123" right-icon='question-o' @click-right-icon='showTips("valid")'/>
+				<van-field class="addInput-li" label-width="2.373333rem" type="number" v-model="cardInfo.cvn2" clearable label="CVN2"
+				 placeholder="信用卡背面后三位，如853" right-icon='question-o' @click-right-icon='showTips("cvn2")'/>
 				<van-field class="addInput-li" label-width="2.373333rem" v-model="cardInfo.userName" disabled clearable label="姓名"
 				 placeholder="请输入姓名" />
 				<van-field class="addInput-li" label-width="2.373333rem" v-model="cardInfo.certificateNum" disabled clearable label="身份证号"
@@ -28,7 +28,19 @@
 				</div> -->
 				<van-field class="addInput-li" label-width="2.373333rem" type="number" v-model="cardInfo.mobile" clearable label="手机号码"
 				 placeholder="请输入银行预留手机号" />
+				<!-- 选择还款通道 -->
+				<div class="road flx-rs medium" v-if="channelListBox">
+					<div class="name">选择通道</div>
+					<van-radio-group v-model="radio" class='radio-box flx-rs' @change='changeRadio'>
+						<van-radio :name="index" v-for="(item,index) in channelList" :key='index'>
+							{{item.channelName}}
+							<img slot="icon" slot-scope="props" :src="props.checked ? icon.active : icon.inactive">
+						</van-radio>
+					</van-radio-group>
+				</div>
+				<div class="otherChannelTips" v-if="channelListBox">提示：已为您放开所有通道，若卡绑定失败，建议选择不同通道进行尝试。仍有疑问可联系客服咨询。</div>
 				<button class="sure-btn bold" @click="showCodeBox">确认添加</button>
+				<!-- <button @click="aaa(2)">按钮按钮</button> -->
 			</van-cell-group>
 		</div>
 		<!-- 选择开户行 -->
@@ -60,10 +72,13 @@
 				<div class="tips">建议绑定所有通道,绑定通道越多,还款越容易</div>
 			</div>
 		</van-dialog>
+		<!-- cvn2和有效期提示组件 -->
+		<card-tips :tipsType='tipsType' @resetTipsType='resetTipsType' ></card-tips>
 	</div>
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
+	import cardTips from '@/components/common/cardTips.vue';
 	import {
 		server
 	} from '@/api/server.js';
@@ -73,7 +88,8 @@
 	import tool from '../../../public/tool/tool.js';
 	export default {
 		components: {
-			topTitle
+			topTitle,
+			cardTips
 		},
 		data() {
 			return {
@@ -82,6 +98,7 @@
 				codeBox: false, //短信验证框
 				countDownBox: true, //倒计时框
 				smsCode: null, //验证码
+				tipsType:'',//cvn2和有效期的提示盒子
 				cardInfo: {
 					cardNum: '', //卡号
 					cvn2: null, //cvv码
@@ -91,28 +108,82 @@
 					bankName: '', //开户行
 					mobile: null, //手机号
 					bankAgentId: '', //信惠通道必须的联行号
-					bankType:'',//快付通大小额必须的联行号
+					bankType: '', //快付通大小额必须的联行号
 					cardType: '2', //卡类型
-					channelCode: ''//通道号
+					channelCode: '' //通道号
 				},
 				// chooseBankBox: false,//选择银行的picker弹窗
 				verify: null, //验证银行卡绑卡需要的信息
 				countDown: 59000, //倒计时
-				bindChannelBox:false,//跳转绑定通道页面弹窗
+				bindChannelBox: false, //跳转绑定通道页面弹窗
+				// ---------------------------------------------------
+				radio: 0,
+				channelListBox: false,
+				channelList: [],
+				icon: {
+					active: require('../../assets/img/addrePayPlan_roadYes.png'),
+					inactive: require('../../assets/img/addrePayPlan_roadNo.png')
+				},
 			};
 		},
 		created() {
 			this.getUserInfo(); //获取用户身份信息函数
 		},
 		methods: {
+			
+			// 失败处理
+			failHandle(){
+				if (this.channelList.length == 0) {
+					tool.toastLoading();
+					server.newRepayChannels()
+						.then(res => {
+							if (res == null) return;
+							// this.$toast({
+							// 	message: '卡片在默认通道绑定失败,现为您切换其他通道,请重新进行绑定',
+							// 	forbidClick: true,
+							// })
+							// let defaultChannelCode = this.$store.state.repayChannelCode; //从vuex里面拿默认通道编号
+							// let channelList = res.data.filter(cur => cur.channelCode != defaultChannelCode)//过滤掉默认通道编号的选项
+							let channelList = res.data;
+							this.channelList = channelList;
+							this.cardInfo.channelCode = channelList[0].channelCode;//设置当前通道为通道列表第一个
+							this.channelListBox = true;//显示通道列表和提示
+						})
+				}else{
+					// this.$toast({
+					// 	message: '卡片在默认通道绑定失败,现为您切换其他通道,请重新进行绑定',
+					// 	forbidClick: true,
+					// })
+					let channelList = this.channelList;
+					this.cardInfo.channelCode = channelList[0].channelCode;
+					this.channelListBox = true;
+				}
+			},
+			// 切换通道
+			changeRadio(index) {
+				// 修改通道号为当前选择的通道
+				let channelList = this.channelList;
+				this.cardInfo.channelCode = channelList[index].channelCode;
+			},
+			// 修改卡号
+			changeCode(value) {
+				// 每次修改卡号,重新设置通道号为默认的通道号
+				// this.cardInfo.channelCode = this.$store.state.repayChannelCode; //从vuex里面拿默认通道编号
+				this.radio = 0,
+				this.channelListBox = false;
+				this.cardInfo.bankName = '';
+				this.cardInfo.bankAgentId = '';
+				this.cardInfo.bankType = '';
+			},
 			// 获取用户身份信息
 			getUserInfo() {
-				this.cardInfo.userName = this.$store.state.userName;//从vuex里面拿用户姓名
-				this.cardInfo.certificateNum = this.$store.state.certificateNum;//从vuex里面拿用户身份证号码
-				this.cardInfo.channelCode = this.$store.state.repayChannelCode;//从vuex里面拿通道编号
+				this.cardInfo.userName = this.$store.state.userName; //从vuex里面拿用户姓名
+				this.cardInfo.certificateNum = this.$store.state.certificateNum; //从vuex里面拿用户身份证号码
+				this.cardInfo.channelCode = this.$store.state.repayChannelCode; //从vuex里面拿通道编号
 			},
-			// 查询开户行
+			// 输入框失去焦点时查询开户行
 			checkCardBank() {
+				tool.toastLoading()
 				let bankcardNumb = this.cardInfo.cardNum;
 				let channelCode = this.cardInfo.channelCode;
 				server.queryBankcardInfo({
@@ -121,7 +192,7 @@
 					})
 					.then(res => {
 						// 判断返回的数据是null或者是{},不执行下面的操作
-						if (res == null || JSON.stringify(res.data) == '{}'){
+						if (res == null || JSON.stringify(res.data) == '{}') {
 							this.cardInfo.bankAgentId = '';
 							this.cardInfo.bankType = '';
 							this.cardInfo.bankName = '';
@@ -134,9 +205,9 @@
 							this.cardInfo.bankAgentId = res.data.xhBankAgentId;
 						}
 						// 判断是否有返回快付通的联行号
-						if(res.data.kftBankType == '' || res.data.kftBankType == null){
+						if (res.data.kftBankType == '' || res.data.kftBankType == null) {
 							this.cardInfo.bankType = '';
-						}else{
+						} else {
 							this.cardInfo.bankType = res.data.kftBankType;
 						}
 						this.cardInfo.bankName = res.data.bankName;
@@ -145,18 +216,6 @@
 			// 显示弹窗
 			showCodeBox() {
 				let cardInfo = this.cardInfo;
-				// 通道号1000000001 信惠的，这个通道必须有联行号
-				if (cardInfo.channelCode == '1000000001' && cardInfo.bankAgentId == '') {
-					this.$toast('该卡不支持,请填其他卡')
-					return;
-				}else if(cardInfo.channelCode == '1000010002' && cardInfo.bankType == ''){
-					this.$toast('该卡不支持,请填其他卡')
-					return;
-				// 通道号1000010002，1000020002 快付通下的通道必须有联行号
-				}else if(cardInfo.channelCode == '1000020002' && cardInfo.bankType == ''){
-					this.$toast('该卡不支持,请填其他卡')
-					return;
-				}
 				let value = true;
 				let verifier = {
 					'cardNum': '卡号',
@@ -179,11 +238,33 @@
 				}
 				// 如果value 为true 的话,进行下一步提交卡片，否则提示用户哪些信息未填写
 				if (value === true) {
+					// 通道号1000000001 信惠的，这个通道必须有联行号
+					if (cardInfo.channelCode == '1000000001' && cardInfo.bankAgentId == '') {
+						this.$toast('该卡不支持,请填其他卡')
+						return;
+					} else if (cardInfo.channelCode == '1000010002' && cardInfo.bankType == '') {
+						this.$toast('该卡不支持,请填其他卡')
+						return;
+						// 通道号1000010002，1000020002 快付通下的通道必须有联行号
+					} else if (cardInfo.channelCode == '1000020002' && cardInfo.bankType == '') {
+						this.$toast('该卡不支持,请填其他卡')
+						return;
+					}
 					// 提示加载中
 					tool.toastLoading()
 					server.getBindcardSm(cardInfo)
 						.then(res => {
 							if (res == null) return;
+							if(res.code != 0){
+								this.$toast({
+									message:res.message,
+									forbidClick:true,
+									onClose:()=>{
+										this.failHandle();//执行失败处理
+									}
+								})
+								return;
+							}
 							let status = res.data.status; //绑卡状态，0-处理中，1-绑卡成功，2-绑卡失败,3-已解绑，4-需短验
 							// 执行验证绑卡状态函数
 							this.checkCardStatus(status, res);
@@ -226,7 +307,7 @@
 							verify.channelCode = res.data.channelCode;
 							verify.orderId = res.data.orderId;
 							verify.recordId = res.data.recordId;
-							verify.smsSeq = res.data.smsSeq||'';//快付通通道的短信验证序列号
+							verify.smsSeq = res.data.smsSeq || ''; //快付通通道的短信验证序列号
 							this.verify = verify; //把短信验证需要的数据设置到data里面
 							this.codeBox = true; //显示短信验证框
 							this.countDownBox = true; //显示倒计时窗口
@@ -240,7 +321,7 @@
 					this.$toast({
 						message: '绑卡正在处理中，请稍等',
 						forbidClick: true,
-						onClose:()=>{
+						onClose: () => {
 							this.bindChannelBox = true;
 						}
 					});
@@ -260,7 +341,7 @@
 					this.$toast({
 						message: '卡片绑定成功',
 						forbidClick: true,
-						onClose:()=>{
+						onClose: () => {
 							this.bindChannelBox = true;
 						}
 					});
@@ -274,25 +355,36 @@
 					// },2000)
 					return;
 				} else if (status == 2) {
+					if (this.$refs.countDown) this.$refs.countDown.reset();
+					this.codeBox = false;
+					this.smsCode = null;
+					this.verify = null;
 					this.$toast({
-						message: '卡片绑定失败',
-						forbidClick: true,
-						duration: 2000,
+						message:'卡片绑定失败，建议选择其他通道进行尝试',
+						forbidClick:true,
 						onClose:()=>{
-							// 关闭弹窗时,如果是倒计时状态,就重置倒计时
-							if(this.$refs.countDown)this.$refs.countDown.reset();
-							this.codeBox = false;
+							this.failHandle()//执行失败处理函数
 						}
-					});
+					})
+					// this.$toast({
+					// 	message: '卡片绑定失败',
+					// 	forbidClick: true,
+					// 	duration: 2000,
+					// 	onClose: () => {
+					// 		// 关闭弹窗时,如果是倒计时状态,就重置倒计时
+					// 		if (this.$refs.countDown) this.$refs.countDown.reset();
+					// 		this.codeBox = false;
+					// 	}
+					// });
 					return;
 				} else if (status == 3) {
 					this.$toast({
 						message: '该卡绑定已解除',
 						forbidClick: true,
 						duration: 2000,
-						onClose:()=>{
+						onClose: () => {
 							// 关闭弹窗时,如果是倒计时状态,就重置倒计时
-							if(this.$refs.countDown)this.$refs.countDown.reset();
+							if (this.$refs.countDown) this.$refs.countDown.reset();
 							this.codeBox = false;
 						}
 					});
@@ -307,6 +399,13 @@
 				server.getBindcardSm(cardInfo)
 					.then(res => {
 						if (res == null) return;
+						if(res.code != 0){
+							this.$toast({
+								message:res.message,
+								forbidClick:true,
+							})
+							return;
+						}
 						let status = res.data.status; //绑卡状态，0-处理中，1-绑卡成功，2-绑卡失败,3-已解绑，4-需短验
 						// 执行验证绑卡状态函数
 						this.checkCardStatus(status, res);
@@ -325,19 +424,34 @@
 			// 关闭弹窗
 			closeCodeBox() {
 				// 关闭弹窗时,如果是倒计时状态,就重置倒计时
-				if(this.$refs.countDown)this.$refs.countDown.reset();
+				if (this.$refs.countDown) this.$refs.countDown.reset();
 				this.codeBox = false;
 				this.smsCode = null;
 				this.verify = null;
 			},
 			// 跳转绑定通道页面
-			goBindChannel(){
+			goBindChannel() {
 				// 跳转到绑定通道页面
 				this.$router.push({
-					name:'bindChannel',
-					params:{page:'addCreditCard'}
+					name: 'bindChannel',
+					params: {
+						page: 'addCreditCard'
+					}
 				})
-			}
+			},
+			// ---------------------------------------------------
+			// 重置tipsType
+			resetTipsType(){
+				this.tipsType = '';
+			},
+			// 提示弹窗
+			showTips(type){
+				if(type == 'cvn2'){
+					this.tipsType = 'cvn2';
+				}else{
+					this.tipsType = 'valid';
+				}
+			},
 			// 选择银行
 			// chooseBank() {
 			// 	this.chooseBankBox = true;
@@ -371,6 +485,14 @@
 	.mint-toast-text {
 		font-size: 30px;
 	}
+	.addInfo-box{
+		.van-field__right-icon{
+			color: #288cff;
+		}
+		.van-field__control:disabled{
+			color: #323233;
+		}
+	}
 </style>
 <style scoped="scoped" lang="less">
 	// 信息栏列表
@@ -388,7 +510,28 @@
 			background: #fff;
 			box-shadow: 0px 3px 12px 0px rgba(212, 212, 212, 0.5);
 			border-radius: 14px;
-
+			// ---------------------------
+			::-webkit-input-placeholder {
+			    /* WebKit browsers */
+			    // font-size: 12px;
+			    color: #999!important;
+			}
+			　　:-moz-placeholder {
+			    /* Mozilla Firefox 4 to 18 */
+			    // font-size: 12px;
+			    color: #999!important;
+			}
+			　　::-moz-placeholder {
+			    /* Mozilla Firefox 19+ */
+			    // font-size: 12px;
+			    color: #999!important;
+			}
+			　　:-ms-input-placeholder {
+			    /* Internet Explorer 10+ */
+			    // font-size: 12px;
+			    color: #999!important;
+			}
+			// -------------------------------------
 			.addInput-li {
 				width: 100%;
 				// height: 100px;
@@ -482,6 +625,7 @@
 			z-index: 9999;
 			border-radius: 50%;
 			background: #fff;
+
 			img {
 				width: 175px;
 				height: 175px;
@@ -545,34 +689,74 @@
 			background-size: 100% 100%;
 		}
 	}
-	
+
 	// 跳转绑通道弹窗
 	.bindChannle {
 		.content {
 			padding: 30px 0;
-			color:#000;
+			color: #000;
+
 			img {
 				width: 100px;
 				height: 100px;
 			}
-	
+
 			div {
 				text-align: left;
 				padding: 30px;
 			}
-			.tips{
+
+			.tips {
 				width: 70%;
 				font-size: 28px;
-				background: rgba(102,185,255,0.6);
+				background: rgba(102, 185, 255, 0.6);
 				border-radius: 5px;
 			}
 		}
 	}
+
 	.van-dialog {
 		overflow: visible;
 	}
 
 	.van-cell:not(:last-child)::after {
 		border: none;
+	}
+
+	.road {
+		width: 100%;
+		height: 100px;
+		color: #212121;
+		font-size: 30px;
+		line-height: 100px;
+		box-sizing: border-box;
+		border-bottom: 1px solid #ededed;
+
+		.name {
+			width: 180px;
+			text-align: left;
+			flex-shrink: 0;
+		}
+
+		.radio-box {
+			width: 100%;
+			justify-content: flex-start;
+
+			div {
+				padding-right: 20px;
+			}
+		}
+
+		img {
+			width: 27px;
+			height: 27px;
+		}
+	}
+
+	.otherChannelTips {
+		font-size: 24px;
+		text-align: left;
+		padding-top: 20px;
+		color: red;
 	}
 </style>

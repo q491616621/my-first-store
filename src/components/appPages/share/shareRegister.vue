@@ -33,7 +33,7 @@
 			<!-- 标题 -->
 			<div class="title flx-r">
 				<span></span>
-				<div>了解金融师</div>
+				<div>了解安安卡管家</div>
 				<span></span>
 			</div>
 			<div class="intro flx-cas">
