@@ -34,15 +34,16 @@
 						</a>
 						<div class="div_vip_li_info">
 							<p style="text-align: left;">
-								1. 达到中级会员后推荐20个用户使用升级既可有机会享受更
-								高收益，还有机会进入躺赚模式，每一个收益环节都可以享受
-								最高分配比例。
+								1. 自己用省钱，还1万省20元，一年省240元。
 							</p>
 							<p style="text-align: left;">
-								2. 会员升级后享受多达三级的级差收益，分享越多收益越多。
+								2. 兼职推广赚钱，推荐朋友使用可以赚还款分润，还款10万赚200元。
 							</p>
 							<p style="text-align: left;">
-								3. 推荐用户注册升级可享40%推荐收益。
+								3. 卡测评收益，查征信收益每笔10元奖励。
+							</p>
+							<p style="text-align: left;">
+								4. 推荐收益。
 							</p>
 							<div class="div_vip_li_title02">
 								分享赚钱
@@ -85,7 +86,7 @@
 											60%
 										</td>
 										<td>
-											付费后累计推荐40人
+											累计推荐40个会员
 										</td>
 									</tr>
 									<tr>
@@ -100,10 +101,10 @@
 											万29
 										</td>
 										<td>
-											50%
+											55%
 										</td>
 										<td>
-											付费后累计推荐25人
+											累计推荐25个会员
 										</td>
 									</tr>
 									<tr>
@@ -118,10 +119,10 @@
 											万27
 										</td>
 										<td>
-											40%
+											50%
 										</td>
 										<td>
-											付费后累计推荐13人
+											累计推荐13个会员
 										</td>
 									</tr>
 									<tr>
@@ -135,10 +136,10 @@
 											万23
 										</td>
 										<td>
-											30%
+											45%
 										</td>
 										<td>
-											付费后累计推荐3人
+											累计推荐3个会员
 										</td>
 									</tr>
 									<tr>
@@ -152,7 +153,7 @@
 											万20
 										</td>
 										<td>
-											20%
+											40%
 										</td>
 										<td>
 											付费升级
@@ -194,14 +195,16 @@
 						</a>
 						<div class="div_vip_li_info">
 							<p style="text-align: left;">
-								1. 达到初级会员后推荐3个用户使用升级既可有机会享受相对
-								较高收益。
+								1. 自己用省钱，还1万省16元，一年省192元。
 							</p>
 							<p style="text-align: left;">
-								2. 会员升级后享受多达三级的级差收益，分享越多收益越多。
+								2. 兼职推广赚钱，推荐朋友使用可以赚收益，还款10万赚160元。
 							</p>
 							<p style="text-align: left;">
-								3. 推荐用户注册升级可享30%推荐收益。
+								3. 卡测评收益，查征信收益每笔5元奖励。
+							</p>
+							<p style="text-align: left;">
+								4. 推荐收益。
 							</p>
 							<div class="div_vip_li_title02">
 								分享赚钱
@@ -242,7 +245,7 @@
 											60%
 										</td>
 										<td>
-											付费后累计推荐40人
+											累计推荐40个会员
 										</td>
 									</tr>
 									<tr>
@@ -256,10 +259,10 @@
 											万25
 										</td>
 										<td>
-											50%
+											55%
 										</td>
 										<td>
-											付费后累计推荐25人
+											累计推荐25个会员
 										</td>
 									</tr>
 									<tr>
@@ -273,10 +276,10 @@
 											万23
 										</td>
 										<td>
-											40%
+											50%
 										</td>
 										<td>
-											付费后累计推荐13人
+											累计推荐13个会员
 										</td>
 									</tr>
 									<tr>
@@ -290,10 +293,10 @@
 											万19
 										</td>
 										<td>
-											30%
+											45%
 										</td>
 										<td>
-											付费后累计推荐3人
+											累计推荐3个会员
 										</td>
 									</tr>
 									<tr>
@@ -307,7 +310,7 @@
 											万16
 										</td>
 										<td>
-											10%
+											30%
 										</td>
 										<td>
 											付费升级
@@ -318,8 +321,8 @@
 						</div>
 					</div>
 					<div class="div_pay">
-						¥198.00/年
-						<span>¥398.00</span>
+						¥98.00/年
+						<span>¥298.00</span>
 						<button class="btn_pay" @click="payMember('levelTwo')" v-if="payMembInfo.memberLevel == 1">立即购买</button>
 						<button class="btn_pay" @click="alreadyPurchased" v-if="payMembInfo.memberLevel >1">您已是会员</button>
 					</div>
@@ -363,7 +366,7 @@
 				// payMembInfo:{'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'1','memberRoute':null}
 			};
 		},
-		created() {
+		beforeCreate() {
 			let me = this;
 			window['getUserLevel'] = (url) => {
 				me.getUserLevel(url)
@@ -374,11 +377,26 @@
 			window['AlipayPayFinish'] = (url) => {
 				me.AlipayPayFinish(url)
 			}
-			// 下面是自己测试代码
-			// let a = {'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'0'}
-			// this.getUserLevel(a)
-			// this.payMembInfo = {'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'1'};
 		},
+		// created() {
+		// 	let me = this;
+		// 	window['getUserLevel'] = (url) => {
+		// 		me.getUserLevel(url)
+		// 	}
+		// 	window['weChatPayFinish'] = (url) => {
+		// 		me.weChatPayFinish(url)
+		// 	}
+		// 	window['AlipayPayFinish'] = (url) => {
+		// 		me.AlipayPayFinish(url)
+		// 	}
+		// 	
+		// 	// console.log(this.$route.query)
+		// 	
+		// 	// 下面是自己测试代码
+		// 	// let a = {'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'0'}
+		// 	// this.getUserLevel(a)
+		// 	// this.payMembInfo = {'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'1'};
+		// },
 		methods: {
 			// 用户已经是会员了
 			alreadyPurchased() {
@@ -391,20 +409,29 @@
 			getUserLevel(e) {
 				// e = JSON.stringify(e)
 				let payMembInfo = JSON.parse(e);
+				// ----------------------------
 				// this.$toast({
-				// 	message: `highMemberName:${payMembInfo.highMemberName},highPayAmount:${payMembInfo.highPayAmount},midMemberName:${payMembInfo.midMemberName},midPayAmount:${payMembInfo.midPayAmount},userLevel:${payMembInfo.memberLevel}`,
-				// 	duration: 0
+				// 	message: `highMemberName:${payMembInfo.highMemberName},highPayAmount:${payMembInfo.highPayAmount},midMemberName:${payMembInfo.midMemberName},midPayAmount:${payMembInfo.midPayAmount},userLevel:${payMembInfo.memberLevel},memberRoute:${payMembInfo.memberRoute}`,
+				// 	duration: 1000
 				// })
+				// -------------------------------
 				this.payMembInfo = payMembInfo;
 			},
 			// 拉起支付选择框
 			payMember(level) {
-				// if (this.payMembInfo.memberLevel > 1) {
-				// 	this.$toast({
-				// 		message: '您已经是会员了，请勿重复购买'
-				// 	})
-				// 	return;
-				// }
+				// -----------------------
+				// let payMembInfo = this.payMembInfo;
+				// this.$toast({
+				// 	message:`highMemberName:${payMembInfo.highMemberName},highPayAmount:${payMembInfo.highPayAmount},midMemberName:${payMembInfo.midMemberName},midPayAmount:${payMembInfo.midPayAmount},userLevel:${payMembInfo.memberLevel},memberRoute:${payMembInfo.memberRoute}`,
+				// 	duration:1000
+				// })
+				// ------------------------
+				if (this.payMembInfo.memberLevel > 1) {
+					this.$toast({
+						message: '您已经是会员了，请勿重复购买'
+					})
+					return;
+				}
 				if (level == 'levelOne') {
 					let highPayAmount = this.payMembInfo.highPayAmount;
 					this.price = parseInt(highPayAmount) / 100;

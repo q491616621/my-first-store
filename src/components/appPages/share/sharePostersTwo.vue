@@ -21,6 +21,9 @@
 					<div class="title">海报{{index+1}}</div>
 				</div>
 			</div>
+			<div class="friends-list" v-if="!bar">
+				<share-posters :platFlag='platFlag'></share-posters>
+			</div>
 		</div>
 		<!-- 生成海报图 -->
 		<div class="posters-box" v-if="postersBox">
@@ -53,12 +56,14 @@
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
+	import sharePosters from '@/components/appPages/share/sharePosters.vue'
 	import switchServer from '../../../../public/tool/switchServer.js';
 	import tool from '../../../../public/tool/tool.js';
 	import QRCode from "qrcode";
 	export default {
 		components: {
 			topTitle,
+			sharePosters
 		},
 		data() {
 			return {
@@ -66,7 +71,14 @@
 				pageType: 'app', //上个页面是什么h5还是app?
 				platFlag:'',//手机类型 0为安卓 1为ios
 				returnBtn:false,//页面是否带有返回按钮
-				postersList: [{
+				postersList: [
+					{
+						img: require('../../../assets/img/posters/posters13.jpg')
+					},
+					{
+						img: require('../../../assets/img/posters/posters14.jpg')
+					},
+					{
 						img: require('../../../assets/img/posters/posters1.jpg')
 					},
 					{
@@ -543,5 +555,9 @@
 		position: absolute;
 		left: -9999px;
 		top: -9999px;
+	}
+	// 朋友圈
+	.friends-list{
+		margin-top: 190px;
 	}
 </style>

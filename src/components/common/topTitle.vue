@@ -18,9 +18,9 @@
 				type: String,
 				default: 'h5'
 			},
-			returnBtn:{
-				type:Boolean,
-				default:true
+			returnBtn: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -39,21 +39,32 @@
 				let pageType = this.pageType; //获取上个页面的类型
 				// 上个页面是H5的话,直接调用自己的方法,返回上个页面
 				if (pageType == 'h5') {
-					if(this.$route.name == 'bindChannel'){
+					// 判断h5
+					if (this.$route.name == 'bindChannel') {
 						this.$router.push('cardManagement')
 						return;
 					}
 					this.$router.go(-1)
 				} else {
+					// 判断当前页面是否是sharePostersTwo页面,是的话安卓调用返回首页的方法,苹果还是调用返回的方法
+					if(this.$route.name == 'sharePostersTwo'){
+						if(this.platFlag == 1){
+							let aaa = '奥利奥，泡一泡';
+							// closeWeb ios定义的退回上一页，删除H5页面的方法
+							window.webkit.messageHandlers.closeWeb.postMessage(aaa);
+						}else{
+							console.log('吃饭睡觉打豆豆')
+						}
+						return;
+					}
 					if (this.platFlag == 1) {
-						let aaa = '奥利奥，泡一泡'
+						let aaa = '奥利奥，泡一泡';
 						// closeWeb ios定义的退回上一页，删除H5页面的方法
 						window.webkit.messageHandlers.closeWeb.postMessage(aaa);
 					} else {
 						// btnBack 安卓定义的退回上一页,删除H5页面的方法
 						window.android.btnBack()
 					}
-
 				}
 			}
 		},

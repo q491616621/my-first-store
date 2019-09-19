@@ -6,9 +6,9 @@
     </div>
     <div class="message-list flx-cas medium">
       <div class="message-li flx-cas" v-for="(item,index) in messageList" :key='index' @click="viewDetails">
-        <div class="message-title">可以制定还款计划了</div>
-        <div class="message-content">尊敬的用户，您尾号为****的**银行信用卡账单日已到，可以制定新的还款计划了</div>
-        <div class="message-time">2019-04-18 10:28:51</div>
+        <div class="message-title">欢迎新用户注册</div>
+        <div class="message-content">尊敬的用户，恭喜您已成功注册安安卡管家！实名认证可解锁更多功能！</div>
+        <!-- <div class="message-time">2019-04-18 10:28:51</div> -->
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
       return {
         titleName: '我的消息',
 		pageType:'app',
-        messageList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19],
+        messageList: [1],
         detailMessage: false,
       };
     },

@@ -64,7 +64,7 @@
 					</div>
 					<!-- 选择还款方式 -->
 					<div class="road flx-rs medium">
-						<div class="name">还款方式</div>
+						<div class="name">消费方式</div>
 						<van-radio-group v-model="radio2" class='radio-box flx-rs' @change='changeRadio2'>
 							<van-radio :name="index+1" v-for="(item,index) in planList" :key='item.ChannelID'>
 								{{item.name}}
@@ -138,13 +138,13 @@
 				channelList: [], //通道列表
 				planList: [{ //方式列表
 					planCode: 1,
-					name: '刷1还1'
+					name: '消费1'
 				}, {
 					planCode: 2,
-					name: '刷2还1'
+					name: '消费2'
 				}, {
 					planCode: 3,
-					name: '刷3还1'
+					name: '消费3'
 				}],
 				radio: 0, //还款通道
 				radio2: 1, //还款方式
@@ -405,12 +405,16 @@
 					this.$toast('请选择落地城市');
 					return
 				}
-				let days = tool.days(); //获取当前月份的天数
+				let days = tool.days(); //获取当前月份的最大天数
+				// 判断当前用户设置的账单日或者是还款日是否大于当前月份的最大天数,是的话改成当前月份最大的天数
+				if(planInfo.billingDay > days)planInfo.billingDay = days;
+				if(planInfo.repaymentDay>days)planInfo.repaymentDay = days;
+				if(planInfo.billingDay == planInfo.repaymentDay)return this.$toast('账单日和还款日不能是同一天哦!')
 				// 判断用户设置的账单日和还款日是否大于当前月分的天数,是的话提示用户进行修改
-				if (planInfo.billingDay > days || planInfo.repaymentDay > days) {
-					this.$toast('账单日或还款日不能大于当月最大天数，请修改后重试')
-					return
-				}
+				// if (planInfo.billingDay > days || planInfo.repaymentDay > days) {
+				// 	this.$toast('账单日或还款日不能大于当月最大天数，请修改后重试')
+				// 	return
+				// }
 				// 弹窗加载中
 				tool.toastLoading();
 				server.preCreatePlan(planInfo).then(res => {
