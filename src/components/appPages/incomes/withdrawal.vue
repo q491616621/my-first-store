@@ -116,7 +116,7 @@
 						if (res.data.settleCardInfo != null) {
 							let bankLogo = {
 								'工商银行': require('../../../assets/img/bankLogo/bank1.png'),
-								'广大银行': require('../../../assets/img/bankLogo/bank2.png'),
+								'光大银行': require('../../../assets/img/bankLogo/bank2.png'),
 								'广发银行': require('../../../assets/img/bankLogo/bank3.png'),
 								'华夏银行': require('../../../assets/img/bankLogo/bank4.png'),
 								'建设银行': require('../../../assets/img/bankLogo/bank5.png'),

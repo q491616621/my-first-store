@@ -246,6 +246,13 @@
 				server.getBindcardSm(init)
 					.then(res => {
 						if (res == null) return;
+						if(res.code != 0){
+							this.$toast({
+								message:res.message,
+								forbidClick:true,
+							})
+							return;
+						}
 						let status = res.data.status; //绑卡状态，0-处理中，1-绑卡成功，2-绑卡失败,3-已解绑，4-需短验
 						//执行验证绑卡状态函数
 						this.checkCardStatus(status, res);
@@ -357,6 +364,13 @@
 				server.getBindcardSm(init)
 					.then(res => {
 						if (res == null) return;
+						if(res.code != 0){
+							this.$toast({
+								message:res.message,
+								forbidClick:true,
+							})
+							return;
+						}
 						let status = res.data.status; //绑卡状态，0-处理中，1-绑卡成功，2-绑卡失败,3-已解绑，4-需短验
 						// 执行验证绑卡状态函数
 						this.checkCardStatus(status, res);

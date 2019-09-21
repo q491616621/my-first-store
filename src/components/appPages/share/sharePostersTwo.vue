@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="width: 100%;">
 		<!-- 顶部标题栏 -->
 		<div class="title-bar flx-r">
 			<top-title :titleName="titleName" :pageType='pageType' :returnBtn='returnBtn'></top-title>
@@ -13,15 +13,17 @@
 					发圈素材
 				</div>
 			</div>
-			<div class="posters-list flx-rs" v-if="bar">
-				<div class="posters-li" v-for="(item,index) in postersList" :key='index' @click="showPostersBox(item.img,index)">
+			<div class="posters-list flx-rs" v-show="bar">
+				<!-- <div class="posters-li" v-for="(item,index) in postersList" :key='index' @click="showPostersBox(item.img,index)"> -->
+				<div class="posters-li" v-for="(item,index) in postersList" :key='index'>
 					<div class="img-box">
-						<van-image :src="item.img" class="posters-img" />
+						<!-- <van-image :src="item.img" class="posters-img" @click="showPostersBox(item.img,index)"/> -->
+						<van-image :src="item.img" class="posters-img" @click="isImgDownLoadFinish(item.img,index)"/>
 					</div>
 					<div class="title">海报{{index+1}}</div>
 				</div>
 			</div>
-			<div class="friends-list" v-if="!bar">
+			<div class="friends-list" v-show="!bar">
 				<share-posters :platFlag='platFlag'></share-posters>
 			</div>
 		</div>
@@ -39,17 +41,12 @@
 			</div>
 		</div>
 		<!-- 分享选择框 -->
-		<van-dialog
-		  class="share-method-box"
-		  v-model="shareMethodBox"
-		  title="使用以下方式打开"
-		  :show-confirm-button = 'false'
-		  show-cancel-button
-		>
-		<div class="method-box flx-r">
-			<img src="../../../assets/img/posters/friendcCircle.png" @click="sharePoster('friendcCircle')">
-			<img src="../../../assets/img/posters/WeChat.png" @click="sharePoster('WeChat')">
-		</div>
+		<van-dialog class="share-method-box" v-model="shareMethodBox" title="使用以下方式打开" :show-confirm-button='false'
+		 show-cancel-button>
+			<div class="method-box flx-r">
+				<img src="../../../assets/img/posters/friendcCircle.png" @click="sharePoster('friendcCircle')">
+				<img src="../../../assets/img/posters/WeChat.png" @click="sharePoster('WeChat')">
+			</div>
 		</van-dialog>
 		<canvas id="myCanvas"></canvas>
 	</div>
@@ -69,10 +66,9 @@
 			return {
 				titleName: '分享海报',
 				pageType: 'app', //上个页面是什么h5还是app?
-				platFlag:'',//手机类型 0为安卓 1为ios
-				returnBtn:false,//页面是否带有返回按钮
-				postersList: [
-					{
+				platFlag: '', //手机类型 0为安卓 1为ios
+				returnBtn: false, //页面是否带有返回按钮
+				postersList: [{
 						img: require('../../../assets/img/posters/posters13.jpg')
 					},
 					{
@@ -127,8 +123,8 @@
 				},
 				currentImgIndex: '', //当前选择的图片序号
 				canvasImgList: [], //存储已经生成了的二维码图片
-				shareMethodBox:false,//选择分享方式的盒子
-				bar:true,
+				shareMethodBox: false, //选择分享方式的盒子
+				bar: true,
 			};
 		},
 		beforeCreate() {
@@ -137,8 +133,8 @@
 		created() {
 			// this.getQrCode('1908141437', '88888888');
 			let platFlag = tool.testPlat();
-			this.platFlag = platFlag;//获取平台类型 0为安卓 1为ios;
-			if(platFlag == 1)this.returnBtn = true;
+			this.platFlag = platFlag; //获取平台类型 0为安卓 1为ios;
+			if (platFlag == 1) this.returnBtn = true;
 			let me = this;
 			window['setPostersData'] = (url) => {
 				me.setPostersData(url)
@@ -146,14 +142,15 @@
 		},
 		methods: {
 			// 切换海报页面
-			switchBar(type){
-				this.$toast('功能正在开发中，敬请期待')
-				return;
-				if(type == 'left'){
+			switchBar(type) {
+				// this.$toast('功能正在开发中，敬请期待')
+				// return;
+				if (type == 'left') {
 					this.bar = true;
-				}else{
+				} else {
 					this.bar = false;
 				}
+				window.scrollTo(0, 0);
 			},
 			// 获取app传递过来的数据
 			setPostersData(e) {
@@ -176,9 +173,33 @@
 						})
 					})
 			},
+			isImgDownLoadFinish(postersBg,currentImgIndex){
+				let image = new Image();
+				image.src = postersBg;
+				let timer = setTimeout(()=>{
+					this.$toast.clear()
+					// console.log('执行了')
+					// this.$toast({
+					// 	message:'加载超时了，图片加载失败，请稍后再试',
+					// 	forbidClick:true
+					// })
+				},8000)
+				this.$toast({
+					type:'loading',
+					message:'加载中...',
+					duration:0,
+					forbidClick:true
+				})
+				// 判断图片是否加载完成,加载完成执行生成二维码图片函数
+				image.onload = ()=>{
+					this.showPostersBox(postersBg,currentImgIndex)
+					// 如果图片加载完成的话,清除定时器
+					clearInterval(timer)
+				}
+			},
 			// 显示海报框
 			showPostersBox(postersBg, currentImgIndex) {
-				tool.toastLoading();
+				// return;
 				this.poster = postersBg;
 				document.querySelector('body').setAttribute('style', 'overflow:hidden')
 				let img = new Image();
@@ -220,10 +241,15 @@
 						// 给图片链接加上时间戳
 						img.src = list[index].file;
 						img.onload = () => {
-							// console.log(list[index])
 							ctx.drawImage(img, ...list[index].size);
 							// 递归list
 							drawing(index + 1)
+						}
+						img.onerror = ()=>{
+							this.$toast({
+								message:'选择的图片加载失败，请重试',
+								forbidClick:true
+							})
 						}
 					} else {
 						base64 = canvas.toDataURL('image/jpeg');
@@ -248,24 +274,26 @@
 				let currentImgIndex = this.currentImgIndex;
 				if (type == 'left' && currentImgIndex - 1 >= 0) {
 					// console.log('执行左边了')
-					this.showPostersBox(postersList[currentImgIndex - 1].img, currentImgIndex - 1)
+					// this.showPostersBox(postersList[currentImgIndex - 1].img, currentImgIndex - 1)
+					this.isImgDownLoadFinish(postersList[currentImgIndex - 1].img, currentImgIndex - 1)
 				} else if (type == 'right' && currentImgIndex + 1 < postersList.length) {
 					// console.log('执行右边了')
-					this.showPostersBox(postersList[currentImgIndex + 1].img, currentImgIndex + 1)
+					// this.showPostersBox(postersList[currentImgIndex + 1].img, currentImgIndex + 1)
+					this.isImgDownLoadFinish(postersList[currentImgIndex + 1].img, currentImgIndex + 1)
 				}
 			},
 			// 分享海报
-			sharePoster(type){
+			sharePoster(type) {
 				// this.shareMethodBox = true;
 				let init = {};
 				init.poster = this.poster;
 				init.type = type;
-				if(this.platFlag == 0){
+				if (this.platFlag == 0) {
 					// 调用安卓分享海报的方法
 					window.android.shareAction(JSON.stringify(init));
 					this.shareMethodBox = false;
 					this.postersBox = false;
-				}else{
+				} else {
 					// 调用ios分享海报的方法
 					window.webkit.messageHandlers.shareAction.postMessage(init);
 					this.shareMethodBox = false;
@@ -273,17 +301,17 @@
 				}
 			},
 			// 保存本地
-			savePoster(){
+			savePoster() {
 				let init = {};
 				init.poster = this.poster;
 				// init.poster = require('../../../assets/img/posters/friendcCircle.png');
 				// console.log(JSON.stringify(init))
-				if(this.platFlag == 0){
+				if (this.platFlag == 0) {
 					// 调用安卓保存海报的方法
 					window.android.saveToLocal(JSON.stringify(init));
 					this.shareMethodBox = false;
 					this.postersBox = false;
-				}else{
+				} else {
 					// 调用ios保存本地的方法
 					window.webkit.messageHandlers.saveToLocal.postMessage(init);
 					this.shareMethodBox = false;
@@ -292,7 +320,7 @@
 			},
 			// 关闭海报框
 			closePostersBox() {
-				if(this.shareMethodBox)return;
+				if (this.shareMethodBox) return;
 				document.querySelector('body').setAttribute('style', 'background-color:#f2f2f2')
 				this.postersBox = false;
 			},
@@ -311,15 +339,16 @@
 	};
 </script>
 <style>
-	.van-toast{
+	.van-toast {
 		z-index: 9999 !important;
 	}
 </style>
 <style scoped="scoped" lang="less">
 	.container {
 		// margin-top: 88px;
-		width: 750px;
-		background:#f2f2f2;
+		width: 100%;
+		background: #f2f2f2;
+
 		.switch-bar {
 			position: fixed;
 			top: 88px;
@@ -341,7 +370,8 @@
 				border-bottom-left-radius: 12px;
 				color: #866e39;
 			}
-			.left2{
+
+			.left2 {
 				width: 220px;
 				height: 65px;
 				background: #34332f;
@@ -351,6 +381,7 @@
 				border-bottom-left-radius: 12px;
 				color: #ffffff;
 			}
+
 			.right {
 				width: 220px;
 				height: 65px;
@@ -361,7 +392,8 @@
 				border-bottom-right-radius: 12px;
 				color: #ffffff;
 			}
-			.right2{
+
+			.right2 {
 				width: 220px;
 				height: 65px;
 				background: #fff;
@@ -536,28 +568,34 @@
 			z-index: 3000 !important;
 		}
 	}
-	.share-method-box{
-		z-index: 9999!important;
-		.method-box{
+
+	.share-method-box {
+		z-index: 9999 !important;
+
+		.method-box {
 			width: 100%;
 			box-sizing: border-box;
 			// padding-left: 100px;
 			// padding-top: 30px;
 			padding: 30px 100px 30px 100px;
 			justify-content: space-around;
-			img{
+
+			img {
 				width: 64px;
 				height: 64px;
 			}
 		}
 	}
+
 	#myCanvas {
 		position: absolute;
 		left: -9999px;
 		top: -9999px;
 	}
+
 	// 朋友圈
-	.friends-list{
+	.friends-list {
+		width: 100%;
 		margin-top: 190px;
 	}
 </style>

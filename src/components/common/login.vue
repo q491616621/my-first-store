@@ -46,11 +46,11 @@
       },
       // 登陆
       denglu() {
-        let init = {
-          agentId: 1986738797,
-          userName: 13610144601,
-          passWord: '123456'
-        }
+        // let init = {
+        //   agentId: 1986738797,
+        //   userName: 13610144601,
+        //   passWord: '123456'
+        // }
 		//  let init = {
 		//   agentId: 1986738797,
 		//   userName: 17665271721,
@@ -73,6 +73,11 @@
 		// 	userName:17665271721,
 		// 	passWord:'123456'
 		// }
+		let init = {
+			agentId:1908141437,
+			userName:18682001955,
+			passWord:'woaini'
+		}
 		// ------------------------------
         server.login(init).then(res=>{
 		  console.log(res.data)

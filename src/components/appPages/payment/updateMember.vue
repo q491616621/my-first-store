@@ -34,16 +34,16 @@
 						</a>
 						<div class="div_vip_li_info">
 							<p style="text-align: left;">
-								1. 自己用省钱，还1万省20元，一年省240元。
+								1. 自用省钱，还款1万最高省31元。
 							</p>
 							<p style="text-align: left;">
-								2. 兼职推广赚钱，推荐朋友使用可以赚还款分润，还款10万赚200元。
+								2. 成人达己，招募团队合伙人。
 							</p>
 							<p style="text-align: left;">
-								3. 卡测评收益，查征信收益每笔10元奖励。
+								3. 卡测评、查征信持续上线，敬请期待。
 							</p>
 							<p style="text-align: left;">
-								4. 推荐收益。
+								4. 尊享分红，同级别共享奖励。
 							</p>
 							<div class="div_vip_li_title02">
 								分享赚钱
@@ -56,7 +56,7 @@
 											会员等级
 										</th>
 										<th>
-											分润增加
+											尊享分红
 										</th>
 										<th>
 											还款收益
@@ -159,12 +159,29 @@
 											付费升级
 										</td>
 									</tr>
+									<tr>
+										<td>
+											普通会员
+										</td>
+										<td>
+											75+1
+										</td>
+										<td>
+											万10
+										</td>
+										<td>
+											0
+										</td>
+										<td>
+											免费
+										</td>
+									</tr>
 								</table>
 							</div>
 						</div>
 					</div>
 					<div class="div_pay">
-						¥398.00/年
+						¥298.00/年
 						<span>¥598.00</span>
 						<button class="btn_pay" @click="payMember('levelOne')" v-if="payMembInfo.memberLevel == 1">立即购买</button>
 						<button class="btn_pay" @click="alreadyPurchased" v-if="payMembInfo.memberLevel >1">您已是会员</button>
@@ -195,16 +212,13 @@
 						</a>
 						<div class="div_vip_li_info">
 							<p style="text-align: left;">
-								1. 自己用省钱，还1万省16元，一年省192元。
+								1. 自用省钱，还款1万最高省27元。
 							</p>
 							<p style="text-align: left;">
-								2. 兼职推广赚钱，推荐朋友使用可以赚收益，还款10万赚160元。
+								2. 成人达己，招募团队合伙人。
 							</p>
 							<p style="text-align: left;">
-								3. 卡测评收益，查征信收益每笔5元奖励。
-							</p>
-							<p style="text-align: left;">
-								4. 推荐收益。
+								3. 卡测评、查征信持续上线，敬请期待。
 							</p>
 							<div class="div_vip_li_title02">
 								分享赚钱
@@ -316,6 +330,23 @@
 											付费升级
 										</td>
 									</tr>
+									<tr>
+										<td>
+											普通会员
+										</td>
+										<td>
+											75+1
+										</td>
+										<td>
+											万10
+										</td>
+										<td>
+											0
+										</td>
+										<td>
+											免费
+										</td>
+									</tr>
 								</table>
 							</div>
 						</div>
@@ -363,7 +394,14 @@
 				price: '', //选择会员的价格
 				goodsname: '', //会员类型 0初级会员 1中级会员
 				payMembInfo: '', //储存的app传过来的
-				// payMembInfo:{'highMemberName':'中级会员','highPayAmount':'2','midMemberName':'初级会员','midPayAmount':'1','memberLevel':'1','memberRoute':null}
+				// payMembInfo: {
+				// 	'highMemberName': '中级会员',
+				// 	'highPayAmount': '2',
+				// 	'midMemberName': '初级会员',
+				// 	'midPayAmount': '1',
+				// 	'memberLevel': '1',
+				// 	'memberRoute': null
+				// }
 			};
 		},
 		beforeCreate() {

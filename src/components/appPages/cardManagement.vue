@@ -32,7 +32,7 @@
 							<div class="sms flx-cas" v-if="item.billingDay == null">
 								<div>账单日未设置</div>
 							</div>
-			<!-- 				<div class="bill flx-rs" v-if="item.billingDay != null">
+							<!-- 				<div class="bill flx-rs" v-if="item.billingDay != null">
 								<div class="num">{{item.billingDay|billDay}}</div>
 								<div>
 									<div class="bold">天后出账单</div>
@@ -160,12 +160,13 @@
 				pageType: 'app', //上个页面是什么h5还是app?
 				cardList: [],
 				commonLoading: true, //默认加载中，页面加载完成才消失
-				loadFail:false,//默认不显示，页面加载失败时显示
+				loadFail: false, //默认不显示，页面加载失败时显示
 			};
 		},
 		beforeRouteEnter(to, from, next) {
 			let name = from.name;
-			if (name == 'planDetail' || name == 'chooseRepaymethod' || name == 'addCreditCard' || name == 'surePlan'||name == 'bindChannel') {
+			if (name == 'planDetail' || name == 'chooseRepaymethod' || name == 'addCreditCard' || name == 'surePlan' || name ==
+				'bindChannel') {
 				to.params.type = 'next'
 			}
 			next();
@@ -206,11 +207,11 @@
 		},
 		methods: {
 			// 返回事件(安卓手机返回按钮)
-			goBack(){
+			goBack() {
 				window.android.btnBack()
 			},
 			// 重新刷新
-			reload(){
+			reload() {
 				this.loadFail = false;
 				this.commonLoading = true;
 				this.getCardList()
@@ -254,10 +255,13 @@
 				})
 			},
 			// 跳转绑定通道页面
-			goBindChannel(){
+			goBindChannel() {
 				this.$router.push({
-					name:'bindChannel',
-					params:{channelCode:'1000020002',page:'surePlan'},
+					name: 'bindChannel',
+					params: {
+						channelCode: '1000020002',
+						page: 'surePlan'
+					},
 					// params:{page:'addCreditCard'},
 					// 1000000001 1000010002 1000020002
 				})
@@ -268,7 +272,7 @@
 						isLinkPlanId: 1,
 					})
 					.then(res => {
-						if (res == null){
+						if (res == null) {
 							this.commonLoading = false;
 							this.loadFail = true;
 							return;
@@ -345,13 +349,13 @@
 				return billing;
 			},
 			// 格式化还款方式
-			formatRepayType:(value)=>{
-				if(value == null) return value = '暂无计划';
-				if(value == 1){
+			formatRepayType: (value) => {
+				if (value == null) return value = '暂无计划';
+				if (value == 1) {
 					value = '完美还款'
-				}else if(value == 2){
+				} else if (value == 2) {
 					value == '智能还款'
-				}else{
+				} else {
 					value = '0余额还款'
 				}
 				return value;
@@ -448,7 +452,9 @@
 					height: 37px;
 					padding-right: 10px;
 				}
-				.num1,.num2{
+
+				.num1,
+				.num2 {
 					font-size: 28px;
 					color: #fff;
 					padding-left: 15px;

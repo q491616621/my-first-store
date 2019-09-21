@@ -12,7 +12,7 @@
 				<div class="flx-rs">
 					<img class="phone-img" src="../../assets/img/contactServer_phone.png" alt="客服电话" />
 					<div>联系电话 :</div>
-					<div class="word">0755-33941925</div>
+					<div class="word phone" @click="callTel">0755-33941925</div>
 				</div>
 				<div class="flx-rs">
 					<img class="time-img" src="../../assets/img/contactServer_time.png" alt="客服电话" />
@@ -27,8 +27,9 @@
 					<div>2.打开微信,点击右上角“+”,【添加朋友】</div>
 					<div>3.在搜索框中,粘贴微信号,与微信客服沟通</div>
 				</div>
-				<div style="width: 100%;" class="flx-c">
+				<div style="width: 100%;" class="bottom-btn flx-r">
 					<button class="copy-btn" data-clipboard-action="copy" data-clipboard-text='17727583650' ref='copy' @click='copyWx'>复制微信号</button>
+					<button class="copy-btn2" @click='openWeChat'>打开微信</button>
 				</div>
 			</div>
 		</div>
@@ -36,6 +37,7 @@
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
+	import tool from '../../../public/tool/tool.js';
 	export default {
 		components: {
 			topTitle
@@ -70,6 +72,32 @@
 				})
 				// 每次都需要重置这个值，不然再点击复制就不生效了
 				this.copyBtn = new this.clipboard(this.$refs.copy);
+			},
+			// 打开微信
+			openWeChat(){
+				let platFlag = tool.testPlat();//获取用户手机类型
+				if(platFlag == 1){
+					//调用ios打开微信的方法
+					let init = '奥利奥，泡一泡'
+					window.webkit.messageHandlers.openWechat.postMessage(init);
+				}else{
+					//调用安卓打开微信的方法
+					window.android.openWechat();
+				}
+			},
+			// 打电话
+			callTel(){
+				let platFlag = tool.testPlat();//获取用户手机类型
+				let init = {
+					telNumber:'0755-33941925'
+				}
+				if(platFlag == 1){
+					// 调用ios打电话的方法
+					window.webkit.messageHandlers.callTelAction.postMessage(init);
+				}else{
+					// 调用安卓打电话方法
+					window.android.callTelAction(JSON.stringify(init));
+				}
 			}
 		},
 	};
@@ -124,9 +152,16 @@
 			div {
 				padding-left: 14px;
 			}
-
+			a{
+				padding-left: 14px;
+				color: #fff;
+				text-decoration: underline;
+			}
 			.word {
 				padding-bottom: 6px;
+			}
+			.phone{
+				text-decoration: underline;
 			}
 		}
 
@@ -161,25 +196,41 @@
 					padding-bottom: 26px;
 				}
 			}
-
-			.copy-btn {
-				margin-top: 10px;
-				width: 360px;
-				height: 75px;
-				color: #fff;
-				font-size: 30px;
-				font-weight: bold;
-				// background: -webkit-gradient(linear,0% 0%, 100% 0%, from(#6EBFFF), to(#1A82FF), color-stop(1.0,#1A82FF));
-				background: linear-gradient(90deg, rgba(110, 191, 255, 1), rgba(26, 130, 255, 1));
-				border-radius: 38px;
-				line-height: 75px;
-				text-align: center;
-				-moz-box-shadow: -1px 10px 24px 0px rgba(53, 133, 254, 0.5);
-				-webkit-box-shadow: -1px 10px 24px 0px rgba(53, 133, 254, 0.5);
-				// -moz-box-shadow:0px 10px 20px rgba(53, 133, 254, 0.5);
-				// -webkit-box-shadow:0px 10px 20px rgba(53, 133, 254, 0.5);
-				box-shadow: 0px 10px 20px rgba(53, 133, 254, 0.5);
-
+			.bottom-btn{
+				justify-content: space-around;
+				.copy-btn {
+					margin-top: 10px;
+					width: 250px;
+					height: 75px;
+					color: #fff;
+					font-size: 30px;
+					font-weight: bold;
+					// background: -webkit-gradient(linear,0% 0%, 100% 0%, from(#6EBFFF), to(#1A82FF), color-stop(1.0,#1A82FF));
+					background: linear-gradient(90deg, rgba(110, 191, 255, 1), rgba(26, 130, 255, 1));
+					border-radius: 38px;
+					line-height: 75px;
+					text-align: center;
+					-moz-box-shadow: -1px 10px 24px 0px rgba(53, 133, 254, 0.5);
+					-webkit-box-shadow: -1px 10px 24px 0px rgba(53, 133, 254, 0.5);
+					box-shadow: 0px 10px 20px rgba(53, 133, 254, 0.5);
+				
+				}
+				.copy-btn2{
+					margin-top: 10px;
+					width: 250px;
+					height: 75px;
+					font-size: 30px;
+					color: #53a7ff;
+					font-weight: bold;
+					border: 2px solid #6EBFFF;
+					box-sizing: border-box;
+					border-radius: 38px;
+					line-height: 75px;
+					text-align: center;
+					-moz-box-shadow: -1px 10px 24px 0px rgba(53, 133, 254, 0.5);
+					-webkit-box-shadow: -1px 10px 24px 0px rgba(53, 133, 254, 0.5);
+					box-shadow: 0px 10px 20px rgba(53, 133, 254, 0.5);
+				}
 			}
 		}
 	}

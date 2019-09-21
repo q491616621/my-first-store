@@ -29,6 +29,10 @@
       };
     },
 	created() {
+		// this.$toast({
+		// 	message:`width:${document.documentElement.clientWidth},height:${document.documentElement.clientHeight}`,
+		// 	duration:0
+		// })
 		let me = this;
 		window['getAppData'] = (url) => {
 			me.getAppData(url)
@@ -72,7 +76,6 @@
       padding: 30px;
       box-sizing: border-box;
       align-items: flex-start;
-
       .message-title {
         font-size: 30px;
         color: #212121;
