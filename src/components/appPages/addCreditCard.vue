@@ -130,7 +130,34 @@
 			this.getUserInfo(); //获取用户身份信息函数
 		},
 		methods: {
-			
+			// aaa(){
+			// 	let res = {};
+			// 	res.data = {
+			// 		channelCode:'1000010002',
+			// 		smsSeq:'2019082600341918',
+			// 		recordId:"19070416304228001699362071",
+			// 		orderId:'19070416304228000087338696'
+			// 	}
+			// 	this.$toast({
+			// 		message: '验证短信已发送,请留意接收',
+			// 		duration: 1000,
+			// 		forbidClick: true,
+			// 		onClose: () => {
+			// 			let verify = {};
+			// 			verify.channelCode = res.data.channelCode;
+			// 			verify.orderId = res.data.orderId;
+			// 			verify.recordId = res.data.recordId;
+			// 			verify.smsSeq = res.data.smsSeq || ''; //快付通通道的短信验证序列号
+			// 			this.verify = verify; //把短信验证需要的数据设置到data里面
+			// 			this.codeBox = true; //显示短信验证框
+			// 			this.countDownBox = true; //显示倒计时窗口
+			// 			// 等dom出现了,开始倒计时
+			// 			setTimeout(() => {
+			// 				this.$refs.countDown.start();
+			// 			}, 500)
+			// 		}
+			// 	})
+			// },
 			// 失败处理
 			failHandle(){
 				if (this.channelList.length == 0) {
@@ -147,6 +174,7 @@
 							let channelList = res.data;
 							this.channelList = channelList;
 							this.cardInfo.channelCode = channelList[0].channelCode;//设置当前通道为通道列表第一个
+							this.radio = 0;
 							this.channelListBox = true;//显示通道列表和提示
 						})
 				}else{
@@ -156,6 +184,7 @@
 					// })
 					let channelList = this.channelList;
 					this.cardInfo.channelCode = channelList[0].channelCode;
+					this.radio = 0;
 					this.channelListBox = true;
 				}
 			},
@@ -358,7 +387,7 @@
 					if (this.$refs.countDown) this.$refs.countDown.reset();
 					this.codeBox = false;
 					this.smsCode = null;
-					this.verify = null;
+					// this.verify = null;
 					this.$toast({
 						message:'卡片绑定失败，建议选择其他通道进行尝试',
 						forbidClick:true,
@@ -427,7 +456,7 @@
 				if (this.$refs.countDown) this.$refs.countDown.reset();
 				this.codeBox = false;
 				this.smsCode = null;
-				this.verify = null;
+				// this.verify = null;
 			},
 			// 跳转绑定通道页面
 			goBindChannel() {

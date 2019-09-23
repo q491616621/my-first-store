@@ -29,7 +29,9 @@ Vue.use(Router)
 //chooseQuickCard //选择快捷支付银行卡
 //addQuickCard //添加快捷信用卡
 //bindChannel //绑定通道
-
+//myMerchant //我的商户
+//merchantDetails //我的商户详情
+//companyIntroduction //公司简介
 const router = new Router({
 	base: process.env.BASE_URL,
 	// mode: 'history',
@@ -156,6 +158,11 @@ const router = new Router({
 			component: resolve => require(['@/components/appPages/payment/updateMember.vue'], resolve)
 		},
 		{
+			path: '/updateMember2',
+			name: 'updateMember2', // incomeDetails //购买升级会员
+			component: resolve => require(['@/components/appPages/payment/updateMember2.vue'], resolve)
+		},
+		{
 			path: '/registerProtocol',
 			name: 'registerProtocol', // incomeDetails //注册协议
 			component: resolve => require(['@/components/appPages/protocol/registerProtocol.vue'], resolve)
@@ -214,6 +221,21 @@ const router = new Router({
 			path: '/bindChannel',
 			name: 'bindChannel', // bindChannel //绑定通道
 			component: resolve => require(['@/components/appPages/bindChannel.vue'], resolve)
+		},
+		{
+			path: '/myMerchant',
+			name: 'myMerchant', // myMerchant //我的商户
+			component: resolve => require(['@/components/appPages/myMerchant/myMerchant.vue'], resolve)
+		},
+		{
+			path: '/merchantDetails',
+			name: 'merchantDetails', // merchantDetails //我的商户详情
+			component: resolve => require(['@/components/appPages/myMerchant/merchantDetails.vue'], resolve)
+		},
+		{
+			path: '/companyIntroduction',
+			name: 'companyIntroduction', // companyIntroduction //公司简介
+			component: resolve => require(['@/components/appPages/companyIntroduction/companyIntroduction.vue'], resolve)
 		},
 	]
 })

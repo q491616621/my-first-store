@@ -217,7 +217,8 @@
 					cardQuota: null, //卡额度
 					repayMode: 1, //默认扣1还1
 					repayType: '', //还款方式
-					columns: [{
+				};
+				this.columns = [{
 							// values: Object.keys(citys),
 							values: [],
 							className: 'column1'
@@ -228,8 +229,7 @@
 							className: 'column2',
 							defaultIndex: 2
 						}
-					],
-				};
+					];
 				this.radio = 0; //还款通道
 				this.radio2 = 1;
 				this.setCardInfo();
@@ -263,11 +263,11 @@
 				server.newRepayChannels().then(res => {
 					if (res == null) return;
 					// 返回和用户选择的通道类型相同的通道
-					// let channelList = res.data.filter(cur => {
-					// 	return cur.channelType == this.planInfo.repayType;
-					// });
+					let channelList = res.data.filter(cur => {
+						return cur.channelType == this.planInfo.repayType;
+					});
 					// this.channelList = channelList.reverse();
-					let channelList = res.data;
+					// let channelList = res.data;
 					this.channelList = channelList;
 					// 设置默认选择的是第一条通道
 					this.planInfo.channelCode = channelList[0].channelCode;

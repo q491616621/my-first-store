@@ -72,9 +72,6 @@
 						img: require('../../../assets/img/posters/posters13.jpg')
 					},
 					{
-						img: require('../../../assets/img/posters/posters14.jpg')
-					},
-					{
 						img: require('../../../assets/img/posters/posters1.jpg')
 					},
 					{

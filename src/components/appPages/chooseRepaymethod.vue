@@ -30,17 +30,17 @@
 				isFirstEnter: false, //是否是第一次进入这个页面
 				titleName: '选择还款方式',
 				methodsList: [
-					// {
-					// 	title: '智能还款',
-					// 	content: '还款总额大于5万元，单笔大于1000元商旅商户账单',
-					// 	checked: false,
-					// 	type: 2
-					// },
 					{
 						title: '完美还款',
 						content: '还款总额小于5万元，单笔金额小于1000元实体落地商户',
 						checked: true,
 						type: 1
+					},
+					{
+						title: '智能还款',
+						content: '还款总额大于5万元，单笔大于1000元商旅商户账单',
+						checked: false,
+						type: 2
 					},
 					// {
 					// 	title: '0余额还款',
@@ -70,10 +70,10 @@
 			// 判断用户非回退回到该页面或者是第一次进入这个页面,重置选项
 			if (!this.$route.meta.isBack || this.isFirstEnter) {
 				this.methodsList = this.methodsList.map(cur => {
-					// cur.checked = false;
-					// this.repaymothod = '';
-					cur.checked = true;
-					this.repaymothod = 1;
+					cur.checked = false;
+					this.repaymothod = '';
+					// cur.checked = true;
+					// this.repaymothod = 1;
 					return cur;
 				})
 				// 获取上个页面传递过来的卡片信息
@@ -105,10 +105,10 @@
 			},
 			// 选择还款方式
 			chooseMethods(e) {
-				if (e == 2) {
-					this.$toast('该还款方式暂未开放,敬请期待!')
-					return;
-				}
+				// if (e == 2) {
+				// 	this.$toast('该还款方式暂未开放,敬请期待!')
+				// 	return;
+				// }
 				let methodsList = this.methodsList.map((cur, index) => {
 					cur.checked = false;
 					if (index == e) {

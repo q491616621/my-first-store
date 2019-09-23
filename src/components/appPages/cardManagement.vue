@@ -49,6 +49,7 @@
 							</div>
 							<div class="bill" v-if="item.repaymentDay == null">还款日未设置</div>
 							<div class="status-btn" @click.stop="goAddrePayPlan(item,index)" v-if="item.planOrderId == null">新增还款</div>
+							<!-- <div class="status-btn" @click.stop="goAddrePayPlan(item,index)" v-if="item.planOrderId != null">新增还款</div> -->
 							<div class="status-btn" @click.stop="goPlanDetail(item.planOrderId,item)" v-if="item.planOrderId != null">查看计划</div>
 						</div>
 					</div>
@@ -187,7 +188,8 @@
 				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
 				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
 				// 	// 正式服务器
-				// 	'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
+				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
+				// 	'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "441823199308235917","userName": "何守卫"}';
 				// this.getCardList()
 				// // 1000000001 1000010002 1000020002
 				// this.$store.commit('setCardManagement', JSON.parse(appData))
@@ -279,7 +281,7 @@
 						}
 						let bankLogo = {
 							'工商银行': require('../../assets/img/bankLogo/bank1.png'),
-							'广大银行': require('../../assets/img/bankLogo/bank2.png'),
+							'光大银行': require('../../assets/img/bankLogo/bank2.png'),
 							'广发银行': require('../../assets/img/bankLogo/bank3.png'),
 							'华夏银行': require('../../assets/img/bankLogo/bank4.png'),
 							'建设银行': require('../../assets/img/bankLogo/bank5.png'),

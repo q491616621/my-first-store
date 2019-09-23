@@ -68,16 +68,23 @@
 		// 	passWord: '123456'
 		// }
 		// 正式服务器的
+		//奥利奥
 		// let init = {
 		// 	agentId:1908141437,
 		// 	userName:17665271721,
 		// 	passWord:'123456'
 		// }
+		//老于
 		let init = {
 			agentId:1908141437,
 			userName:18682001955,
 			passWord:'woaini'
 		}
+		// let init = {
+		// 	agentId:1908141437,
+		// 	userName:13631435331,
+		// 	passWord:'123456'
+		// }
 		// ------------------------------
         server.login(init).then(res=>{
 		  console.log(res.data)
