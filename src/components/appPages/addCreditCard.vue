@@ -279,6 +279,28 @@
 						this.$toast('该卡不支持,请填其他卡')
 						return;
 					}
+					// -----------------------------------------------------------
+					// 此段代码用来判断当前卡所属银行在信惠通道是否支持,不支持return掉
+					let ask = true;
+					if(cardInfo.channelCode == 1000000001){
+						let arr = ['中国银行','浦发银行','交通银行','花旗银行','汇丰银行']
+						arr.forEach(cur=>{
+							if(cur == cardInfo.bankName){
+								ask = false
+							}
+						})
+					}
+					if(!ask){
+						this.$toast({
+							message:'该通道不支持这个银行绑定，已为您放开所有通道，请选择其他通道绑定',
+							forbidClick:true,
+							onClose:()=>{
+								this.failHandle()
+							}
+						})
+						return
+					}
+					// ----------------------------------------------------------------
 					// 提示加载中
 					tool.toastLoading()
 					server.getBindcardSm(cardInfo)

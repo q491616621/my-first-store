@@ -74,11 +74,11 @@
 		methods: {
 			// 获取我的商户
 			getMyMerchantData(e) {
-				let appData = JSON.parse(e);
-				this.$toast({
-					message:appData.sessionId,
-					duration:5000
-				})
+				// let appData = JSON.parse(e);
+				// this.$toast({
+				// 	message:appData.sessionId,
+				// 	duration:5000
+				// })
 			},
 			// 返回上一个页面
 			returnBack(){
