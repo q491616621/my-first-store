@@ -25,4 +25,6 @@ export const server = {
   stopRepayPlan:(data)=>{return post('/plan/stopRepayPlan.do',data)},//终止计划
   queryCardInfoByChannel:(data)=>{return post('/bankcard/queryCardInfoByChannel.do',data)},//查询用户所有卡在某个通道下未绑卡的列表
   newRepayChannels:(data)=>{return post('/plan/repayChannels.do',data)},//查询代还通道列表(新)
+  countSubAccounts:(data)=>{return post('/user/countSubAccounts.do',data)},//查询直接间接推荐总数
+  querySubAccountList:(data)=>{return post('/user/querySubAccountList.do',data)},//查询直接或间接人数列表
 }

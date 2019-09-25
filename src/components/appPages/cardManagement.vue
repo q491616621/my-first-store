@@ -220,7 +220,7 @@
 			},
 			// 获取app端传过来的数据
 			getAppData(e) {
-				// 这行代码用来判断用户是否是从app端进来当前页面的,如果不是的app端进来的或者处于非cardManagement页面,不执行下面的操作
+				// 这行代码用来判断用户是否是从app端进来当前页面的,如果不是的app端进来的或者处于非cardManagement页面,不执行下面的操作(这个是为了优化安卓不多次调用接口)
 				if(this.$route.name != 'cardManagement'||this.$route.params.type == 'next')return;
 				// 获取到app端传过来的数据
 				let appData = JSON.parse(e);

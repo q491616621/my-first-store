@@ -8,93 +8,141 @@
 				<div class="title-name">{{titleName}}</div>
 			</div>
 		</div>
-		<div class="background-box">
+		<div class="background-box" @click="goMerChantDetails(2)">
 			<div class="information-box position">
-				<div class="title">累积推广（人）：未知</div>
+				<div class="title">累积推广（人）：{{totalAccount}}</div>
 				<div class="content flx-r">
 					<div class="box flx-c">
 						<div class="name">直接</div>
-						<div class="num">未知</div>
+						<div class="num">{{list[0].subTotal}}</div>
 					</div>
 					<div class="box flx-c">
 						<div class="name">VIP</div>
-						<div class="num">未知</div>
+						<div class="num">{{list[0].memberTotal}}</div>
 					</div>
 					<div class="box flx-c">
 						<div class="name">实名</div>
-						<div class="num">未知</div>
+						<div class="num">{{list[0].authTotal}}</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="information flx-cas">
-			<div class="information-box">
-				<div class="title">累积服务商（人）：未知</div>
+			<div class="information-box" @click="goMerChantDetails(3)">
+				<!-- <div class="title">累积服务商（人）：未知</div> -->
 				<div class="content flx-r">
 					<div class="box flx-c">
-						<div class="name">直接</div>
-						<div class="num">未知</div>
-					</div>
-				<!-- 	<div class="box flx-c">
-						<div class="name">VIP</div>
-						<div class="num">未知</div>
-					</div> -->
-					<div class="box flx-c">
 						<div class="name">间接</div>
-						<div class="num">未知</div>
+						<div class="num">{{list[1].subTotal}}</div>
+					</div>
+					<div class="box flx-c">
+						<div class="name">VIP</div>
+						<div class="num">{{list[1].memberTotal}}</div>
+					</div>
+					<div class="box flx-c">
+						<div class="name">实名</div>
+						<div class="num">{{list[1].authTotal}}</div>
 					</div>
 				</div>
 			</div>
-			<div class="information-box bottom">
+			<!-- 	<div class="information-box bottom">
 				<div class="title">当月累积交易金额</div>
 				<div class="content flx-r">
 					<div class="box flx-c">
 						<div class="num">¥未知</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
 <script>
 	import tool from '../../../../public/tool/tool.js'
+	import switchServer from '../../../../public/tool/switchServer.js';
+	import {
+		server
+	} from '@/api/server.js';
 	export default {
 		data() {
 			return {
 				titleName: '我的商户', //标题栏标题
 				pageType: 'app', //上个页面是什么h5还是app?
+				totalAccount: 0, //累计推广人数
+				list: [{
+						"subTotal": 0,
+						"memberTotal": 0,
+						"authTotal": 0,
+						"userLevel": 2
+					},
+					{
+						"subTotal": 0,
+						"memberTotal": 0,
+						"authTotal": 0,
+						"userLevel": 3
+					}
+				], //存放我的商户数据的数组
 			};
 		},
+		beforeRouteEnter(to,from,next){
+			let name = from.name;
+			if(name == 'merchantDetails'){
+				to.params.type = 'next'
+			}
+			next()
+		},
 		created() {
-			let me = this;
-			window['getMyMerchantData'] = (url) => {
-				me.getMyMerchantData(url)
+			if(this.$route.params.type == 'next'){
+				this.getData()
+			}else{
+				let me = this;
+				window['getMyMerchantData'] = (url) => {
+					me.getMyMerchantData(url)
+				}
+				// -----------------------------
+				// this.getData()
 			}
 		},
 		methods: {
-			// 获取我的商户
+			// 设置相关app端传过来的数据
 			getMyMerchantData(e) {
-				// let appData = JSON.parse(e);
+				// 这行代码用来判断用户是否是从app端进来当前页面的,如果不是的app端进来的或者处于非myMerchant页面,不执行下面的操作(这个是为了优化安卓不多次调用接口)
+				if(this.$route.name != 'myMerchant'||this.$route.params.type == 'next')return;
+				let appData = JSON.parse(e);
+				let sessionId = appData.sessionId;
+				switchServer.setCookie(sessionId)
 				// this.$toast({
 				// 	message:appData.sessionId,
 				// 	duration:5000
 				// })
+				this.getData() //执行调用获取数据的函数
+			},
+			getData() {
+				tool.toastLoading()
+				server.countSubAccounts()
+					.then(res => {
+						if (res == null) return;
+						if (res.data.list.length != 0) {
+							this.list = res.data.list;
+						}
+						this.totalAccount = res.data.totalAccount;
+					})
 			},
 			// 返回上一个页面
-			returnBack(){
+			returnBack() {
 				// 检查平台 0为安卓，1为ios，2为PC
 				let platFlag = tool.testPlat();
-				if(platFlag == 1){//苹果调用苹果的返回方法
+				if (platFlag == 1) { //苹果调用苹果的返回方法
 					let aaa = '奥利奥，泡一泡';
 					window.webkit.messageHandlers.closeWeb.postMessage(aaa);
-				}else{//安卓调用安卓的返回方法
+				} else { //安卓调用安卓的返回方法
 					window.android.btnBack()
 				}
 			},
 			// 跳转我的商户详情页面
-			goMerChantDetails(){
+			goMerChantDetails(userLevel) {
 				this.$router.push({
-					name:'merchantDetails'
+					name: 'merchantDetails',
+					params:{userLevel}
 				})
 			}
 		},
@@ -139,13 +187,15 @@
 		width: 100%;
 		height: 150px;
 		background: linear-gradient(90deg, rgba(110, 191, 255, 1), rgba(26, 130, 255, 1));
-		.position{
+
+		.position {
 			position: absolute;
 			top: 20px;
 			left: 50%;
 			margin-left: -345px;
-		}	
+		}
 	}
+
 	.information-box {
 		width: 690px;
 		height: 280px;
@@ -156,26 +206,31 @@
 		box-shadow: 0px 5px 10px #ccc;
 		box-sizing: border-box;
 		padding: 20px;
-		.title{
+
+		.title {
 			width: 100%;
 			font-size: 24px;
 			text-align: left;
 			font-weight: bold;
 		}
-		.content{
+
+		.content {
 			width: 100%;
 			height: 130px;
 			margin-top: 50px;
 			// background: pink;
 			justify-content: space-around;
-			.box{
+
+			.box {
 				width: 33.3333%;
 				height: 100%;
-				.name{
+
+				.name {
 					color: #777;
 					font-size: 26px;
 				}
-				.num{
+
+				.num {
 					padding-top: 20px;
 					color: #373737;
 					font-size: 40px;
@@ -184,10 +239,12 @@
 			}
 		}
 	}
-	.information{
+
+	.information {
 		width: 100%;
 		margin-top: 180px;
-		.bottom{
+
+		.bottom {
 			margin-top: 30px;
 		}
 	}

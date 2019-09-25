@@ -5,32 +5,34 @@
 			<top-title :titleName="titleName"></top-title>
 		</div>
 		<!-- 标题 -->
-		<div class="title flx-r">
+		<!-- 	<div class="title flx-r">
 			<span>我的推荐</span>
 			<span>（393人）</span>
-		</div>
+		</div> -->
 		<!-- 推荐人列表 -->
 		<van-list class="people-list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-			<div class="people-li flx-r" v-for="item in list" :key='item'>
+			<div class="people-li flx-r" v-for="(item,index) in list" :key='index'>
 				<div class="name flx-c">
-					<div>赵**</div>
-					<div>137****8948</div>
+					<div>{{item.realName == ''||item.realName == null?'未实名':item.realName}}</div>
+					<div>{{item.userMobile}}</div>
 				</div>
 				<div class="status flx-r">
-					<div>已实名</div>
-					<div>VIP</div>
+					<div :class="item.authStatus == 0?'real-name2':'real-name1'">{{item.authStatus == 0?'未实名':'已实名'}}</div>
+					<div :class="item.memberRoute == null||item.memberRoute==0?'vip1':'vip2'">{{item.memberRoute==null||item.memberRoute==0?'普通':'VIP'}}</div>
 				</div>
-				<div class="phone">
+				<!-- <div class="phone">
 					<img src="../../../assets/img/phone2.png">
-				</div>
+				</div> -->
 			</div>
-			<!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
 		</van-list>
 	</div>
 </template>
 <script>
 	import topTitle from '@/components/common/topTitle.vue';
-	import tool from '../../../../public/tool/tool.js'
+	import tool from '../../../../public/tool/tool.js';
+	import {
+		server
+	} from '@/api/server.js';
 	export default {
 		components: {
 			topTitle,
@@ -40,15 +42,65 @@
 				titleName: '我的商户', //标题栏标题
 				list: [],
 				loading: false,
-				finished: false
+				finished: false,
+				page: 1, //当前页数
+				pageSize: 10, //每页的个数
+				userLevel: '',
 			};
 		},
+		created() {
+			// console.log(this.$route.params)
+			this.userLevel = this.$route.params.userLevel;
+			this.onLoad()
+		},
 		methods: {
-			callTel() {
+			// 加载页面数据
+			onLoad() {
+				let init = {
+					userLevel: this.userLevel,
+					page: this.page,
+					pageSize: this.pageSize
+				}
+				this.loading = true;
+				server.querySubAccountList(init)
+					.then(res => {
+						if (res == null) return;
+						if (res.data.length == 0) {
+							this.loading = false;
+							this.finished = true;
+							return;
+						}
+						let arr = res.data;
+						this.list = this.list.concat(arr);
+						this.loading = false;
+						// 判断这次拿回来的数据是否小于每页的条数,小于的话不必再触发onLoad事件
+						if (res.data.length < this.pageSize) {
+							this.loading = false;
+							this.finished = true;
+							return
+						}
+						this.page += 1;
+					})
+				// 异步更新数据
+				// setTimeout(() => {
+				// 	for (let i = 0; i < 10; i++) {
+				// 		this.list.push(this.list.length + 1);
+				// 	}
+				// 	// 加载状态结束
+				// 	this.loading = false;
+				// 	// 数据全部加载完成
+				// 	if (this.list.length >= 40) {
+				// 		console.log('触发了')
+				// 		this.finished = true;
+				// 	}
+				// }, 500);
+			},
+			// 拨打电话
+			callTel(phoneNum) {
 				// 检查平台 0为安卓，1为ios，2为PC
 				let platFlag = tool.testPlat();
 				let init = {
-					telNumber: '0755-33941925'
+					telNumber: phoneNum
 				}
 				if (platFlag == 1) {
 					// 调用ios打电话的方法
@@ -58,49 +110,35 @@
 					window.android.callTelAction(JSON.stringify(init));
 				}
 			},
-			onLoad() {
-				// 异步更新数据
-				setTimeout(() => {
-					for (let i = 0; i < 10; i++) {
-						this.list.push(this.list.length + 1);
-					}
-					// 加载状态结束
-					this.loading = false;
-					// 数据全部加载完成
-					if (this.list.length >= 40) {
-						console.log('触发了')
-						this.finished = true;
-					}
-				}, 500);
-			}
 		},
 	};
 </script>
 
 <style scoped="scoped" lang="less">
-	.title {
-		width: 100%;
-		height: 88px;
-		position: fixed;
-		top: 88px;
-		left: 0;
-		z-index: 1600;
-		background: #fff;
-		// margin-top: 88px;
-		border-bottom: 4px solid #2e90ff;
-		font-size: 30px;
-		font-weight: bold;
-		color: #333;
+	// .title {
+	// 	width: 100%;
+	// 	height: 88px;
+	// 	position: fixed;
+	// 	top: 88px;
+	// 	left: 0;
+	// 	z-index: 1600;
+	// 	background: #fff;
+	// 	// margin-top: 88px;
+	// 	border-bottom: 4px solid #2e90ff;
+	// 	font-size: 30px;
+	// 	font-weight: bold;
+	// 	color: #333;
 
-		:nth-child(2) {
-			color: #2e90ff;
-			font-size: 30px;
-		}
-	}
+	// 	:nth-child(2) {
+	// 		color: #2e90ff;
+	// 		font-size: 30px;
+	// 	}
+	// }
 
 	.people-list {
-		margin-top: 180px;
-		.people-li{
+		margin-top: 88px;
+
+		.people-li {
 			width: 100%;
 			height: 120px;
 			// background: pink;
@@ -109,37 +147,64 @@
 			box-sizing: border-box;
 			padding-left: 20px;
 			border-bottom: 1px solid #d7d7d7;
-			.name{
+
+			.name {
 				height: 100px;
 				justify-content: space-around;
 				align-items: flex-start;
-				:nth-child(1){
+
+				:nth-child(1) {
 					font-size: 28px;
 					color: #333;
 					font-weight: bold;
 				}
-				:nth-child(2){
+
+				:nth-child(2) {
 					color: #999;
 				}
 			}
-			.status{
+
+			.status {
 				padding-left: 30px;
 				font-size: 24px;
-				:nth-child(1){
+
+				.real-name1 {
 					color: #fff;
-					background:#2e90ff;
+					background: #2e90ff;
 					padding: 6px 20px;
 					border-radius: 10px;
 				}
-				:nth-child(2){
+
+				.real-name2 {
+					color: #fff;
+					background: #989898;
+					padding: 6px 20px;
+					border-radius: 10px;
+				}
+
+				.vip1 {
+					color: #333;
 					padding-left: 30px;
 					font-weight: bold;
 				}
+
+				.vip2 {
+					color: #2e90ff;
+					padding-left: 30px;
+					font-weight: bold;
+				}
+
+				// :nth-child(2){
+				// 	padding-left: 30px;
+				// 	font-weight: bold;
+				// }
 			}
-			.phone{
+
+			.phone {
 				padding-left: 200px;
 				padding-top: 5px;
-				img{
+
+				img {
 					width: 40px;
 					height: 40px;
 				}
