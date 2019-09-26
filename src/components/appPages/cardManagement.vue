@@ -184,16 +184,16 @@
 				window['getAppData'] = (url) => {
 					me.getAppData(url)
 				}
-				// let appData =
-				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
-				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
-				// 	// 正式服务器
-				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
-				// 	'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "441823199308235917","userName": "何守卫"}';
-				// this.getCardList()
-				// // 1000000001 1000010002 1000020002
-				// this.$store.commit('setCardManagement', JSON.parse(appData))
-				// // this.getAppData(appData)
+				let appData =
+					// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+					// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
+					// 正式服务器
+					// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
+					'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "441823199308235917","userName": "何守卫"}';
+				this.getCardList()
+				// 1000000001 1000010002 1000020002
+				this.$store.commit('setCardManagement', JSON.parse(appData))
+				// this.getAppData(appData)
 			}
 		},
 		mounted() {
