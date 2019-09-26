@@ -8,12 +8,12 @@
 				<div class="title-name">{{titleName}}</div>
 			</div>
 		</div>
-		<div class="background-box" @click="goMerChantDetails(2)">
+		<div class="background-box" @click="goMerChantDetails(list[0].userLevel)">
 			<div class="information-box position">
 				<div class="title">累积推广（人）：{{totalAccount}}</div>
 				<div class="content flx-r">
 					<div class="box flx-c">
-						<div class="name">直接</div>
+						<div class="name">我的伙伴</div>
 						<div class="num">{{list[0].subTotal}}</div>
 					</div>
 					<div class="box flx-c">
@@ -28,11 +28,11 @@
 			</div>
 		</div>
 		<div class="information flx-cas">
-			<div class="information-box" @click="goMerChantDetails(3)">
+			<div class="information-box" @click="goMerChantDetails(list[1].userLevel)">
 				<!-- <div class="title">累积服务商（人）：未知</div> -->
 				<div class="content flx-r">
 					<div class="box flx-c">
-						<div class="name">间接</div>
+						<div class="name">我的团队</div>
 						<div class="num">{{list[1].subTotal}}</div>
 					</div>
 					<div class="box flx-c">
@@ -72,13 +72,13 @@
 						"subTotal": 0,
 						"memberTotal": 0,
 						"authTotal": 0,
-						"userLevel": 2
+						"userLevel": null
 					},
 					{
 						"subTotal": 0,
 						"memberTotal": 0,
 						"authTotal": 0,
-						"userLevel": 3
+						"userLevel": null
 					}
 				], //存放我的商户数据的数组
 			};
@@ -121,9 +121,14 @@
 				server.countSubAccounts()
 					.then(res => {
 						if (res == null) return;
-						if (res.data.list.length != 0) {
+						if(res.data.list.length !=0&&res.data.list.length == 1){
+							this.list[0] = res.data.list[0];
+						}else if(res.data.list.length !=0&&res.data.list.length == 2){
 							this.list = res.data.list;
 						}
+						// if (res.data.list.length != 0) {
+						// 	this.list = res.data.list;
+						// }
 						this.totalAccount = res.data.totalAccount;
 					})
 			},

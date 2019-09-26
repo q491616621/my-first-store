@@ -56,6 +56,11 @@
 		methods: {
 			// 加载页面数据
 			onLoad() {
+				// 判断userLevel 是否为null,是的话不执行获取数据操作
+				if(this.userLevel == null){
+					this.finished = true;
+					return;
+				}
 				let init = {
 					userLevel: this.userLevel,
 					page: this.page,

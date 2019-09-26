@@ -23,12 +23,12 @@
 			<div class="server-weChat flx-c">
 				<div class="title">客服微信</div>
 				<div class="content flx-c">
-					<div>1.复制客服微信:17727583650</div>
+					<div>1.复制客服微信:18924596162</div>
 					<div>2.打开微信,点击右上角“+”,【添加朋友】</div>
 					<div>3.在搜索框中,粘贴微信号,与微信客服沟通</div>
 				</div>
 				<div style="width: 100%;" class="bottom-btn flx-r">
-					<button class="copy-btn" data-clipboard-action="copy" data-clipboard-text='17727583650' ref='copy' @click='copyWx'>复制微信号</button>
+					<button class="copy-btn" data-clipboard-action="copy" data-clipboard-text='18924596162' ref='copy' @click='copyWx'>复制微信号</button>
 					<button class="copy-btn2" @click='openWeChat'>打开微信</button>
 				</div>
 			</div>

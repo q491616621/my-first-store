@@ -242,6 +242,7 @@
 			goAddrePayPlan(e, index) {
 				let cardInfo = e;
 				cardInfo.bgClassName = `bg${(index+1)%5}`
+				cardInfo.defaultChannelCode = this.$store.state.repayChannelCode;//把默认的通道号传过去
 				this.$router.push({
 					name: 'chooseRepaymethod',
 					params: cardInfo
