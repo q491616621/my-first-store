@@ -129,6 +129,7 @@
 								'招商银行': require('../../../assets/img/bankLogo/bank12.png'),
 								'中国银行': require('../../../assets/img/bankLogo/bank13.png'),
 								'中信银行': require('../../../assets/img/bankLogo/bank14.png'),
+								'上海银行': require('../../../assets/img/bankLogo/bank16.png'),
 							};
 							let settleCardInfo = res.data.settleCardInfo
 							settleCardInfo.logo = require('../../../assets/img/bankLogo/bank15.png');

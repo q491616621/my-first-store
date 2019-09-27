@@ -184,16 +184,16 @@
 				window['getAppData'] = (url) => {
 					me.getAppData(url)
 				}
-				let appData =
-					// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
-					// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
-					// 正式服务器
-					// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
-					'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "441823199308235917","userName": "何守卫"}';
-				this.getCardList()
-				// 1000000001 1000010002 1000020002
-				this.$store.commit('setCardManagement', JSON.parse(appData))
-				// this.getAppData(appData)
+				// let appData =
+				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "445122199010122716","userName": "王金盛"}';
+				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "231084199508103628","userName": "刘昭茜"}';
+				// 	// 正式服务器
+				// 	// '{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "36062219910910705X","userName": "黄国桥"}';
+				// 	'{"repayChannelCode": "1000010002","sessionId": "d06c2071-829c-4bbd-bf3d-3bae11caf1b0","certificateNum": "441823199308235917","userName": "何守卫"}';
+				// this.getCardList()
+				// // 1000000001 1000010002 1000020002
+				// this.$store.commit('setCardManagement', JSON.parse(appData))
+				// // this.getAppData(appData)
 			}
 		},
 		mounted() {
@@ -297,6 +297,7 @@
 							'招商银行': require('../../assets/img/bankLogo/bank12.png'),
 							'中国银行': require('../../assets/img/bankLogo/bank13.png'),
 							'中信银行': require('../../assets/img/bankLogo/bank14.png'),
+							'上海银行': require('../../assets/img/bankLogo/bank16.png'),
 						};
 
 						let cardList = res.data.map((cur, index) => {
@@ -379,6 +380,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(http://px45uxsff.bkt.clouddn.com/bg1.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -390,6 +392,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(https://px45uxsff.bkt.clouddn.com/bg2.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg2.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -401,6 +404,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(https://px45uxsff.bkt.clouddn.com/bg3.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg3.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -412,6 +416,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(https://px45uxsff.bkt.clouddn.com/bg4.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg4.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -423,6 +428,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(https://px45uxsff.bkt.clouddn.com/bg5.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg5.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -434,6 +440,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(https://px45uxsff.bkt.clouddn.com/bg1.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;

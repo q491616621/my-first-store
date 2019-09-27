@@ -47,6 +47,7 @@
 				</van-cell-group>
 				<button class="sumbit-btn bold" @click="verifyBank">提交</button>
 				<button class="cancel-btn" @click="closeCodeBox"></button>
+				<!-- <button @click="test"> 测试测试</button> -->
 			</van-dialog>
 		</div>
 	</div>
@@ -85,6 +86,7 @@
 				cardInfo: '',
 				currentChannelCode: '', //当前选中的通道号
 				currentIndex: '', //当前选择卡片序列号
+				currentUniqueId: '', //当前选择卡片的uniqueId
 				checkIndex: 0,
 				channelList: [], //该卡片绑定的通道情况，status有三种状态 1已绑定该通道 -1未绑定该通道 0 通道正在绑定中（正在等待绑定的回调）
 				cardList: [],
@@ -93,6 +95,8 @@
 				smsCode: null, //验证码
 				verify: null, //验证银行卡绑卡需要的信息
 				countDown: 59000, //倒计时
+				surePlanData: '', //surePlan页面传过来的数据
+				isSumbitPlan: false //是否在该页面提交过计划
 			};
 		},
 		beforeCreate() {
@@ -103,6 +107,7 @@
 			if (Object.keys(params).length > 0) {
 				// 判断上个页面是否传值过来,如果有的话说明上个页面是h5页面，直接执行getChannelList函数
 				this.pageType = 'h5';
+				this.surePlanData = params;
 				this.getChannelList(params)
 			} else {
 				this.pageType = 'app';
@@ -132,9 +137,9 @@
 		methods: {
 			// 返回事件(安卓手机返回按钮)
 			goBack() {
-				if(this.pageType == 'app'){
+				if (this.pageType == 'app') {
 					window.android.btnBack()
-				}else{
+				} else {
 					this.$router.replace({
 						name: 'cardManagement'
 					})
@@ -241,21 +246,22 @@
 				let init = {};
 				init.channelCode = this.currentChannelCode;
 				init.uniqueId = this.cardList[index].uniqueId;
+				this.currentUniqueId = this.cardList[index].uniqueId;
 				// -----------------------------------------------------------
 				// 此段代码用来判断当前卡所属银行在信惠通道是否支持,不支持return掉
 				let ask = true;
-				if(this.currentChannelCode == 1000000001){
-					let arr = ['中国银行','浦发银行','交通银行','花旗银行','汇丰银行']
-					arr.forEach(cur=>{
-						if(cur == this.cardList[index].bankName){
+				if (this.currentChannelCode == 1000000001) {
+					let arr = ['中国银行', '浦发银行', '交通银行', '花旗银行', '汇丰银行']
+					arr.forEach(cur => {
+						if (cur == this.cardList[index].bankName) {
 							ask = false
 						}
 					})
 				}
-				if(!ask){
+				if (!ask) {
 					this.$toast({
-						message:'该通道不支持这个银行绑定，请选择其他通道绑定',
-						forbidClick:true
+						message: '该通道不支持这个银行绑定，请选择其他通道绑定',
+						forbidClick: true
 					})
 					return
 				}
@@ -265,10 +271,10 @@
 				server.getBindcardSm(init)
 					.then(res => {
 						if (res == null) return;
-						if(res.code != 0){
+						if (res.code != 0) {
 							this.$toast({
-								message:res.message,
-								forbidClick:true,
+								message: res.message,
+								forbidClick: true,
 							})
 							return;
 						}
@@ -277,6 +283,9 @@
 						this.checkCardStatus(status, res);
 					})
 			},
+			// test(){
+			// 	this.checkCardStatus(1,'吃饭睡觉打豆豆')
+			// },
 			// 检查绑卡状态函数
 			checkCardStatus(status, res) {
 				if (status == 4) { //需短验
@@ -308,6 +317,34 @@
 							if (this.$refs.countDown) this.$refs.countDown.reset();
 							// 关闭短信验证弹窗
 							this.codeBox = false;
+							// --------------------------------------------------
+							// 此段代码用来提交surePlan页面过来绑定通道,绑定成功了提交计划
+							// 判断是否是从h5页面过来的,是否之前没提交过计划,绑定的卡是否是用户做计划的卡,是的话提交计划
+							if (this.pageType == 'h5' && !this.isSumbitPlan && this.surePlanData.planData.bindcardUniqueId == this.currentUniqueId&&this.surePlanData.planData.channelType==1) {
+								let init = {};
+								init.channelCode = this.currentChannelCode;
+								init.planDTO = this.surePlanData.planData.planDTO;
+								init.planInfo = this.surePlanData.planData.planInfo;
+								tool.toastLoading()
+								server.comfirmRepayPlan(init)
+									.then(res => {
+										if (res == null) return;
+										if (res.code == '-30001') {
+											this.$toast({
+												message: '未知错误',
+												forbidClick: true
+											})
+											return
+										} else {
+											this.$toast({
+												message: '已为您成功提交之前制定的计划',
+												forbidClick: true
+											})
+											this.isSumbitPlan = true;
+										}
+									})
+							}
+							// --------------------------------------------------
 						}
 					});
 					return;
@@ -324,6 +361,34 @@
 							// 关闭弹窗时,如果是倒计时状态,就重置倒计时
 							if (this.$refs.countDown) this.$refs.countDown.reset();
 							this.codeBox = false;
+							// --------------------------------------------------
+							// 此段代码用来提交surePlan页面过来绑定通道,绑定成功了提交计划
+							// 判断是否是从h5页面过来的,是否之前没提交过计划,绑定的卡是否是用户做计划的卡,是的话提交计划
+							if (this.pageType == 'h5' && !this.isSumbitPlan && this.surePlanData.planData.bindcardUniqueId == this.currentUniqueId&&this.surePlanData.planData.channelType==1) {
+								let init = {};
+								init.channelCode = this.currentChannelCode;
+								init.planDTO = this.surePlanData.planData.planDTO;
+								init.planInfo = this.surePlanData.planData.planInfo;
+								tool.toastLoading()
+								server.comfirmRepayPlan(init)
+									.then(res => {
+										if (res == null) return;
+										if (res.code == '-30001') {
+											this.$toast({
+												message: '未知错误',
+												forbidClick: true
+											})
+											return
+										} else {
+											this.$toast({
+												message: '已为您成功提交之前制定的计划',
+												forbidClick: true
+											})
+											this.isSumbitPlan = true;
+										}
+									})
+							}
+							// --------------------------------------------------
 						}
 					});
 					return;
@@ -383,10 +448,10 @@
 				server.getBindcardSm(init)
 					.then(res => {
 						if (res == null) return;
-						if(res.code != 0){
+						if (res.code != 0) {
 							this.$toast({
-								message:res.message,
-								forbidClick:true,
+								message: res.message,
+								forbidClick: true,
 							})
 							return;
 						}
@@ -421,7 +486,7 @@
 		width: 100%;
 		position: fixed;
 		left: 0;
-		top:88px;
+		top: 88px;
 		// margin-top: 88px;
 
 		.title {

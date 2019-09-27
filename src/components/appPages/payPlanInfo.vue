@@ -100,6 +100,7 @@
 				planInfo: null, //预览计划的信息
 				cardInfo: null, //上个页面用户填写的卡信息
 				commonLoading: true, //默认加载中，页面加载完成才消失
+				channelType:'',//上个页面传过来的用户选择的还款类型
 			};
 		},
 		beforeRouteEnter(to, from, next) {
@@ -130,6 +131,8 @@
 			sumbitPlan() {
 				let surePlanInfo = this.planInfo;
 				surePlanInfo.channelCode = this.cardInfo.channelCode;
+				surePlanInfo.bindcardUniqueId = this.cardInfo.bindcardUniqueId;
+				surePlanInfo.channelType = this.channelType;
 				this.$router.push({
 					name: 'surePlan',
 					params: surePlanInfo
@@ -160,6 +163,8 @@
 				this.forMatInfo(planInfo)
 				// 把上个页面填写的信息设置给cardInfo
 				this.cardInfo = this.$route.params.cardInfo;
+				//设置上个页面传递过来的channelType
+				this.channelType = this.$route.params.channelType;
 			},
 			// 格式化数据
 			forMatInfo(planInfo) {

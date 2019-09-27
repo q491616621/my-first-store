@@ -238,7 +238,6 @@
 				this.getChannelList(); //执行获取代还通道请求
 			}
 			this.isFirstEnter = false;
-			console.log(22222222222)
 		},
 		methods: {
 			// 把上个页面传递过来的数据设置给这个页面
@@ -278,21 +277,21 @@
 					// 		"channelType": 2,
 					// 		"channelCode": "1000010002",
 					// 		"isSupportLand": 1,
-					// 		"isCardBindsuc": 1
+					// 		"isCardBindsuc": 2
 					// 	},
 					// 	{
 					// 		"channelName": "通道3",
 					// 		"channelType": 1,
 					// 		"channelCode": "1000020002",
 					// 		"isSupportLand": 1,
-					// 		"isCardBindsuc": 0
+					// 		"isCardBindsuc": 2
 					// 	},
 					// 	{
 					// 		"channelName": "通道1",
 					// 		"channelType": 1,
 					// 		"channelCode": "1000000001",
 					// 		"isSupportLand": 1,
-					// 		"isCardBindsuc": 0
+					// 		"isCardBindsuc": 2
 					// 	},
 					// ]
 					// 情况1用户绑定的通道都是失败的
@@ -302,7 +301,7 @@
 					value = channelList.every(item=>item.isCardBindsuc == a)
 					if(value){
 						this.$toast({
-							message:'您在该还款方式中，并未成功绑定过通道，请选择其他还款方式',
+							message:'您在该还款方式中，并未成功绑定过通道无法使用该方式还款，请选择其他还款方式',
 							forbidClick:true,
 							duration:5000,
 							onClose:()=>{
@@ -477,10 +476,12 @@
 				tool.toastLoading();
 				server.preCreatePlan(planInfo).then(res => {
 					if (res == null) return;
+					let channelType = this.channelList[this.radio].channelType;
 					this.$toast.clear()
 					this.$router.push({
 						name: 'payPlanInfo',
 						params: {
+							channelType,
 							cardInfo: planInfo,
 							planInfo: res.data,
 							// userInfo:this.cardInfo
@@ -565,6 +566,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(http://px45uxsff.bkt.clouddn.com/bg1.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg1.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -576,6 +578,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(http://px45uxsff.bkt.clouddn.com/bg2.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg2.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -587,6 +590,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(http://px45uxsff.bkt.clouddn.com/bg3.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg3.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -598,6 +602,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(http://px45uxsff.bkt.clouddn.com/bg4.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg4.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;
@@ -609,6 +614,7 @@
 			margin-top: 20px;
 			width: 690px;
 			height: 350px;
+			// background: url(http://px45uxsff.bkt.clouddn.com/bg5.jpg) no-repeat center center;
 			background: url(../../assets/img/cardManagement/bg5.jpg) no-repeat center center;
 			background-size: 100% 100%;
 			border-radius: 10px;

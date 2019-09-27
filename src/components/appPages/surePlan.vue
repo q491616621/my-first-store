@@ -124,9 +124,14 @@
 			// 跳转绑定通道页面
 			goBindChannel(){
 				// 未绑定通道跳转去绑定通道页面,把当前要绑定的通道号和当前页面的名称携带过去
+				let init = {};
+				init.planDTO = this.surePlanInfo.planDTO;
+				init.planInfo = this.surePlanInfo.planInfo;
+				init.bindcardUniqueId = this.surePlanInfo.bindcardUniqueId;
+				init.channelType = this.surePlanInfo.channelType;
 				this.$router.push({
 					name:'bindChannel',
-					params:{channelCode:this.surePlanInfo.channelCode,page:'surePlan'}
+					params:{channelCode:this.surePlanInfo.channelCode,page:'surePlan',planData:init}
 				})
 			}
 		},

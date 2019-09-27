@@ -45,14 +45,23 @@
 					</div>
 				</div>
 			</div>
-			<!-- 	<div class="information-box bottom">
-				<div class="title">当月累积交易金额</div>
+			<div class="information-box box2" @click="goMerChantDetails(list[2].userLevel)">
+				<!-- <div class="title">累积服务商（人）：未知</div> -->
 				<div class="content flx-r">
 					<div class="box flx-c">
-						<div class="num">¥未知</div>
+						<div class="name">我的人脉</div>
+						<div class="num">{{list[2].subTotal}}</div>
+					</div>
+					<div class="box flx-c">
+						<div class="name">VIP</div>
+						<div class="num">{{list[2].memberTotal}}</div>
+					</div>
+					<div class="box flx-c">
+						<div class="name">实名</div>
+						<div class="num">{{list[2].authTotal}}</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </template>
@@ -69,6 +78,12 @@
 				pageType: 'app', //上个页面是什么h5还是app?
 				totalAccount: 0, //累计推广人数
 				list: [{
+						"subTotal": 0,
+						"memberTotal": 0,
+						"authTotal": 0,
+						"userLevel": null
+					},
+					{
 						"subTotal": 0,
 						"memberTotal": 0,
 						"authTotal": 0,
@@ -124,6 +139,9 @@
 						if(res.data.list.length !=0&&res.data.list.length == 1){
 							this.list[0] = res.data.list[0];
 						}else if(res.data.list.length !=0&&res.data.list.length == 2){
+							this.list[0] = res.data.list[0];
+							this.list[1] = res.data.list[1];
+						}else if(res.data.list.length !=0&&res.data.list.length == 3){
 							this.list = res.data.list;
 						}
 						// if (res.data.list.length != 0) {
@@ -252,5 +270,8 @@
 		.bottom {
 			margin-top: 30px;
 		}
+	}
+	.box2{
+		margin-top: 30px;
 	}
 </style>
